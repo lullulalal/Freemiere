@@ -26,7 +26,7 @@ create sequence filefolders_seq;
 insert into filefolders values(
  'lullulalal@naver.com',
  'C:\freemiere\ohayu@naver.com\yoo\',
- 'test',
+ 'test1',
  default,
  filefolders_seq.nextval,
  default);
