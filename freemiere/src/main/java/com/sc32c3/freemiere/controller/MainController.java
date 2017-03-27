@@ -26,6 +26,7 @@ public class MainController {
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(Member member, HttpSession session){
 		Member memberInfo = memberDAO.getMember(member.getEmail());
+		if(memberInfo == null) return "redirect:/";
 		if(member.getPassword().equals(memberInfo.getPassword())) {
 			session.setAttribute("loginMem", member.getEmail());
 			return "storage";
