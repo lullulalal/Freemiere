@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.fileBox { display:inline; }
+
+.naviBar {cursor:pointer;}
+
+.sideMenu {cursor:pointer;}
+
+.folder {cursor:pointer;}
+
+.file {cursor:pointer;}
+
