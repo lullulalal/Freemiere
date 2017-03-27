@@ -25,7 +25,7 @@ create sequence filefolders_seq;
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\test\',
+ 'C:\freemiere\ohayu@naver.com\yoo\',
  'test',
  default,
  filefolders_seq.nextval,
@@ -95,5 +95,5 @@ insert into filefolders values(
 
  insert into bookmarks values(
   6,
-  'lullulalal@naver.com',
+  'ohayu@naver.com',
    't');
