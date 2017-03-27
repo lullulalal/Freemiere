@@ -24,10 +24,11 @@ public class FileFolderController {
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
-    @RequestMapping(value = "/storage", method = RequestMethod.GET)
-    public String storage() {
-        return "storage";
-    }
+    //@RequestMapping(value = "storage", method = RequestMethod.GET)
+    //public String storage() {
+    //	System.out.println("??");
+    //    return "storage";
+   // }
     
     @ResponseBody
 	@RequestMapping(value = "loadTrash", method = RequestMethod.GET ,

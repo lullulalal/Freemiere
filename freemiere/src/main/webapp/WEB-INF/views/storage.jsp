@@ -320,7 +320,9 @@
 
     </div>
     <!-- /#wrapper -->
-
+	<script>
+		var loginMem='${loginMem}';
+	</script>
     <!-- jQuery -->
     <script src="resources/vendor/jquery/jquery.min.js"></script>
 

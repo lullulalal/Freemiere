@@ -11,19 +11,18 @@
 
 <!-- Bootstrap -->
 <link rel="stylesheet" type="text/css"
-	href="resources/vendor/bootstrap/css/bootstrap.css">
+	href="resources/main/css/bootstrap.css">
 <link rel="stylesheet" type="text/css"
-	href="resources/vendor/font-awesome/css/font-awesome.css">
+	href="resources/main/fonts/font-awesome/css/font-awesome.css">
 
 <!-- Stylesheet
     ================================================== -->
-<link rel="stylesheet" type="text/css" href="resources/css/main/style.css">
+<link rel="stylesheet" type="text/css" href="resources/main/css/style.css">
 <link rel="stylesheet" type="text/css"
-	href="resources/css/main/prettyPhoto.css">
+	href="resources/main/css/prettyPhoto.css">
 <link
 	href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300'
 	rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="resources/js/modernizr.custom.js"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +34,7 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 	<div id="preloader">
 		<div id="status">
-			<img src="resources/img/main/preloader.gif" height="64" width="64" alt="">
+			<img src="resources/main/img/preloader.gif" height="64" width="64" alt="">
 		</div>
 	</div>
 	<!-- Navigation -->
@@ -99,14 +98,14 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<input type="text" name="email" id="name" class="form-control"
+								<input type="text" name="email" id="email" class="form-control"
 									placeholder="Email" required="required">
 								<p class="help-block text-danger"></p>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<input type="password" name="password" id="email"
+								<input type="password" name="password" id="password"
 									class="form-control" placeholder="PassWord" required="required">
 								<p class="help-block text-danger"></p>
 							</div>
@@ -490,26 +489,20 @@
 			</nav>
 		</div>
 	</div>
-
-
-
-
-
-
-
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script type="text/javascript" src="resources/vendor/jquery/jquery.js"></script>
+	<script type="text/javascript" src="resources/main/js/jquery.1.11.1.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script type="text/javascript" src="resources/vendor/bootstrap/js/bootstrap.js"></script>
-	<script type="text/javascript" src="resources/js/main/SmoothScroll.js"></script>
-	<script type="text/javascript" src="resources/vendor/jquery/jquery.prettyPhoto.js"></script>
-	<script type="text/javascript" src="resources/vendor/jquery/jquery.isotope.js"></script>
-	<script type="text/javascript" src="resources/vendor/jquery/jquery.parallax.js"></script>
-	<script type="text/javascript" src="resources/vendor/bootstrap/js/jqBootstrapValidation.js"></script>
+	<script type="text/javascript" src="resources/main/js/bootstrap.js"></script>
+	<script type="text/javascript" src="resources/main/js/SmoothScroll.js"></script>
+	<script type="text/javascript" src="resources/main/js/jquery.prettyPhoto.js"></script>
+	<script type="text/javascript" src="resources/main/js/jquery.isotope.js"></script>
+	<script type="text/javascript" src="resources/main/js/jquery.parallax.js"></script>
+	<script type="text/javascript"
+		src="resources/main/js/jqBootstrapValidation.js"></script>
 	<!-- <script type="text/javascript" src="resources/js/contact_me.js"></script>  -->
 
 	<!-- Javascripts
     ================================================== -->
-	<script type="text/javascript" src="resources/js/main/main.js"></script>
+	<script type="text/javascript" src="resources/main/js/main.js"></script>
 </body>
 </html>

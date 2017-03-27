@@ -1,10 +1,12 @@
 var myRootDir='';
 var menu='MyStorage';
 var navRoot='MyStorage';
-	
+
 $(document).ready(function(){
+
+	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
-	myRootDir += 'lullulalal@naver.com'; //사용자 email 로 고쳐야함
+	myRootDir += loginMem; //사용자 email 로 고쳐야함
 	myRootDir += '\\';
 	
 	loadList(myRootDir); 

@@ -1,4 +1,9 @@
-﻿ create table filefolders(
+﻿create table members(
+	email varchar2(30) not null,
+	password varchar2(30) not null
+);
+
+create table filefolders(
 	email varchar2(30) not null,
 	path varchar2(260) not null,
 	info varchar2(200) not null,
