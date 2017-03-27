@@ -268,8 +268,8 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+ <!-- 검색 -->              <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="파일명을 입력하시오">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button">
                                         <i class="fa fa-search"></i>
@@ -279,19 +279,22 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a id='myStorage' class='sideMenu'><i class="fa fa-dashboard fa-fw"></i> 내 저장소</a>
+<!-- 좌측메뉴바 -->          <a id='myStorage' class='sideMenu'><i class="fa fa-folder-open-o fa-fw"></i> 내 저장소</a>
                         </li>
                         <li>
-                            <a id='shared' class='sideMenu'><i class="fa fa-sitemap fa-fw"></i> 공유 저장소</a>
+                            <a id='shared' class='sideMenu'><i class="fa fa-usb fa-fw"></i> 공유 저장소</a>
                         </li>
                         <li>
-                            <a id='recent' class='sideMenu'><i class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a>
+                            <a id='recent' class='sideMenu'><i class="fa fa-spinner fa-fw"></i> 최근 사용 저장소</a>
                         </li>                        
                         <li>
-                            <a id='bookMark' class='sideMenu'><i class="fa fa-edit fa-fw"></i> 즐겨찾기</a>
+                            <a id='bookMark' class='sideMenu'><i class="fa fa-tags fa-fw"></i> 즐겨찾기</a>
                         </li>
                         <li>
-                            <a id='trash' class='sideMenu'><i class="fa fa-table fa-fw"></i> 휴지통</a>
+                            <a id='trash' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 휴지통</a>
+                        </li>
+                         <li>
+                            <a id='edit' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 영상편집</a>
                         </li>
                         
                         

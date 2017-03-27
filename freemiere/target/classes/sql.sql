@@ -10,13 +10,13 @@
 create table shares(
 	ffid number references filefolders(ffid),
 	auth varchar2(10) not null,
-	email varchar2(30) not null,
+	email varchar2(30) not null
 );
 
 create table bookmarks(
 	ffid number references filefolders(ffid),
 	email varchar2(30) not null,
-	state char(1) default 'T'
+	bookstate char(1) default 'T'
 );
 
 create sequence filefolders_seq;
@@ -28,7 +28,7 @@ insert into filefolders values(
  'C:\freemiere\lullulalal@naver.com\test\',
  'test',
  default,
- filefolders_seq.nextval,
+	 filefolders_seq.nextval,
  default);
 
 insert into filefolders values(

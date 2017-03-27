@@ -60,7 +60,7 @@ function loadList(path){
 }
 
 function outputList(list){
-	//alert(JSON.stringify(list));
+	alert(JSON.stringify(list));
 	var data = '';
 
 	$.each(list, function(index, item){
