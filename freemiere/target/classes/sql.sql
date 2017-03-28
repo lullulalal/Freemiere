@@ -1,4 +1,4 @@
-﻿ create table members(
+﻿create table members(
 	email varchar2(30) not null,
 	password varchar2(30) not null
 );
