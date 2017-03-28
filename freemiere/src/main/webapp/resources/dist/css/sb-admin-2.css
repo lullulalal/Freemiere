@@ -82,15 +82,11 @@ body {
 	right: 0;
 	left: auto;
 }
-
-.navbar-bottom-button {
-	position: fixed;
-	position:relative;
-	bottom:-500px;
-	color:#428bca;
-	font-weight: bold;
+.navbar-fixed-bottom-menu{
+	color: #428bca;
+	position: absolute;
+	bottom: 0px;
 }
-
 .sidebar .sidebar-nav.navbar-collapse {
 	padding-left: 0;
 	padding-right: 0;
@@ -517,4 +513,5 @@ table.dataTable thead .sorting:after {
 		border-right-width: 14px;
 		border-left-width: 0;
 	}
+.fi
 }

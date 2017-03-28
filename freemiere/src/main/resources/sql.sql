@@ -25,8 +25,8 @@ create sequence filefolders_seq;
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\ohayu@naver.com\yoo\',
- 'test1',
+ 'C:\freemiere\lullulalal@naver.com\test3',
+ 'test2',
  default,
  filefolders_seq.nextval,
  default);
@@ -80,14 +80,14 @@ insert into filefolders values(
 insert into filefolders values(
  'lullulalal@naver.com',
  'C:\freemiere\lullulalal@naver.com\img.jpeg',
- 'test',
+ 'test1',
  default,
  filefolders_seq.nextval,
  't');
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\bookmark\',
+ 'C:\freemiere\lullulalal@naver.com\folder1\',
  'test',
  default,
  filefolders_seq.nextval,

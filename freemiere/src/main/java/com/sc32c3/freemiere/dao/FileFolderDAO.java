@@ -49,6 +49,12 @@ public class FileFolderDAO {
 
 		return mapper.getFilerFolerInfo(path);
 	}
+	public int deleteFileFolder(int ffid){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		
+		return mapper.deleteFileFolder(ffid); 
+	}
+	
 	
 	
 }

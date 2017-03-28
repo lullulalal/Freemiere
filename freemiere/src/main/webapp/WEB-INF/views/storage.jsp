@@ -273,22 +273,30 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
-						<span id="navigator"> </span>
+						<span id="navigator"> </span> </span>
 					</div>
 				</div>
 				<!-- /.row -->
 				<div id="outputList"></div>
 
+				<nav class="navbar-fixed-bottom-menu navbar-light bg-faded">
+					<nav class="navbar fixed-bottom navbar-light bg-faded">
+						<form class="form-inline">
+							<input type="button" class="btn btn-outline-success" id="btn-all"value="전체선택">
+							<input type="button" class="btn btn-outline-success" id="btn-del"value="삭제">
+							<input type="button" class="btn btn-outline-success" value="새폴더">
+							<input type="button" class="btn btn-outline-success" value="다운로드">
+							<input type="button" class="btn btn-outline-success" value="업로드">
+						</form>
+					</nav>
+				</nav>
+
 			</div>
 
 			<!-- /.container-fluid -->
-			<nav class="navbar-bottom">
-				<input type="button" class="navbar-bottom-button" value="전체선택">
-				<input type="button" class="navbar-bottom-button" value="삭제">
-				<input type="button" class="navbar-bottom-button" value="새폴더">
-				<input type="button" class="navbar-bottom-button" value="다운로드">
-				<input type="button" class="navbar-bottom-button" value="업로드">
-			</nav>
+
+
+
 		</div>
 		<!-- /#page-wrapper -->
 	</div>

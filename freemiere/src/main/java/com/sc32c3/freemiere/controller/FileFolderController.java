@@ -1,5 +1,8 @@
 package com.sc32c3.freemiere.controller;
 
+import static org.hamcrest.CoreMatchers.is;
+
+import java.awt.List;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sc32c3.freemiere.dao.FileFolderDAO;
@@ -134,5 +138,21 @@ public class FileFolderController {
 		}
 
 		return rtn;
+	}
+	@ResponseBody
+	@RequestMapping(value="deleteFileFolder", method = RequestMethod.POST)
+	public int deleteFileFolder(String[] ffid,
+								String[] isshared){
+		logger.info("ffid="+ffid);
+		logger.info("share="+isshared);
+		int result = 0;
+		for(int i=0; i<isshared.length;i++){
+			if(isshared[i].equalsIgnoreCase("F")){
+				fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
+			}
+			//else if(isshared[i].equalsIgnoreCase("T")){}
+		}
+		
+		return result;
 	}
 }

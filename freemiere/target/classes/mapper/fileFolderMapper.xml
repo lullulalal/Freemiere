@@ -89,4 +89,10 @@
 			and LOWER(isDeleted)='t'
 	</select>
 	
+	<update id="deleteFileFolder" parameterType="int">
+		update filefolders
+		set isdeleted = 't'
+		where ffid = #{ffid}
+	</update>
+	
 </mapper>
