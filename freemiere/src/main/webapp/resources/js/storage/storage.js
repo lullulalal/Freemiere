@@ -213,11 +213,12 @@ jQuery.ajaxSettings.traditional = true;
 		data:{ffid:ffid, isshared:isshared},
 		success : function(){
 			alert('휴지통으로 이동되었습니다.');
+			loadList(path);
+
 		},
 		error: function(e){
 			alert(JSON,stringify(e));
 		}
 	
 	});
-	loadList(path);
-}
+	}
