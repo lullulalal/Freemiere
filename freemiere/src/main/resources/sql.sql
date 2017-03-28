@@ -101,4 +101,4 @@ insert into filefolders values(
  insert into bookmarks values(
   6,
   'lullulalal@naver.com',
-   't');
+  't');

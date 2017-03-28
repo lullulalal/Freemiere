@@ -21,6 +21,7 @@
 			where LOWER(ffs.path)=LOWER(#{0}) ) myffs, bookmarks bm
 		where myffs.ffs_ffid = bm.ffid(+) 
 		      and (bm.email=#{1} or bm.email is null) 
+		      and LOWER(myffs.ffs_isshared)='f'
 	</select>
 	
 	

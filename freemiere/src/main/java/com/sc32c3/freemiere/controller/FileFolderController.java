@@ -138,6 +138,7 @@ public class FileFolderController {
 				p += "\\";
 			System.out.println(p);
 			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email);
+			if(ff == null) continue;
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 			rtn.add(ff);
