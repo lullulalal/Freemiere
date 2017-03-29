@@ -1,10 +1,12 @@
 var myRootDir = '';
 var menu = 'MyStorage';
-var navRoot = 'MyStorage';
+var nowPath='';
 
 $(document).ready(function() {
+
+	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
-	myRootDir += 'lullulalal@naver.com'; // 사용자 email 로 고쳐야함
+	myRootDir += loginMem; //�용email �고쳐�함
 	myRootDir += '\\';
 
 	loadList(myRootDir);
@@ -12,26 +14,26 @@ $(document).ready(function() {
 	
 	$('#myStorage').click(function() {
 		menu = 'MyStorage';
-		navRoot = menu;
+		setNavRoot(menu);
 		loadList();
 	});
 	$('#shared').click(function() {
 		menu = 'Shared';
-		navRoot = menu;
+		setNavRoot(menu);
 		loadList();
 	});
 	$('#recent').click(function() {
 		menu = 'Recent';
-		navRoot = menu;
+		setNavRoot(menu);
 	});
 	$('#bookMark').click(function() {
 		menu = 'Bookmark';
-		navRoot = menu;
+		setNavRoot(menu);
 		loadList();
 	});
 	$('#trash').click(function() {
 		menu = 'Trash';
-		navRoot = menu;
+		setNavRoot(menu);
 		loadList();
 	});
 	$('#btn-del').on('click',go_to_Trash);
@@ -56,7 +58,7 @@ function loadList(path) {
 			alert(JSON.stringify(e));
 		}
 	});
-
+	
 	outputNavi(path);
 }
 
@@ -115,7 +117,7 @@ function outputList(list) {
 
 	$('#outputList').html(data);
 	
-	// 하단 전체선택 버튼
+	// �단 �체�택 버튼
 	$('#btn-all').click(function() {
 		// alert('hi');
 		$('.file_check').each(function(index, item) {
@@ -130,22 +132,37 @@ function outputList(list) {
 	if (navRoot != 'Trash') {
 		$('.folder').dblclick(function() {
 			var path = $(this).attr('path');
+			nowPath = path;
 			menu = 'List';
 			loadList(path);
 		});
 	}
 }
 
-function outputNavi(fullPath) {
 
-	if (fullPath != null) {
-		var tmp = fullPath.split('\\');
-		var rootDir = tmp[0] + '\\' + tmp[1] + '\\' + tmp[2] + '\\';
+//객체�자
 
-		path = fullPath.substring(rootDir.length, fullPath.length);
-		var dirArray = path.split('\\');
+var navRoot='MyStorage';
+var nav='<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '��소</a>';
+
+function setNavRoot(nr){
+	navRoot = nr;
+	if(navRoot == 'MyStorage') {
+		alert('haha');
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '��소</a>';
 	}
-	function getPatialPath(dirArray, index) {
+	else if(navRoot == 'Shared')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유 ��소</a>';
+	else if (navRoot == 'Bookmark')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
+	else if (navRoot == 'Trash')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '��/a>';
+	setNav();
+}
+
+function outputNavi(fullPath){
+	//alert(nav);
+	function getPatialPath(dirArray, index){
 		var rtn = '';
 		for (j = 0; j <= index; j++) {
 			rtn += dirArray[j];
@@ -154,45 +171,46 @@ function outputNavi(fullPath) {
 		return rtn;
 	}
 
-	var data = '';
-	// alert(navRoot);
-	if (navRoot == 'MyStorage')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '내 저장소</a>';
-	else if (navRoot == 'Shared')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '공유 저장소</a>';
-	else if (navRoot == 'Bookmark')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '즐겨 찾기</a>';
-	else if (navRoot == 'Trash')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '휴지통</a>';
-
-	if (fullPath != null) {
-		for (i = 0; i < dirArray.length - 1; i++) {
-			data += '<a class="navbar-brand">/</a>';
-			data += '<a class="navbar-brand naviBar"';
-			data += ' path="' + (rootDir + getPatialPath(dirArray, i)) + '">';
-			data += dirArray[i] + '</a>';
+	if(fullPath != null){
+		var tmp = fullPath.split('\\');
+		var rootDir = tmp[0]+'\\'+tmp[1]+'\\'+tmp[2]+'\\';
+		
+		if(rootDir.length != fullPath.length){
+			path = fullPath.substring(rootDir.length,fullPath.length);
+			var dirArray=path.split('\\');
+	
+			var iEnd = dirArray.length-2;
+			nav += '<a class="navbar-brand">/</a>';
+			nav += '<a class="navbar-brand naviBar"';
+			nav += ' path="' + ( rootDir + getPatialPath(dirArray, iEnd) ) + '">';
+			nav += dirArray[iEnd] + '</a>';
 		}
 	}
+	
+	setNav();
+	
+	regEvent();
+}
 
-	$('#navigator').html(data);
-	$(".naviBarRoot").click(function() {
+function regEvent(){
+	$(".naviBarRoot").click(function(){
 		var path = $(this).attr('nav');
 		menu = path;
+		setNavRoot(menu)
 		loadList();
 	});
 
 	$(".naviBar").click(function() {
 		var path = $(this).attr('path');
-		menu = 'List';
-		alert(path);
-		loadList(path);
+
+		if(nowPath != path) {
+			nowPath = path;
+			menu = 'List';
+		    loadList(path);
+		}
 	});
 }
-//삭제 버튼 클릭시 휴지통으로 보내기
+//�� 버튼 �릭��으�보내�
 function go_to_Trash(){
 	var ffid=[];
 	var isshared=[];
@@ -212,7 +230,7 @@ jQuery.ajaxSettings.traditional = true;
 		type: 'POST',
 		data:{ffid:ffid, isshared:isshared},
 		success : function(){
-			alert('휴지통으로 이동되었습니다.');
+			alert('��으롴동�었�니');
 			loadList(path);
 
 		},
@@ -222,3 +240,7 @@ jQuery.ajaxSettings.traditional = true;
 	
 	});
 	}
+
+function setNav(){
+	$('#navigator').html(nav);
+}

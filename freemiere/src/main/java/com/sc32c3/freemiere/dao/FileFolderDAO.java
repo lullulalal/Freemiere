@@ -32,11 +32,11 @@ public class FileFolderDAO {
 		return mapper.getSharedList(email);
 	}
 	
-	public ArrayList<FileFolder> getMyStorageList(String email){
-		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+	//public ArrayList<FileFolder> getMyStorageList(String email){
+	//	FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 
-		return mapper.getMyStorageList(email);
-	}
+	//	return mapper.getMyStorageList(email);
+	//}
 	
 	public ArrayList<FileFolder> getTrashList(String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
@@ -44,10 +44,10 @@ public class FileFolderDAO {
 		return mapper.getTrashList(email);
 	}
 	
-	public FileFolder getFilerFolerInfo(String path){
+	public FileFolder getFilerFolerInfo(String path, String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 
-		return mapper.getFilerFolerInfo(path);
+		return mapper.getFilerFolerInfo(path, email);
 	}
 	public int deleteFileFolder(int ffid){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
