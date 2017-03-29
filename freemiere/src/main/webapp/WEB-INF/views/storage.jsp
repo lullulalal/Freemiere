@@ -285,7 +285,7 @@
                             <a id='shared' class='sideMenu'><i class="fa fa-usb fa-fw"></i> 공유 저장소</a>
                         </li>
                         <li>
-                            <a id='recent' class='sideMenu'><i class="fa fa-spinner fa-fw"></i> 최근 사용 저장소</a>
+                            <a id='recent' class='sideMenu'><i class="fa fa-spinner fa-fw"></i> 최근 작업 파일</a>
                         </li>                        
                         <li>
                             <a id='bookMark' class='sideMenu'><i class="fa fa-tags fa-fw"></i> 즐겨찾기</a>

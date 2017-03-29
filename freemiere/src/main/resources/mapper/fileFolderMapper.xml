@@ -49,6 +49,23 @@
 		      and (bm.email=#{email} or bm.email is null)
 	</select>
 	
+	<select id="getMyRecentList" parameterType="string" resultType="FileFolder">
+		select myffs.ffs_email email, myffs.ffs_path path,
+		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
+		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		       bm.bookstate bookstate
+		from	(select ffs.email ffs_email, ffs.path ffs_path, 
+				ffs.info ffs_info, ffs.isshared ffs_isshared, 
+				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+			from filefolders ffs
+			where ffs.email=#{email}
+				and LOWER(ffs.isShared)='f' 
+				and LOWER(ffs.isDeleted)='f') myffs, bookmarks bm
+		where myffs.ffs_ffid = bm.ffid(+) 
+		      and (bm.email=#{email} or bm.email is null)
+	</select>
+	
+	
 	<select id="getSharedBookmarkList" parameterType="string" resultType="FileFolder">
 		select shared.ffs_email email, shared.ffs_path path,
 		       shared.ffs_info info, shared.ffs_isshared isshared, 
@@ -88,5 +105,6 @@
 		where email=#{email} 
 			and LOWER(isDeleted)='t'
 	</select>
+	
 	
 </mapper>

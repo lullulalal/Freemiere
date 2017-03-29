@@ -49,6 +49,11 @@ public class FileFolderDAO {
 
 		return mapper.getFilerFolerInfo(path);
 	}
+	public ArrayList<FileFolder> getMyRecentList(String email){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+
+		return mapper.getMyRecentList(email);
+	}
 	
 	
 }

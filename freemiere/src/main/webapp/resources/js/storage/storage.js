@@ -22,6 +22,7 @@ $(document).ready(function(){
 	$('#recent').click(function(){
 		menu='Recent';
 		navRoot=menu;
+		loadList();
 	});
 	$('#bookMark').click(function(){
 		menu='Bookmark';
@@ -30,6 +31,11 @@ $(document).ready(function(){
 	});
 	$('#trash').click(function(){
 		menu='Trash';
+		navRoot=menu;
+		loadList();
+	});
+	$('#edit').click(function(){
+		menu='Edit';
 		navRoot=menu;
 		loadList();
 	});
@@ -60,7 +66,7 @@ function loadList(path){
 }
 
 function outputList(list){
-	alert(JSON.stringify(list));
+	/*alert(JSON.stringify(list));*/
 	var data = '';
 
 	$.each(list, function(index, item){
@@ -69,19 +75,19 @@ function outputList(list){
 		data += '	<td>';
 		
 		if(item.isFolder == false){
-			data += '<img class="file" src="./resources/img/storage/file.png">';	
+			data += '<img class="file" src="./resources/img/storage/file_green.png">';	
 		}else{
 			if(item.isShared.toLowerCase()=='t'){
 				if(item.bookState.toLowerCase()=='t')
 					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sbfolder.png">';
 				else
-					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sfolder.png">';	
+					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/folderballoon.png">';	
 			}
 			else {
 				if(item.bookState.toLowerCase()=='t')
 					data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mbfolder.png">';
 				else
-					data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mfolder.png">';
+					data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/folderballoon_y.png">';
 			}
 		}
 		
@@ -130,10 +136,14 @@ function outputNavi(fullPath){
 		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
 	else if(navRoot == 'Shared')
 		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유 저장소</a>';
+	else if(navRoot == 'Recent')
+		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '최근 사용 저장소</a>';
 	else if (navRoot == 'Bookmark')
 		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
 	else if (navRoot == 'Trash')
 		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '휴지통</a>';
+	else if(navRoot == 'Edit')
+		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '영상편집</a>';
 	
 	if(fullPath != null){
 		for (i = 0; i < dirArray.length-1; i++) { 

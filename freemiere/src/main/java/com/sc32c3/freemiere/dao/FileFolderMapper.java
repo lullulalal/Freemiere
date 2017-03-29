@@ -11,4 +11,5 @@ public interface FileFolderMapper {
 	public ArrayList<FileFolder> getTrashList(String email);
 	public ArrayList<FileFolder> getSharedBookmarkList(String email);
 	public ArrayList<FileFolder> getMyStorageBookmarkList(String email);
+	public ArrayList<FileFolder> getMyRecentList(String email);
 }

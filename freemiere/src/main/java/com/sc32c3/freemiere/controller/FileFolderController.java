@@ -1,6 +1,7 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -99,6 +100,7 @@ public class FileFolderController {
     	myStorageList.addAll(sharedList);
     	
     	for(FileFolder ff : myStorageList){
+    		System.out.println(ff.getPath());
     		File f = new File(ff.getPath());
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
@@ -106,6 +108,7 @@ public class FileFolderController {
     	
 		return myStorageList;
 	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "loadList", method = RequestMethod.GET ,
@@ -123,11 +126,14 @@ public class FileFolderController {
 		FileManager.fileSort( files );
 
 		for( File f : files ) {
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");//수정된 날짜 출력
+			System.out.println(sf.format(f.lastModified()));
+			
 			String p = f.getAbsolutePath();
 			if(f.isDirectory()==true)
 				p += "\\";
 			System.out.println(p);
-			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p );
+			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p);
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 			rtn.add(ff);
@@ -135,4 +141,6 @@ public class FileFolderController {
 
 		return rtn;
 	}
+	
+	
 }
