@@ -1,8 +1,9 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,22 +22,23 @@ import com.sc32c3.freemiere.vo.FileFolder;
 public class FileFolderController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileFolderController.class);
-
+ 
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
-    @RequestMapping(value = "/storage", method = RequestMethod.GET)
-    public String storage() {
-        return "storage";
-    }
+    //@RequestMapping(value = "storage", method = RequestMethod.GET)
+    //public String storage() {
+    //	System.out.println("??");
+    //    return "storage";
+   // }
     
     @ResponseBody
 	@RequestMapping(value = "loadTrash", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadTrash(){
+	public ArrayList<FileFolder> loadTrash(HttpSession session){
     	logger.info("서버:loadTrash 실행 ");
     	
-    	String email="lullulalal@naver.com";//세션의 email을 가져와야함.
+    	String email= (String)session.getAttribute("loginMem");
     	ArrayList<FileFolder> rtn = fileFolderDAO.getTrashList(email);
     	
     	for(FileFolder ff : rtn){
@@ -51,10 +53,10 @@ public class FileFolderController {
     @ResponseBody
 	@RequestMapping(value = "loadShared", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadShared(){
+	public ArrayList<FileFolder> loadShared(HttpSession session){
     	logger.info("서버:loadShared 실행 ");
     	
-    	String email="lullulalal@naver.com";//세션의 email을 가져와야함.
+    	String email= (String)session.getAttribute("loginMem");
     	ArrayList<FileFolder> rtn = fileFolderDAO.getSharedList(email);
     	
     	for(FileFolder ff : rtn){
@@ -69,11 +71,11 @@ public class FileFolderController {
 	@ResponseBody
 	@RequestMapping(value = "loadBookmark", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadBookmark(){
+	public ArrayList<FileFolder> loadBookmark(HttpSession session){
 		
 		logger.info("서버:loadBookmark 실행 ");
 		
-    	String email="lullulalal@naver.com";//세션의 email을 가져와야함.
+		String email= (String)session.getAttribute("loginMem");
     	ArrayList<FileFolder> myStorageList = fileFolderDAO.getMyStorageBookmarkList(email);
     	ArrayList<FileFolder> sharedList = fileFolderDAO.getSharedBookmarkList(email);
     	myStorageList.addAll(sharedList);
@@ -90,32 +92,37 @@ public class FileFolderController {
 	@ResponseBody
 	@RequestMapping(value = "loadMyStorage", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadMyStorage(){
+	public ArrayList<FileFolder> loadMyStorage(HttpSession session){
 		
 		logger.info("서버:loadMyStorage 실행 ");
 		
-    	String email="lullulalal@naver.com";//세션의 email을 가져와야함.
-    	ArrayList<FileFolder> myStorageList = fileFolderDAO.getMyStorageList(email);
-    	ArrayList<FileFolder> sharedList = fileFolderDAO.getSharedList(email);
-    	myStorageList.addAll(sharedList);
+		String email= (String)session.getAttribute("loginMem");
     	
-    	for(FileFolder ff : myStorageList){
-    		System.out.println(ff.getPath());
+		//ArrayList<FileFolder> myStorageList = fileFolderDAO.getMyStorageList(email);
+		
+		ArrayList<FileFolder> myStorageList = loadList("c:\\freemiere\\" + email, session);
+    	ArrayList<FileFolder> sharedList = fileFolderDAO.getSharedList(email);
+    	
+    	for(FileFolder ff : sharedList){
     		File f = new File(ff.getPath());
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
     	}
     	
+    	myStorageList.addAll(sharedList);
+    	
 		return myStorageList;
 	}
-	
 	
 	@ResponseBody
 	@RequestMapping(value = "loadList", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadList(String path){
+	public ArrayList<FileFolder> loadList(String path, HttpSession session){
 		
 		logger.info("서버:loadList 실행 " + path);
+		
+		String email= (String)session.getAttribute("loginMem");
+		
 		String loadPath = path;
 		if(path.charAt(path.length()-1) != '\\')
 			loadPath += "\\";
@@ -126,14 +133,12 @@ public class FileFolderController {
 		FileManager.fileSort( files );
 
 		for( File f : files ) {
-			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");//수정된 날짜 출력
-			System.out.println(sf.format(f.lastModified()));
-			
 			String p = f.getAbsolutePath();
 			if(f.isDirectory()==true)
 				p += "\\";
 			System.out.println(p);
-			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p);
+			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email);
+			if(ff == null) continue;
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 			rtn.add(ff);
@@ -141,6 +146,4 @@ public class FileFolderController {
 
 		return rtn;
 	}
-	
-	
 }

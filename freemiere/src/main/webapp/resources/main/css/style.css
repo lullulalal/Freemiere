@@ -1,4 +1,4 @@
-﻿body, html {
+body, html {
 	font-family: 'Open Sans', sans-serif;
 	text-rendering: optimizeLegibility !important;
 	-webkit-font-smoothing: antialiased !important;
@@ -264,7 +264,7 @@ hr {
 /* Services Section */
 /* Testimonials Section */
 #services {
-	background: url(../../../resources/img/main/testimonials-bg.jpg);
+	background: url(../img/testimonials-bg.jpg);
 	background-size: cover;
 	background-attachment: fixed;
 	color: #ddd;
@@ -450,7 +450,7 @@ img.img-thumbnail.team-img {
 }
 /* Testimonials Section */
 #testimonials {
-	background: url(../../../resources/img/main/testimonials-bg.jpg);
+	background: url(../img/testimonials-bg.jpg);
 	background-size: cover;
 	background-attachment: fixed;
 	color: #ddd;

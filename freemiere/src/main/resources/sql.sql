@@ -1,4 +1,9 @@
-﻿create table filefolders(
+﻿create table members(
+	email varchar2(30) not null,
+	password varchar2(30) not null
+);
+
+create table filefolders(
 	email varchar2(30) not null,
 	path varchar2(260) not null,
 	info varchar2(200) not null,
@@ -52,7 +57,7 @@ insert into filefolders values(
 
 insert into filefolders values(
  'duk@naver.com',
- 'C:\freemiere\duk@naver.com\shared\sharedimg.jpg',
+ 'C:\freemiere\duk@naver.com\shared\sharedimg.jpeg',
  'test',
  default,
  filefolders_seq.nextval,
@@ -79,7 +84,7 @@ insert into filefolders values(
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\img.jpg',
+ 'C:\freemiere\lullulalal@naver.com\img.jpeg',
  'test',
  default,
  filefolders_seq.nextval,
@@ -96,4 +101,4 @@ insert into filefolders values(
  insert into bookmarks values(
   6,
   'lullulalal@naver.com',
-   't');
+  't');
