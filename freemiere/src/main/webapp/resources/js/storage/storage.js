@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
-	myRootDir += loginMem; //�용email �고쳐�함
+	myRootDir += loginMem; 
 	myRootDir += '\\';
 
 	loadList(myRootDir);
@@ -117,7 +117,7 @@ function outputList(list) {
 
 	$('#outputList').html(data);
 	
-	// �단 �체�택 버튼
+	// �단 �체�택 버튼
 	$('#btn-all').click(function() {
 		// alert('hi');
 		$('.file_check').each(function(index, item) {
@@ -140,23 +140,22 @@ function outputList(list) {
 }
 
 
-//객체�자
 
 var navRoot='MyStorage';
-var nav='<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '��소</a>';
+var nav='<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
 
 function setNavRoot(nr){
 	navRoot = nr;
 	if(navRoot == 'MyStorage') {
 		alert('haha');
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '��소</a>';
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
 	}
 	else if(navRoot == 'Shared')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유 ��소</a>';
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유저장소</a>';
 	else if (navRoot == 'Bookmark')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
 	else if (navRoot == 'Trash')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '��/a>';
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '휴지통</a>';
 	setNav();
 }
 
@@ -210,7 +209,7 @@ function regEvent(){
 		}
 	});
 }
-//�� 버튼 �릭��으�보내�
+
 function go_to_Trash(){
 	var ffid=[];
 	var isshared=[];
@@ -230,7 +229,7 @@ jQuery.ajaxSettings.traditional = true;
 		type: 'POST',
 		data:{ffid:ffid, isshared:isshared},
 		success : function(){
-			alert('��으롴동�었�니');
+			alert('휴지통으로 이동 되었습니다.');
 			loadList(path);
 
 		},
