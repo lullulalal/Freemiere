@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,19 +27,20 @@ public class FileFolderController {
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
-    //@RequestMapping(value = "storage", method = RequestMethod.GET)
-    //public String storage() {
-    //	System.out.println("??");
-    //    return "storage";
-   // }
+	
+    @RequestMapping(value = "/storage", method = RequestMethod.GET)
+    public String storage() {
+    	
+        return "storage";
+    }
     
     @ResponseBody
 	@RequestMapping(value = "loadTrash", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadTrash(HttpSession session){
-    	logger.info("서버:loadTrash 실행 ");
+	public ArrayList<FileFolder> loadTrash(){
+    	logger.info("?쒕쾭:loadTrash ?ㅽ뻾 ");
     	
-    	String email= (String)session.getAttribute("loginMem");
+    	String email="lullulalal@naver.com";//?몄뀡??email??媛?몄??쇳븿.
     	ArrayList<FileFolder> rtn = fileFolderDAO.getTrashList(email);
     	
     	for(FileFolder ff : rtn){
@@ -53,10 +55,10 @@ public class FileFolderController {
     @ResponseBody
 	@RequestMapping(value = "loadShared", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadShared(HttpSession session){
-    	logger.info("서버:loadShared 실행 ");
+	public ArrayList<FileFolder> loadShared(){
+    	logger.info("?쒕쾭:loadShared ?ㅽ뻾 ");
     	
-    	String email= (String)session.getAttribute("loginMem");
+    	String email="lullulalal@naver.com";//?몄뀡??email??媛?몄??쇳븿.
     	ArrayList<FileFolder> rtn = fileFolderDAO.getSharedList(email);
     	
     	for(FileFolder ff : rtn){
@@ -71,11 +73,11 @@ public class FileFolderController {
 	@ResponseBody
 	@RequestMapping(value = "loadBookmark", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadBookmark(HttpSession session){
+	public ArrayList<FileFolder> loadBookmark(){
 		
-		logger.info("서버:loadBookmark 실행 ");
+		logger.info("?쒕쾭:loadBookmark ?ㅽ뻾 ");
 		
-		String email= (String)session.getAttribute("loginMem");
+    	String email="lullulalal@naver.com";//?몄뀡??email??媛?몄??쇳븿.
     	ArrayList<FileFolder> myStorageList = fileFolderDAO.getMyStorageBookmarkList(email);
     	ArrayList<FileFolder> sharedList = fileFolderDAO.getSharedBookmarkList(email);
     	myStorageList.addAll(sharedList);
@@ -86,30 +88,27 @@ public class FileFolderController {
 			ff.setFileName(f.getName());
     	}
     	
+    	
 		return myStorageList;
 	}
     
 	@ResponseBody
 	@RequestMapping(value = "loadMyStorage", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadMyStorage(HttpSession session){
+	public ArrayList<FileFolder> loadMyStorage(){
 		
-		logger.info("서버:loadMyStorage 실행 ");
+		logger.info("?쒕쾭:loadMyStorage ?ㅽ뻾 ");
 		
-		String email= (String)session.getAttribute("loginMem");
-    	
-		//ArrayList<FileFolder> myStorageList = fileFolderDAO.getMyStorageList(email);
-		
-		ArrayList<FileFolder> myStorageList = loadList("c:\\freemiere\\" + email, session);
+    	String email="lullulalal@naver.com";//?몄뀡??email??媛?몄??쇳븿.
+    	ArrayList<FileFolder> myStorageList = fileFolderDAO.getMyStorageList(email);
     	ArrayList<FileFolder> sharedList = fileFolderDAO.getSharedList(email);
+    	myStorageList.addAll(sharedList);
     	
-    	for(FileFolder ff : sharedList){
+    	for(FileFolder ff : myStorageList){
     		File f = new File(ff.getPath());
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
     	}
-    	
-    	myStorageList.addAll(sharedList);
     	
 		return myStorageList;
 	}
@@ -117,19 +116,16 @@ public class FileFolderController {
 	@ResponseBody
 	@RequestMapping(value = "loadList", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
-	public ArrayList<FileFolder> loadList(String path, HttpSession session){
+	public ArrayList<FileFolder> loadList(String path){
 		
-		logger.info("서버:loadList 실행 " + path);
-		
-		String email= (String)session.getAttribute("loginMem");
-		
+		logger.info("?쒕쾭:loadList ?ㅽ뻾 " + path);
 		String loadPath = path;
 		if(path.charAt(path.length()-1) != '\\')
 			loadPath += "\\";
 		System.out.println(loadPath);
 		File[] files = FileManager.findFile(loadPath);
 		ArrayList<FileFolder> rtn = new ArrayList<>();
-
+		String email="lullulalal@naver.com";
 		FileManager.fileSort( files );
 
 		for( File f : files ) {
@@ -137,8 +133,7 @@ public class FileFolderController {
 			if(f.isDirectory()==true)
 				p += "\\";
 			System.out.println(p);
-			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email);
-			if(ff == null) continue;
+			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email );
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 			rtn.add(ff);
@@ -146,4 +141,33 @@ public class FileFolderController {
 
 		return rtn;
 	}
+	
+	
+	
+	
+	//여기서부터는 컨텍스트메뉴 관련
+	
+	@RequestMapping(value = "createMovie", method = RequestMethod.GET)
+    public String createMovie() {
+    	
+        return "createMovie";
+    }
+	
+	
+	@ResponseBody
+	@RequestMapping(value="bookmarkUpdate", method=RequestMethod.POST)
+	public void bookmarkUpdate(int ffid){
+		
+		int result = 0;
+		System.out.print("ffid가 무엇이더냐 : "+ffid);
+		try{
+			result = fileFolderDAO.bookmarkUpdate(ffid); 
+		}catch (Exception e) {
+			// TODO: handle exception
+			result = 1;
+		}
+
+	}
+	
 }
+
