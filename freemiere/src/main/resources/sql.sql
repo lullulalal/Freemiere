@@ -27,7 +27,7 @@ create table bookmarks(
 create sequence filefolders_seq;
 
 <!--테스트 sql --!>
-
+   
 insert into filefolders values(
  'lullulalal@naver.com',
  'C:\freemiere\lullulalal@naver.com\test\',
