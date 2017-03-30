@@ -13,10 +13,6 @@
 
     <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
-
-<!-- 테스트 컨텍스트메뉴 -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
     <!-- Bootstrap Core CSS -->
     <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -331,16 +327,9 @@
 
     </div>
     <!-- /#wrapper -->
-
-<!-- <div>
-<form action="write" method="post" id="writeForm" enctype="multipart/form-data">
-<input type="file" name="upload" size="30" multiple="multiple">
-<input type="submit" value="업로드">
-</form>
-</div> -->
-
-
-	
+	<script>
+		var loginMem='${loginMem}';
+	</script>
     <!-- jQuery -->
     <script src="resources/vendor/jquery/jquery.min.js"></script>
 

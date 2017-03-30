@@ -1,6 +1,6 @@
 var myRootDir='';
 var menu='MyStorage';
-var navRoot='MyStorage';
+var nowPath='';
 
 //마우스 우클릭버튼
 jQuery.fn.contextPopup = function(menuData) {
@@ -101,34 +101,36 @@ return this;
 
 
 $(document).ready(function(){
+
+	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
-	myRootDir += 'lullulalal@naver.com'; //사용자 email 로 고쳐야함
+	myRootDir += loginMem; //사용자 email 로 고쳐야함
 	myRootDir += '\\';
 	
 	loadList(myRootDir); 
 	
 	$('#myStorage').click(function(){
 		menu='MyStorage';
-		navRoot=menu;
+		setNavRoot(menu);
 		loadList(); 
 	});
 	$('#shared').click(function(){
 		menu='Shared';
-		navRoot=menu;
+		setNavRoot(menu);
 		loadList(); 
 	});
 	$('#recent').click(function(){
 		menu='Recent';
-		navRoot=menu;
+		setNavRoot(menu);
 	});
 	$('#bookMark').click(function(){
 		menu='Bookmark';
-		navRoot=menu;
+		setNavRoot(menu);
 		loadList();
 	});
 	$('#trash').click(function(){
 		menu='Trash';
-		navRoot=menu;
+		setNavRoot(menu);
 		loadList();
 	});
 	
@@ -153,7 +155,7 @@ function loadList(path){
 			alert(JSON.stringify(e));
 		}
 	});
-		
+	
 	outputNavi(path);
 }
 
@@ -291,21 +293,36 @@ function outputList(list){
 	if(navRoot != 'Trash') {
 		$('.folder').dblclick(function(){
 			var path = $(this).attr('path');
+			nowPath = path;
 			menu = 'List';
 		    loadList(path);
 		});
 	}
 }
 
-function outputNavi(fullPath){
 
-	if(fullPath != null){
-		var tmp = fullPath.split('\\');
-		var rootDir = tmp[0]+'\\'+tmp[1]+'\\'+tmp[2]+'\\';
-		
-		path = fullPath.substring(rootDir.length,fullPath.length);
-		var dirArray=path.split('\\');
+//객체화 하자
+
+var navRoot='MyStorage';
+var nav='<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
+
+function setNavRoot(nr){
+	navRoot = nr;
+	if(navRoot == 'MyStorage') {
+		alert('haha');
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
 	}
+	else if(navRoot == 'Shared')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유 저장소</a>';
+	else if (navRoot == 'Bookmark')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
+	else if (navRoot == 'Trash')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '휴지통</a>';
+	setNav();
+}
+
+function outputNavi(fullPath){
+	//alert(nav);
 	function getPatialPath(dirArray, index){
 		var rtn = '';
 		for(j = 0; j <= index; j++){
@@ -315,54 +332,48 @@ function outputNavi(fullPath){
 		return rtn;
 	}
 	
-	var data = '';
-	//alert(navRoot);
-	if(navRoot == 'MyStorage')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
-	else if(navRoot == 'Shared')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유 저장소</a>';
-	else if (navRoot == 'Bookmark')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
-	else if (navRoot == 'Trash')
-		data = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '휴지통</a>';
-	
 	if(fullPath != null){
-		for (i = 0; i < dirArray.length-1; i++) { 
-			data += '<a class="navbar-brand">/</a>';
-			data += '<a class="navbar-brand naviBar"';
-			data += ' path="' + ( rootDir + getPatialPath(dirArray, i) ) + '">';
-			data += dirArray[i] + '</a>';
+		var tmp = fullPath.split('\\');
+		var rootDir = tmp[0]+'\\'+tmp[1]+'\\'+tmp[2]+'\\';
+		
+		if(rootDir.length != fullPath.length){
+			path = fullPath.substring(rootDir.length,fullPath.length);
+			var dirArray=path.split('\\');
+	
+			var iEnd = dirArray.length-2;
+			nav += '<a class="navbar-brand">/</a>';
+			nav += '<a class="navbar-brand naviBar"';
+			nav += ' path="' + ( rootDir + getPatialPath(dirArray, iEnd) ) + '">';
+			nav += dirArray[iEnd] + '</a>';
 		}
 	}
 	
-	$('#navigator').html(data);
+	setNav();
+	
+	regEvent();
+}
+
+function regEvent(){
 	$(".naviBarRoot").click(function(){
 		var path = $(this).attr('nav');
 		menu = path;
+		setNavRoot(menu)
 	    loadList();
 	});
 	
 	$(".naviBar").click(function(){
 		var path = $(this).attr('path');
-		menu = 'List';
-		alert(path);
-	    loadList(path);
+
+		if(nowPath != path) {
+			nowPath = path;
+			menu = 'List';
+		    loadList(path);
+		}
 	});
 }
 
-
-/*금요일시험 포맷된컴퓨터에서 세팅 설치파일은 오라클 jdk sts
-프로퍼티같은거는 다안에들어가있음
-테이블/인서트문 다있음.
-로그인기능도있음
-DB에 저장되는 것
-DB에 저장된것 읽기
-jsp에서는 jquery, jstl사용
-
-저장/셀렉트하는부분 하나랑
-서브쿼리랑 조인으로 불러오는 페이지 하나가있음.
-select * 쓸일은 절대없음. group by 기능도있음.
-인터셉터부분 나옴.
-마이바티스/pdf파일은 줄거임*/
+function setNav(){
+	$('#navigator').html(nav);
+}
 
 	

@@ -22,7 +22,7 @@
 		where myffs.ffs_ffid = bm.ffid(+) 
 		      and (bm.email=#{1} or bm.email is null) 
 		      and LOWER(myffs.ffs_isshared)='f'
-		       and LOWER(myffs.ffs_isdeleted)='f'
+		      and LOWER(myffs.ffs_isdeleted)='f'
 	</select>
 	
 	
@@ -44,7 +44,7 @@
 		      and (bm.email=#{email} or bm.email is null)
 	</select>
 	
-	<select id="getMyStorageList" parameterType="string" resultType="FileFolder">
+	<!--<select id="getMyStorageList" parameterType="string" resultType="FileFolder">
 		select myffs.ffs_email email, myffs.ffs_path path,
 		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
 		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
@@ -59,7 +59,7 @@
 		where myffs.ffs_ffid = bm.ffid(+) 
 		      and (bm.email=#{email} or bm.email is null)
 		      
-	</select>
+	</select> -->
 	
 	<select id="getSharedBookmarkList" parameterType="string" resultType="FileFolder">
 		select shared.ffs_email email, shared.ffs_path path,
