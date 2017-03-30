@@ -44,10 +44,16 @@ public class FileFolderDAO {
 		return mapper.getTrashList(email);
 	}
 	
-	public FileFolder getFilerFolerInfo(String path){
+	public FileFolder getFilerFolerInfo(String path, String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 
-		return mapper.getFilerFolerInfo(path);
+		return mapper.getFilerFolerInfo(path, email);
+	}
+
+	public int bookmarkUpdate(int ffid) {
+		// TODO Auto-generated method stub
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.bookmarkUpdate(ffid);
 	}
 	
 	

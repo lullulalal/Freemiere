@@ -9,9 +9,20 @@
 		select * from filefolders where LOWER(path) like LOWER('%#{path}%') 
 	</select> -->
 	
-	<select id="getFilerFolerInfo" parameterType="string" resultType="FileFolder">
-		select * from filefolders 
-		where LOWER(path)=LOWER(#{path}) 
+	<select id="getFilerFolerInfo" resultType="FileFolder">
+		select myffs.ffs_email email, myffs.ffs_path path,
+		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
+		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		       bm.bookstate bookstate
+		from	(select ffs.email ffs_email, ffs.path ffs_path, 
+				ffs.info ffs_info, ffs.isshared ffs_isshared, 
+				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+			from filefolders ffs
+			where LOWER(ffs.path)=LOWER(#{0}) ) myffs, bookmarks bm
+		where myffs.ffs_ffid = bm.ffid(+) 
+		      and (bm.email=#{1} or bm.email is null) 
+		      and LOWER(myffs.ffs_isshared)='f'
+		       and LOWER(myffs.ffs_isdeleted)='f'
 	</select>
 	
 	
@@ -47,6 +58,7 @@
 				and LOWER(ffs.isDeleted)='f') myffs, bookmarks bm
 		where myffs.ffs_ffid = bm.ffid(+) 
 		      and (bm.email=#{email} or bm.email is null)
+		      
 	</select>
 	
 	<select id="getSharedBookmarkList" parameterType="string" resultType="FileFolder">
@@ -88,5 +100,18 @@
 		where email=#{email} 
 			and LOWER(isDeleted)='t'
 	</select>
+	
+	<update id="bookmarkUpdate" parameterType="int">
+	update bookmarks set 
+	 
+	<!--  <choose>
+	 	<when test="bookstate = 'f'">bookstate='t'</when>
+	 	<otherwise>bookstate='f'</otherwise>
+	 </choose>  -->
+	 <if test="bookstate = 'f'">bookstate='t'</if> 
+	 <if test="bookstate = 't'">bookstate='f'</if>
+
+	 where ffid= #{ffid}
+	</update>
 	
 </mapper>
