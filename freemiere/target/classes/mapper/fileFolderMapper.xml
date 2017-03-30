@@ -22,11 +22,7 @@
 		where myffs.ffs_ffid = bm.ffid(+) 
 		      and (bm.email=#{1} or bm.email is null) 
 		      and LOWER(myffs.ffs_isshared)='f'
-<<<<<<< HEAD
-		       and LOWER(myffs.ffs_isdeleted)='f'
-=======
-		      and LOWER(myffs.ffs_isdeleted)='f'
->>>>>>> origin/minsu
+
 	</select>
 	
 	
