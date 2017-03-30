@@ -13,6 +13,10 @@
 
     <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
+
+<!-- 테스트 컨텍스트메뉴 -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
     <!-- Bootstrap Core CSS -->
     <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -28,6 +32,12 @@
 	<!-- Storage CSS -->
 	<link href="resources/css/storage/storage.css" rel="stylesheet">
 	
+	<!-- Storage context -->
+	<link href="resources/css/storage/context.css" rel="stylesheet">
+	
+	<<!-- jquery 3.1.1 version -->
+	<script type="text/javascript" src="resources/js/storage/jquery-3.1.1.min.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -39,6 +49,7 @@
 
 <body>
 
+	
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -320,9 +331,16 @@
 
     </div>
     <!-- /#wrapper -->
-	<script>
-		var loginMem='${loginMem}';
-	</script>
+
+<!-- <div>
+<form action="write" method="post" id="writeForm" enctype="multipart/form-data">
+<input type="file" name="upload" size="30" multiple="multiple">
+<input type="submit" value="업로드">
+</form>
+</div> -->
+
+
+	
     <!-- jQuery -->
     <script src="resources/vendor/jquery/jquery.min.js"></script>
 
@@ -337,6 +355,11 @@
 
     <!-- Storage JavaScript -->
 	<script src="resources/js/storage/storage.js"></script>
+	
+	<!-- Storage 우클릭 이벤트 -->
+	<script src="resources/js/storage/rightMouse.js"></script>
+	
+	
 </body>
 
 </html>
