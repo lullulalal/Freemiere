@@ -104,12 +104,16 @@
 	<update id="bookmarkUpdate" parameterType="int">
 	update bookmarks set 
 	 
-	<!--  <choose>
-	 	<when test="bookstate = 'f'">bookstate='t'</when>
+	   <choose>
+	   <when test="bookState = 't'">bookstate='f'</when>
+	   <when test="bookState = 'f'">bookstate='t'</when>
+	  
+	   
+	 	
 	 	<otherwise>bookstate='f'</otherwise>
-	 </choose>  -->
-	 <if test="bookstate = 'f'">bookstate='t'</if> 
-	 <if test="bookstate = 't'">bookstate='f'</if>
+	 </choose> 
+	<!-- <if test="bookstate = 'f'">bookstate='t'</if>
+	  <if test="bookstate = 't'">bookstate='f'</if>  -->
 
 	 where ffid= #{ffid}
 	</update>

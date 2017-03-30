@@ -164,6 +164,10 @@ function edit(){
 	location.href="createMovie";
 }
 
+function init(){
+	loadList(nowPath);
+}
+
 function outputList(list){
 	//alert(JSON.stringify(list));
 	var data = '';
@@ -193,8 +197,8 @@ function outputList(list){
 			    				type: 'POST',
 			    				data: {ffid: item.ffid},
 			    				success: function() {
-			    					alert('변경되었습니다.');
-			    					
+			    					alert('성공했어요 ');
+			    					loadList(nowPath);
 			    				},
 			    				error: function(e) {
 			    					alert(JSON.stringify(e));

@@ -121,7 +121,7 @@ public class FileFolderController {
 					produces = "application/json;charset=utf-8")
 	public ArrayList<FileFolder> loadList(String path, HttpSession session){
 		
-		logger.info("?쒕쾭:loadList ?ㅽ뻾 " + path);
+		logger.info("서버:loadList 실행 " + path);
 		
 		String email= (String)session.getAttribute("loginMem");
 		
@@ -131,7 +131,7 @@ public class FileFolderController {
 		System.out.println(loadPath);
 		File[] files = FileManager.findFile(loadPath);
 		ArrayList<FileFolder> rtn = new ArrayList<>();
-		String email="lullulalal@naver.com";
+		
 		FileManager.fileSort( files );
 
 		for( File f : files ) {
@@ -163,7 +163,7 @@ public class FileFolderController {
 	
 	@ResponseBody
 	@RequestMapping(value="bookmarkUpdate", method=RequestMethod.POST)
-	public void bookmarkUpdate(int ffid){
+	public void bookmarkUpdate(int ffid, String bookstate){
 		
 		int result = 0;
 		System.out.print("ffid가 무엇이더냐 : "+ffid);
