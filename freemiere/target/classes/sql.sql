@@ -1,9 +1,4 @@
-﻿create table members(
-	email varchar2(30) not null,
-	password varchar2(30) not null
-);
-
-create table filefolders(
+﻿ create table filefolders(
 	email varchar2(30) not null,
 	path varchar2(260) not null,
 	info varchar2(200) not null,
@@ -29,9 +24,9 @@ create sequence filefolders_seq;
 <!--테스트 sql --!>
 
 insert into filefolders values(
- 'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\test\',
- 'test',
+ 'ohayu@naver.com',
+ 'C:\freemiere\ohayu@naver.com\bookmark\',
+ 'yoo3',
  default,
  filefolders_seq.nextval,
  default);
@@ -45,14 +40,14 @@ insert into filefolders values(
  default);
 
  insert into shares values(
-   2,
+   89,
    'owner',
-   'duk@naver.com');
+   'lullulalal@naver.com');
 
  insert into shares values(
-   2,
+   89,
    'editor',
-   'lullulalal@naver.com');
+   'oahyu@naver.com');
 
 
 insert into filefolders values(
@@ -65,40 +60,53 @@ insert into filefolders values(
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\myshared\',
+ 'C:\freemiere\lullulalal@naver.com\test\',
  'test',
  't',
  filefolders_seq.nextval,
  default);
 
+ insert into filefolders values(
+ 'ohayu@naver.com',
+ 'C:\freemiere\ohayu@naver.com\bookmark\',
+ 'test',
+ 't',
+ filefolders_seq.nextval,
+ default);
+ 
  insert into shares values(
-  4,
+  89,
    'editor',
- 'duk@naver.com');
+ 'ohayu@naver.com');
 
  insert into shares values(
   4,
   'owner',
   'lullulalal@naver.com');
+  
+  insert into shares values(
+  98,
+  'owner',
+  'ohayu@naver.com');
 
 
 insert into filefolders values(
  'lullulalal@naver.com',
  'C:\freemiere\lullulalal@naver.com\img.jpeg',
- 'test',
+ 'test1',
  default,
  filefolders_seq.nextval,
  't');
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\bookmark\',
+ 'C:\freemiere\lullulalal@naver.com\folder1\',
  'test',
  default,
  filefolders_seq.nextval,
  default);
 
  insert into bookmarks values(
-  6,
-  'lullulalal@naver.com',
-  't');
+  99,
+  'ohayu@naver.com',
+   't');
