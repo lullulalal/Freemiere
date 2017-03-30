@@ -24,9 +24,9 @@ create sequence filefolders_seq;
 <!--테스트 sql --!>
 
 insert into filefolders values(
- 'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\test3',
- 'test2',
+ 'ohayu@naver.com',
+ 'C:\freemiere\ohayu@naver.com\bookmark\',
+ 'yoo3',
  default,
  filefolders_seq.nextval,
  default);
@@ -40,14 +40,14 @@ insert into filefolders values(
  default);
 
  insert into shares values(
-   2,
+   89,
    'owner',
-   'duk@naver.com');
+   'lullulalal@naver.com');
 
  insert into shares values(
-   2,
+   89,
    'editor',
-   'lullulalal@naver.com');
+   'oahyu@naver.com');
 
 
 insert into filefolders values(
@@ -60,21 +60,34 @@ insert into filefolders values(
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\myshared\',
+ 'C:\freemiere\lullulalal@naver.com\test\',
  'test',
  't',
  filefolders_seq.nextval,
  default);
 
+ insert into filefolders values(
+ 'ohayu@naver.com',
+ 'C:\freemiere\ohayu@naver.com\bookmark\',
+ 'test',
+ 't',
+ filefolders_seq.nextval,
+ default);
+ 
  insert into shares values(
-  4,
+  89,
    'editor',
- 'duk@naver.com');
+ 'ohayu@naver.com');
 
  insert into shares values(
   4,
   'owner',
   'lullulalal@naver.com');
+  
+  insert into shares values(
+  98,
+  'owner',
+  'ohayu@naver.com');
 
 
 insert into filefolders values(
@@ -94,6 +107,6 @@ insert into filefolders values(
  default);
 
  insert into bookmarks values(
-  6,
+  99,
   'ohayu@naver.com',
    't');

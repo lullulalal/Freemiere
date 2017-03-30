@@ -1,17 +1,16 @@
 var myRootDir = '';
 var menu = 'MyStorage';
-var nowPath='';
+var nowPath = '';
 
 $(document).ready(function() {
 
 	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
-	myRootDir += loginMem; 
+	myRootDir += loginMem;
 	myRootDir += '\\';
 
 	loadList(myRootDir);
 
-	
 	$('#myStorage').click(function() {
 		menu = 'MyStorage';
 		setNavRoot(menu);
@@ -36,7 +35,11 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		loadList();
 	});
-	$('#btn-del').on('click',go_to_Trash);
+	// 하단 삭제버튼
+	$('#btn-del').on('click', go_to_Trash);
+
+	// 하단 업로드버튼
+	$('#btn-upload').on('click', fileFolderUpload);
 
 });
 
@@ -58,7 +61,7 @@ function loadList(path) {
 			alert(JSON.stringify(e));
 		}
 	});
-	
+
 	outputNavi(path);
 }
 
@@ -68,19 +71,23 @@ function outputList(list) {
 
 	$.each(list,function(index, item) {
 						data += '<table class="fileBox">';
-				
-						data += '<tr>';
+
+						data += '<tr><td>';
 						data += '<input type="checkbox" class="file_check" ffid="'
-									+ item.ffid
-									+ '" '
-									+'isshared="'
-									+item.isShared
-									+'" '
-									+ 'id="file_check'+ index + '">';
-						data += '</tr>';
+								+ item.ffid
+								+ '" '
+								+ 'bookState="'
+								+ item.bookState
+								+ '"'
+								+ 'isshared="'
+								+ item.isShared
+								+ '" '
+								+ 'id="file_check'
+								+ index + '">';
+						data += '</td></tr>';
+
 						data += '<tr align="center">';
 						data += '	<td>';
-
 						if (item.isFolder == false) {
 							data += '<img class="file" src="./resources/img/storage/file.png">';
 						} else {
@@ -116,15 +123,15 @@ function outputList(list) {
 					});
 
 	$('#outputList').html(data);
-	
-	// �단 �체�택 버튼
+
+	// 하단 전체선택 메뉴버튼
 	$('#btn-all').click(function() {
 		// alert('hi');
 		$('.file_check').each(function(index, item) {
 			$(this).attr("checked", "checked");
 		});
 	});
-	
+
 	$('.folder').dblclick(function() {
 		$('.file_check').attr("checked", "checked");
 	});
@@ -139,29 +146,31 @@ function outputList(list) {
 	}
 }
 
+var navRoot = 'MyStorage';
+var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+		+ navRoot + '">' + '내 저장소</a>';
 
-
-var navRoot='MyStorage';
-var nav='<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
-
-function setNavRoot(nr){
+function setNavRoot(nr) {
 	navRoot = nr;
-	if(navRoot == 'MyStorage') {
+	if (navRoot == 'MyStorage') {
 		alert('haha');
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '내 저장소</a>';
-	}
-	else if(navRoot == 'Shared')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유저장소</a>';
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '내 저장소</a>';
+	} else if (navRoot == 'Shared')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '공유저장소</a>';
 	else if (navRoot == 'Bookmark')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '즐겨 찾기</a>';
 	else if (navRoot == 'Trash')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '휴지통</a>';
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '휴지통</a>';
 	setNav();
 }
 
-function outputNavi(fullPath){
-	//alert(nav);
-	function getPatialPath(dirArray, index){
+function outputNavi(fullPath) {
+	// alert(nav);
+	function getPatialPath(dirArray, index) {
 		var rtn = '';
 		for (j = 0; j <= index; j++) {
 			rtn += dirArray[j];
@@ -170,29 +179,29 @@ function outputNavi(fullPath){
 		return rtn;
 	}
 
-	if(fullPath != null){
+	if (fullPath != null) {
 		var tmp = fullPath.split('\\');
-		var rootDir = tmp[0]+'\\'+tmp[1]+'\\'+tmp[2]+'\\';
-		
-		if(rootDir.length != fullPath.length){
-			path = fullPath.substring(rootDir.length,fullPath.length);
-			var dirArray=path.split('\\');
-	
-			var iEnd = dirArray.length-2;
+		var rootDir = tmp[0] + '\\' + tmp[1] + '\\' + tmp[2] + '\\';
+
+		if (rootDir.length != fullPath.length) {
+			path = fullPath.substring(rootDir.length, fullPath.length);
+			var dirArray = path.split('\\');
+
+			var iEnd = dirArray.length - 2;
 			nav += '<a class="navbar-brand">/</a>';
 			nav += '<a class="navbar-brand naviBar"';
-			nav += ' path="' + ( rootDir + getPatialPath(dirArray, iEnd) ) + '">';
+			nav += ' path="' + (rootDir + getPatialPath(dirArray, iEnd)) + '">';
 			nav += dirArray[iEnd] + '</a>';
 		}
 	}
-	
+
 	setNav();
-	
+
 	regEvent();
 }
 
-function regEvent(){
-	$(".naviBarRoot").click(function(){
+function regEvent() {
+	$(".naviBarRoot").click(function() {
 		var path = $(this).attr('nav');
 		menu = path;
 		setNavRoot(menu)
@@ -202,44 +211,51 @@ function regEvent(){
 	$(".naviBar").click(function() {
 		var path = $(this).attr('path');
 
-		if(nowPath != path) {
+		if (nowPath != path) {
 			nowPath = path;
 			menu = 'List';
-		    loadList(path);
+			loadList(path);
 		}
 	});
 }
 
-function go_to_Trash(){
-	var ffid=[];
-	var isshared=[];
-	$('.file_check').each(function(index, item){
-		if($(item).is(":checked")){
+function go_to_Trash() {
+	var ffid = [];
+	var isshared = [];
+	var bookState = [];
+
+	$('.file_check').each(function(index, item) {
+		
+		if ($(item).is(":checked")) {
 			ffid.push($(item).attr('ffid'));
 			isshared.push($(item).attr('isshared'));
+			bookState.push($(item).attr('bookState'))
 		}
 	});
 	alert(ffid);
-	alert(isshared);
-	
-jQuery.ajaxSettings.traditional = true;
+	jQuery.ajaxSettings.traditional = true;
 
 	$.ajax({
-		url: 'deleteFileFolder',
-		type: 'POST',
-		data:{ffid:ffid, isshared:isshared},
-		success : function(){
-			alert('휴지통으로 이동 되었습니다.');
-			loadList(path);
-
+		url : 'deleteFileFolder',
+		type : 'POST',
+		data : {
+			ffid : ffid,
+			isshared : isshared,
+			bookState : bookState,
 		},
-		error: function(e){
-			alert(JSON,stringify(e));
+		success : function() {
+			alert('휴지통으로 이동 되었습니다.');
+			loadList(nowPath);
+			alert('hi2');
+		},
+		error : function(e) {
+			alert(JSON, stringify(e));
 		}
-	
-	});
-	}
 
-function setNav(){
+	});
+}
+
+
+function setNav() {
 	$('#navigator').html(nav);
 }

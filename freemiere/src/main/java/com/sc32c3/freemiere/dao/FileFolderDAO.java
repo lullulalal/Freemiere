@@ -1,9 +1,11 @@
 package com.sc32c3.freemiere.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Repository;
 
 import com.sc32c3.freemiere.vo.FileFolder;
@@ -46,13 +48,30 @@ public class FileFolderDAO {
 	
 	public FileFolder getFilerFolerInfo(String path, String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-
+	
 		return mapper.getFilerFolerInfo(path, email);
 	}
+	//휴지통으로 파일 폴더 이동
 	public int deleteFileFolder(int ffid){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		
 		return mapper.deleteFileFolder(ffid); 
+	}
+	//북마크된 파일 폴더 휴지통으로 이동
+	public int deleteBookmarks(int ffid, String email) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> bookmarks = new HashMap<>();
+		bookmarks.put("ffid", ffid);
+		bookmarks.put("email", email);
+		return mapper.deleteBookmarks(bookmarks);
+	}
+	//고유된 폴더 휴지통으로 이동
+	public int deleteShare(int ffid, String email) {
+		FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> shares = new HashMap<>();
+		shares.put("ffid", ffid);
+		shares.put("email", email);
+		return maaper.deleteShare(shares);
 	}
 	
 	

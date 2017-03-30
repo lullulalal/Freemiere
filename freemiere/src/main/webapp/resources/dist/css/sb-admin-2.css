@@ -15,6 +15,7 @@ body {
 	padding: 0 15px;
 	min-height: 568px;
 	background-color: white;
+	overflow-y:scroll;
 }
 
 @media ( min-width : 768px) {
