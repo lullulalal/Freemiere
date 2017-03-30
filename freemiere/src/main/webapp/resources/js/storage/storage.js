@@ -15,7 +15,7 @@ $(document).ready(function(){
 		menu='MyStorage';
 		setNavRoot(menu);
 		loadList(); 
-	});
+	});   
 	$('#shared').click(function(){
 		menu='Shared';
 		setNavRoot(menu);
