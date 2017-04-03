@@ -14,15 +14,24 @@
 	href="resources/main/css/bootstrap.css">
 <link rel="stylesheet" type="text/css"
 	href="resources/main/fonts/font-awesome/css/font-awesome.css">
-
 <!-- Stylesheet
     ================================================== -->
-<link rel="stylesheet" type="text/css" href="resources/main/css/style.css">
+<link rel="stylesheet" type="text/css"
+	href="resources/main/css/style.css">
 <link rel="stylesheet" type="text/css"
 	href="resources/main/css/prettyPhoto.css">
 <link
 	href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300'
 	rel='stylesheet' type='text/css'>
+
+<!-- 메인 본고딕 -->
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans:700"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poiret+One"
+	rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,7 +43,8 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 	<div id="preloader">
 		<div id="status">
-			<img src="resources/main/img/preloader.gif" height="64" width="64" alt="">
+			<img src="resources/main/img/preloader.gif" height="64" width="64"
+				alt="">
 		</div>
 	</div>
 	<!-- Navigation -->
@@ -66,6 +76,11 @@
 	<div id="intro">
 		<div class="intro-body">
 			<div class="container">
+			<!-- <video autoplay loop class="intro_video" width="1920" height="1080"	 muted>
+			<source src="resources/video/intro_bg.mp4" type="video/webm">
+  <source src="resources/video/intro_bg.mp4" type="video/mp4">
+</video> -->
+  <span class="brand-heading"><h1>F R E E M I E R E</h1></span>
 				<div class="row">
 
 					<!--         <div class="col-md-10 col-md-offset-1">
@@ -74,11 +89,10 @@
 </video> -->
 
 
-					<h1>
-						<span class="brand-heading">F R E E M I R E</span>
-					</h1>
-					<p class="intro-text">asdasd</p>
-					<a href="#about" class="btn-login btn btn-default page-scroll">로그인</a>
+
+
+					<p class="intro-text"></p>	
+					<a href="#about" class="btn-login btn btn-default-intro page-scroll">　로그인　</a>
 				</div>
 			</div>
 		</div>
@@ -88,11 +102,10 @@
 	<div id="about">
 		<div class="container">
 			<div class="section-title text-center center">
-				<h2>About us</h2>
+				<h2>LOG IN</h2>
 				<hr>
 			</div>
 			<div class="col-md-8 col-md-offset-2">
-				<h3>가입하셔요!</h3>
 				<form action="login" method="post" name="sentMessage"
 					id="contactForm" novalidate>
 					<div class="row">
@@ -111,9 +124,8 @@
 							</div>
 						</div>
 						<div id="success"></div>
-						<button type="submit" class="btn btn-default">login</button>
-						<a href="#contact" class="btn btn-default page-scroll">회원가입
-							하셔요~!</a>
+						<button type="submit" class="btn btn-default_login">　로그인　</button>
+						<a href="#contact" class="btn btn-default page-scroll">　회원가입　</a>
 					</div>
 				</form>
 			</div>
@@ -143,22 +155,22 @@
 	</div>
 	<!-- Services Section -->
 
-		<div id="services" class="text-center">
-			<div class="container">
-				<div class="section-title center">
-					<h2>간편하게 편집하세요.</h2>
-					<hr>
-			<!-- 	<div class="save"></div> -->
-				
-			<div class="service_edit">
-						<i class="fa fa-film"></i>
-						<h3>언제 어디서든</h3>
-						<p>이용자가 어디에 있든 서버에 등록된 자료는 모두 확인가능합니다.</p>
-					</div>
-			
+	<div id="services" class="text-center">
+		<div class="container">
+			<div class="section-title center">
+				<h1>간편하게 편집하세요.</h1>
+				<hr class="hr1">
+				<!-- 	<div class="save"></div> -->
+
+				<div class="service_edit">
+					<i class="fa fa-film fa-5x"></i>
+					<h3></h3>
+					<p>초보자도 쉽고 빠르게 영상을 만들 수 있습니다.</p>
 				</div>
-				<div class="space"></div>
-				<!--   <div class="row">
+
+			</div>
+			<div class="space"></div>
+			<!--   <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <div class="row testimonials">
           <div class="col-sm-4">
@@ -191,11 +203,11 @@
         </div>
       </div>
     </div> -->
-			</div>
 		</div>
+	</div>
 
-		<!-- Portfolio Section -->
-		<!-- <div id="works">
+	<!-- Portfolio Section -->
+	<!-- <div id="works">
   <div class="container"> Container
     <div class="section-title text-center center">
       <h2>Our Portfolio</h2>
@@ -302,18 +314,18 @@
     </div>
   </div>
 </div> -->
-		<!-- Team Section -->
-		<div id="team" class="text-center">
-			<div class="container">
-				<div class="section-title center">
-					<h2>언제 어디서든 공유하세요.</h2>
-					<hr>
-					<i class="fa fa-share-alt"></i>
-						<h3>언제 어디서든</h3>
-						<p>이용자가 어디에 있든 서버에 등록된 자료는 모두 확인가능합니다.</p>
-				</div>
-				<div class="share"></div>
-				<!-- <div id="row">
+	<!-- Team Section -->
+	<div id="team" class="text-center">
+		<div class="container">
+			<div class="section-title center">
+				<h1>언제 어디서든 공유하세요.</h1>
+				<hr>
+				<i class="fa fa-share-alt fa-5x"></i>
+				<h3></h3>
+				<p>이용자가 어디에 있든 서버에 등록된 자료는 모두 확인가능합니다.</p>
+			</div>
+			<div class="share"></div>
+			<!-- <div id="row">
       <div class="col-xs-6 col-md-3 col-sm-6">
         <div class="thumbnail"> <img src="resources/img/team/01.jpg" alt="..." class="img-thumbnail team-img">
           <div class="caption">
@@ -347,21 +359,21 @@
         </div>
       </div>
     </div> -->
-			</div>
 		</div>
-		<!-- Testimonials Section -->
-		<div id="testimonials" class="text-center">
-			<div class="container">
-			
-				<div class="section-title center">
-					<h2>소중한 추억을 남기세요.</h2>
-					<hr>
-					<i class="fa fa-share-alt"></i>
-						<h3>언제 어디서든</h3>
-						<p>이용자가 어디에 있든 서버에 등록된 자료는 모두 확인가능합니다.</p>
-				</div>
-				<div class="save"></div>
-				<!--   <div class="row">
+	</div>
+	<!-- Testimonials Section -->
+	<div id="testimonials" class="text-center">
+		<div class="container">
+
+			<div class="section-title center">
+				<h1>소중한 추억을 남기세요.</h1>
+				<hr class="hr3">
+				<i class="fa fa-picture-o"></i>
+				<h3></h3>
+				<p>간직하고 싶은 영상들을 만들고 내 저장소에 저장하세요.</p>
+			</div>
+			<div class="save"></div>
+			<!--   <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <div class="row testimonials">
           <div class="col-sm-4">
@@ -394,71 +406,77 @@
         </div>
       </div>
     </div> -->
-			</div>
 		</div>
+	</div>
 
-		<!-- Contact Section -->
-		<div id="contact" class="text-center">
-			<!-- <div class="container">
+	<!-- Contact Section -->
+	<div id="contact" class="text-center">
+		<!-- <div class="container">
   
         <div class="form-group">
           <textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
           <p class="help-block text-danger"></p>
         </div>  -->
+		<div class="col-md-8 col-md-offset-2">
+			<br>
+			<br>
+			<br>
+			<br>
+			<br><br><br><br>
+			<span class="footer-join"> 가 입 하 세 요 ! </span>
+			<br>
+			<hr>
+			<form name="sentMessage" id="contactForm" novalidate>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<input type="text" id="name" class="form-control"
+								placeholder="Email" required="required">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<input type="password" id="email" class="form-control"
+								placeholder="PassWord" required="required">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div id="success"></div>
+					<button type="submit" class="btn btn-default">　Join　</button>
+			</form>
+			<div class="section-title center">
+				<h2>　</h2>
+				<!-- <hr> -->
+				<p>　</p>
+			</div>
 			<div class="col-md-8 col-md-offset-2">
-				<h3>가입하셔요!</h3>
-				<form name="sentMessage" id="contactForm" novalidate>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<input type="text" id="name" class="form-control"
-									placeholder="Email" required="required">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input type="password" id="email" class="form-control"
-									placeholder="PassWord" required="required">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div id="success"></div>
-						<button type="submit" class="btn btn-default">Join</button>
-				</form>
-				<div class="section-title center">
-					<h2>Contact us</h2>
-					<hr>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Duis sed dapibus leo nec ornare diamcommodo nibh ante facilisis.</p>
+				<div class="col-md-4">
+					<div class="contact-item">
+						<!-- <i class="fa fa-map-marker fa-2x"></i> -->
+						<p>
+							　
+						</p>
+					</div>
 				</div>
-				<div class="col-md-8 col-md-offset-2">
-					<div class="col-md-4">
-						<div class="contact-item">
-							<i class="fa fa-map-marker fa-2x"></i>
-							<p>
-								4321 California St,<br> San Francisco, CA 12345
-							</p>
-						</div>
+				<div class="col-md-4">
+					<div class="contact-item">
+						<!-- <i class="fa fa-envelope-o fa-2x"></i> -->
+						<p>　</p>
 					</div>
-					<div class="col-md-4">
-						<div class="contact-item">
-							<i class="fa fa-envelope-o fa-2x"></i>
-							<p>info@company.com</p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="contact-item">
-							<i class="fa fa-phone fa-2x"></i>
-							<p>
-								+1 123 456 1234<br> +1 321 456 1234
-							</p>
-						</div>
-					</div>
-					<div class="clearfix"></div>
 				</div>
+				<div class="col-md-4">
+					<div class="contact-item">
+						<!-- <i class="fa fa-phone fa-2x"></i> -->
+						<p>
+							　
+						</p>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
 
-				<!-- <div class="social">
+			<!-- <div class="social">
         <h3>Follow us</h3>
         <ul>
           <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -469,8 +487,8 @@
           <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
         </ul>
       </div> -->
-			</div>
 		</div>
+	</div>
 	</div>
 
 	<div>
@@ -494,9 +512,12 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script type="text/javascript" src="resources/main/js/bootstrap.js"></script>
 	<script type="text/javascript" src="resources/main/js/SmoothScroll.js"></script>
-	<script type="text/javascript" src="resources/main/js/jquery.prettyPhoto.js"></script>
-	<script type="text/javascript" src="resources/main/js/jquery.isotope.js"></script>
-	<script type="text/javascript" src="resources/main/js/jquery.parallax.js"></script>
+	<script type="text/javascript"
+		src="resources/main/js/jquery.prettyPhoto.js"></script>
+	<script type="text/javascript"
+		src="resources/main/js/jquery.isotope.js"></script>
+	<script type="text/javascript"
+		src="resources/main/js/jquery.parallax.js"></script>
 	<script type="text/javascript"
 		src="resources/main/js/jqBootstrapValidation.js"></script>
 	<!-- <script type="text/javascript" src="resources/js/contact_me.js"></script>  -->
