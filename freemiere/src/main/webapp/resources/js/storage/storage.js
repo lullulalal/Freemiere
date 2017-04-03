@@ -140,7 +140,7 @@ $(document).ready(function(){
 function loadList(path){
 	if (menu == 'MyStorage')
 		path = myRootDir;
-	
+	//alert(path);
 	var url='load' + menu;
 	//alert(url);
 	$.ajax({
@@ -179,44 +179,105 @@ function outputList(list){
 		
 		//이미지파일일 경우 띄우고 새창에서 이미지 보여지게 함.
 		if(item.isFolder == false){
-			$(function() {
-				  
-			 	// var image = document.getElementById("#file"); 
-			 	  
-			     $('#file').contextPopup({
-			       title: 'Image/Avi File',
-			       items: [
-			         {label:'편집',    action:function() { edit(); } },
-			         {label:'복사/이동',                 action:function() { location.href="http://www.naver.com" } },
-			         {label:'게시',                   action:function() { alert('clicked 3') } },
-			         null, // divider
-			         
-			    	 {label:'중요' ,                 action:function() {      
-			    		 $.ajax({
-			    				url:'bookmarkUpdate',
-			    				type: 'POST',
-			    				data: {ffid: item.ffid},
-			    				success: function() {
-			    					alert('성공했어요 ');
-			    					loadList(nowPath);
-			    				},
-			    				error: function(e) {
-			    					alert(JSON.stringify(e));
-			    					//alert('에-러');
-			    				}
-			    			});	
-			    	 } },
-			       
-			         
-			       // {label:'중요',                 action:function() { 	  alert('clicked 5')       } },
-			         {label:'속성',                         action:function() { alert('clicked 5') } },
-			         {label:'삭제',                         action:function() { alert('clicked 6') } }
-			         
-			       ]
-			     });
-			  });
+			
+			//중요의 상태가 T일 경우
+			if(item.bookState.toLowerCase()=='t'){
+				$(function() {
+					  
+				 	// var image = document.getElementById("#file"); 
+				 	  
+				     $('#file').contextPopup({
+				       title: 'Image/Avi File',
+				       items: [
+				         {label:'편집',    action:function() { edit(); } },
+				         {label:'복사/이동',                 action:function() { location.href="http://www.naver.com" } },
+				         {label:'게시',                   action:function() { alert('clicked 3') } },
+				         null, // divider
+				         
+				    	 {label:'중요        ★' ,                 action:function() {      
+				    		 $.ajax({
+				    				url:'bookmarkUpdate',
+				    				type: 'POST',
+				    				data: {ffid: item.ffid, bookstate: item.bookState},
+				    				success: function() {
+				    					alert('중요하지 않군요... ');
+				    					init();
+				    				},
+				    				error: function(e) {
+				    					alert(JSON.stringify(e));
+				    					//alert('에-러');
+				    				}
+				    			});	
+				    	 } },
+				       
+				         
+				       // {label:'중요',                 action:function() { 	  alert('clicked 5')       } },
+				         {label:'속성',                         action:function() { alert('clicked 5')
+				        	 
+				         } },
+				         {label:'삭제',                         action:function() { alert('clicked 6') } }
+				         
+				       ]
+				     });
+				  });
+			}else{ //bookState가 F일 경우
+				$(function() {
+					  
+				 	// var image = document.getElementById("#file"); 
+				 	  
+				     $('#file').contextPopup({
+				       title: 'Image/Avi File',
+				       items: [
+				         {label:'편집',    action:function() { edit(); } },
+				         {label:'복사/이동',                 action:function() { location.href="http://www.naver.com" } },
+				         {label:'게시',                   action:function() { alert('clicked 3') } },
+				         null, // divider
+				         
+				    	 {label:'중요' ,                 action:function() {      
+				    		 $.ajax({
+				    				url:'bookmarkUpdate',
+				    				type: 'POST',
+				    				data: {ffid: item.ffid, bookstate: item.bookState},
+				    				success: function() {
+				    					alert('중요로 변경되었습니다.');
+				    					init();
+				    				},
+				    				error: function(e) {
+				    					alert(JSON.stringify(e));
+				    					//alert('에-러');
+				    				}
+				    			});	
+				    	 } },
+				       
+				         
+				       // {label:'중요',                 action:function() { 	  alert('clicked 5')       } },
+				         {label:'속성',                         action:function() { alert('clicked 5') } },
+				         {label:'삭제',                         action:function() { alert('clicked 6') } }
+				         
+				       ]
+				     });
+				  });
+			}
+			
+			
 			//data += '<img class="file" src="./resources/img/storage/file.png">';
-			data += '<img id="file" src="./resources/img/storage/file.png">';
+			
+			//현재 되게 만듬(0402)
+			//data += '<img id="file" src="./resources/img/storage/file.png">';
+			 $.ajax({
+ 				url:'download',
+ 				type: 'GET',
+ 				data: {ffid: item.ffid, path: item.path},
+ 				success: function() {
+ 					data += '<img class="file" src="download?ffid=${rtn.ffid}">';
+ 				},
+ 				error: function(e) {
+ 					alert(JSON.stringify(e));
+ 					//alert('에-러');
+ 				}
+ 			});	
+			
+			data += '<img id="file" src="'+item.path+'" onclick="window.open(this.src)">';
 			//data += '<img class="file" src="./resources/img/storage/file.png" onclick="window.open(this.src)">';
 		}
 		
@@ -245,7 +306,6 @@ function outputList(list){
 					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sbfolder.png">';
 					}
 				else{
-					
 					
 					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sfolder.png">';	
 					

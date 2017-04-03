@@ -1,6 +1,7 @@
 package com.sc32c3.freemiere.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +51,18 @@ public class FileFolderDAO {
 		return mapper.getFilerFolerInfo(path, email);
 	}
 
-	public int bookmarkUpdate(int ffid) {
+	public int bookmarkUpdate(int ffid,String bookstate) {
 		// TODO Auto-generated method stub
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-		return mapper.bookmarkUpdate(ffid);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("ffid", ffid);
+		map.put("bookstate", bookstate);
+		return mapper.bookmarkUpdate(map);
+	}
+	
+	public FileFolder boardread(int ffid){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.boardread(ffid);
 	}
 	
 	

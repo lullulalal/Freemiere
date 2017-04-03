@@ -101,21 +101,19 @@
 			and LOWER(isDeleted)='t'
 	</select>
 	
-	<update id="bookmarkUpdate" parameterType="int">
-	update bookmarks set 
-	 
-	   <choose>
-	   <when test="bookState = 't'">bookstate='f'</when>
-	   <when test="bookState = 'f'">bookstate='t'</when>
-	  
-	   
-	 	
-	 	<otherwise>bookstate='f'</otherwise>
-	 </choose> 
-	<!-- <if test="bookstate = 'f'">bookstate='t'</if>
-	  <if test="bookstate = 't'">bookstate='f'</if>  -->
+	<update id="bookmarkUpdate" parameterType="map" >
+	update bookmarks set  
+	  <if test='bookstate=="t"'>bookstate='f'</if>
+	   <if test='bookstate=="f"'>bookstate='t'</if>
 
 	 where ffid= #{ffid}
 	</update>
+	
+	<select id="boardread" parameterType="int" resultType="FileFolder">
+	
+	select * from filefolders
+	where ffid=#{ffid}
+	</select>
+	
 	
 </mapper>

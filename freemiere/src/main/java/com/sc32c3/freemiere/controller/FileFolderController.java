@@ -1,8 +1,13 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
 import com.sc32c3.freemiere.vo.FileFolder;
+
 
 
 @Controller
@@ -27,12 +34,9 @@ public class FileFolderController {
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
-    //@RequestMapping(value = "storage", method = RequestMethod.GET)
-    //public String storage() {
-    //	System.out.println("??");
-    //    return "storage";
-   // }
-    
+	
+	final String uploadPage = "/boardfile";
+   
     @ResponseBody
 	@RequestMapping(value = "loadTrash", method = RequestMethod.GET ,
 					produces = "application/json;charset=utf-8")
@@ -138,14 +142,13 @@ public class FileFolderController {
 			String p = f.getAbsolutePath();
 			if(f.isDirectory()==true)
 				p += "\\";
-			System.out.println(p);
+			System.out.println("경로데스까?"+p);
 			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email);
 			if(ff == null) continue;
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 			rtn.add(ff);
 		}
-
 		return rtn;
 	}
 	
@@ -167,14 +170,42 @@ public class FileFolderController {
 		
 		int result = 0;
 		System.out.print("ffid가 무엇이더냐 : "+ffid);
+		System.out.println("bookstate는 무었이더냐"+bookstate);
 		try{
-			result = fileFolderDAO.bookmarkUpdate(ffid); 
+			result = fileFolderDAO.bookmarkUpdate(ffid,bookstate); 
 		}catch (Exception e) {
 			// TODO: handle exception
 			result = 1;
 		}
-
 	}
 	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "download", method = RequestMethod.GET)
+	public String download(int ffid, HttpServletResponse response) {
+		// 전달된 글번호로 글정보 검색
+		FileFolder list = fileFolderDAO.boardread(ffid);
+		
+	
+		// 클라이언트로 전달할 출력스트림으로 복사
+		String fullPath = uploadPage + "/" + list.getPath();
+
+		try {
+			FileInputStream is = new FileInputStream(fullPath);
+			ServletOutputStream out = response.getOutputStream();
+
+			FileCopyUtils.copy(is, out);
+			is.close();
+			out.close();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
 
