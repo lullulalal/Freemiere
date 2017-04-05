@@ -22,6 +22,7 @@
 		where myffs.ffs_ffid = bm.ffid(+) 
 		      and (bm.email=#{1} or bm.email is null) 
 		      and LOWER(myffs.ffs_isshared)='f'
+		      and LOWER(myffs.ffs_isdeleted)='f'
 	</select>
 	
 	
@@ -121,5 +122,29 @@
 			and LOWER(isDeleted)='t'
 	</select>
 	
+	<!-- 일반 파일 폴더 삭제 -->
+	<update id="deleteFileFolder" parameterType="int">
+		update filefolders
+		set isdeleted = 't'
+		where ffid = #{ffid}
+	</update>
+	
+	<!--북마크 파일폴더 삭제  -->
+	<delete id="deleteBookmarks" parameterType="map">
+		delete bookmarks 
+		where 
+			ffid = #{ffid}
+		and
+			email = #{email}
+	</delete>
+	
+	<!--공유 파일폴더 삭제  -->
+	<delete id="deleteShare" parameterType="map">
+		delete shares 
+		where 
+			ffid = #{ffid}
+		and
+			email = #{email}
+	</delete>
 	
 </mapper>
