@@ -256,10 +256,10 @@ public class FileFolderController {
 				int mMonth = cal.get(Calendar.MONTH);
 				int mDay = cal.get(Calendar.DAY_OF_MONTH);
 
-				int mHour = cal.get(Calendar.HOUR);
+				/*int mHour = cal.get(Calendar.HOUR);
 				int mMin = cal.get(Calendar.MINUTE);
 				int mSec = cal.get(Calendar.SECOND);
-				int mMilisec = cal.get(Calendar.MILLISECOND);
+				int mMilisec = cal.get(Calendar.MILLISECOND);*/
 				
 				String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
 				String uploadDate = mYear2 + "년"+(mMonth2+1)+"월"+mDay2+ "일";
