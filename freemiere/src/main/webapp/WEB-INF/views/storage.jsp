@@ -271,8 +271,8 @@
  <!-- 검색 -->              <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="파일명을 입력하시오">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
+                                    <button class="btn btn-default" type="button" id="search"><!-- 검색 버튼 -->
+                                        <i class="fa fa-search" ></i>
                                     </button>
                                 </span>
                             </div>
@@ -294,7 +294,7 @@
                             <a id='trash' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 휴지통</a>
                         </li>
                          <li>
-                            <a id='edit' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 영상편집</a>
+                            <a id='edit' class='sideMenu'><i class="fa fa-spinner fa-fw"></i> 영상편집</a>
                         </li>
                         
                         

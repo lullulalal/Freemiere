@@ -11,6 +11,15 @@ create table filefolders(
 	ffid number primary key,
 	isdeleted char(1) default 'F'
 );
+create table filefolders(	--날짜추가--
+	email varchar2(30) not null,
+	path varchar2(260) not null,
+	info varchar2(200) not null,
+	updatedate		date default sysdate,
+	isshared char(1) default 'F',
+	ffid number primary key,
+	isdeleted char(1) default 'F'
+);
  
 create table shares(
 	ffid number references filefolders(ffid),
@@ -35,10 +44,18 @@ insert into filefolders values(
  default,
 	 filefolders_seq.nextval,
  default);
+ 
+ insert into filefolders(email, path, info, isshared, ffid, isdeleted) values(
+ 'moominjava@gmail.com',
+ 'C:\freemiere\moominjava@gmail.com\shared\test.txt',
+ 'test',
+ default,
+	 filefolders_seq.nextval,
+ default);
 
-insert into filefolders values(
- 'duk@naver.com',
- 'C:\freemiere\duk@naver.com\shared\',
+insert into filefolders(email, path, info, isshared, ffid, isdeleted) values(
+ 'moominjava@gmail.com',
+ 'C:\freemiere\moominjava@gmail.com\sharetest\',
  'test',
  't',
  filefolders_seq.nextval,

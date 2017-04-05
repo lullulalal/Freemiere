@@ -1,9 +1,12 @@
 package com.sc32c3.freemiere.vo;
 
-public class FileFolder {
+public class FileFolder implements Comparable<FileFolder> {
 	private String email;
 	private String path;
 	private String info;
+	
+	private String strUpdate;
+	private long lnUpdate;
 	
 	private char isShared;
 	private String auth;
@@ -15,6 +18,7 @@ public class FileFolder {
 	private String fileName;
 	
 	private char bookState;
+	
 	
 	public String getEmail() {
 		return email;
@@ -96,13 +100,38 @@ public class FileFolder {
 		this.auth = auth;
 	}
 
-	@Override
-	public String toString() {
-		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", ffid="
-				+ ffid + ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName=" + fileName
-				+ ", bookState=" + bookState + "]";
+
+	public String getStrUpdate() {
+		return strUpdate;
 	}
 
+	public void setStrUpdate(String strUpdate) {
+		this.strUpdate = strUpdate;
+	}
+
+	public long getLnUpdate() {
+		return lnUpdate;
+	}
+
+	public void setLnUpdate(long lnUpdate) {
+		this.lnUpdate = lnUpdate;
+	}
+
+	@Override
+	public int compareTo(FileFolder o) {
+		if(this.lnUpdate  == o.getLnUpdate())
+			return 0;
+		else if( this.lnUpdate > o.getLnUpdate())
+			return -1;
+		else if( this.lnUpdate < o.getLnUpdate())
+			return 1;
+		//return this.getUpdatedate().compareTo(o.getUpdatedate());
+		return 0;
+	}
+/*	@Override
+	public int compareTo(FileFolder o1, FileFolder o2){
+		if(o1.lastModified() < o2.last)
+	}*/
 
 
 }

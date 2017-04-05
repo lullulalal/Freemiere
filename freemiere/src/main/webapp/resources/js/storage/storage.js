@@ -24,6 +24,7 @@ $(document).ready(function(){
 	$('#recent').click(function(){
 		menu='Recent';
 		setNavRoot(menu);
+		loadList(); 
 	});
 	$('#bookMark').click(function(){
 		menu='Bookmark';
@@ -34,6 +35,16 @@ $(document).ready(function(){
 		menu='Trash';
 		setNavRoot(menu);
 		loadList();
+	});
+	$('#edit').click(function(){
+		menu='Edit';
+		setNavRoot(menu);
+		loadList(); 
+	});
+	$('#search').click(function(){
+		menu='Search';
+		setNavRoot(menu);
+		loadList(); 
 	});
 	
 });
@@ -61,29 +72,75 @@ function loadList(path){
 	outputNavi(path);
 }
 
+
 function outputList(list){
 	//alert(JSON.stringify(list));
 	var data = '';
-
+	
 	$.each(list, function(index, item){
+		
+		if(item.strUpdate != null){
+			data += item.strUpdate;
+			
+			data += '<table class="fileBox">';
+			data += '<tr align="center">';
+			data += '	<td>';
+			
+			if(item.isFolder == false){//폴더 안에 들어있는 파일
+				data += '<img class="file" src="./resources/img/storage/textFile.png">';	
+			}else{
+				if(item.isShared.toLowerCase()=='t'){
+					if(item.bookState.toLowerCase()=='t')//북마크 찍은 폴더
+						data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sbfolder.png">';
+					else//파빨 공유 폴더
+						data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/folderballoon.png">';	
+				}
+				
+				else {
+					if(item.bookState.toLowerCase()=='t')//북마크 찍은 폴더
+						data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mbfolder.png">';
+					else//기본폴더
+						data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/folderballoon_y.png">';
+				}
+			}
+			data += '	</td>';
+			data += '</tr>';
+			data += '<tr align="center">';
+			data += '	<td>';
+			data += item.fileName;
+			data += '	</td>';
+			data += '</tr>';
+			data += '</table>';
+			if(item.strUpdate == '2017/03/89'){
+
+			}else{
+				data += '	<br>';//줄바끔 추가
+			}
+		}
+		else {
+			
+		
 		data += '<table class="fileBox">';
 		data += '<tr align="center">';
 		data += '	<td>';
 		
-		if(item.isFolder == false){
-			data += '<img class="file" src="./resources/img/storage/file.png">';	
+		if(item.isFolder == false){//폴더 안에 들어있는 파일
+			data += '<img class="file" src="./resources/img/storage/textFile.png">';	
 		}else{
 			if(item.isShared.toLowerCase()=='t'){
-				if(item.bookState.toLowerCase()=='t')
+				data += '<h5>공유폴더</h5>';
+				if(item.bookState.toLowerCase()=='t')//북마크 찍은 폴더
 					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sbfolder.png">';
-				else
-					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sfolder.png">';	
+				else//파빨 공유 폴더
+					data += '<img class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/folderballoon.png">';	
 			}
+			
 			else {
-				if(item.bookState.toLowerCase()=='t')
+				if(item.bookState.toLowerCase()=='t')//북마크 찍은 폴더
 					data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mbfolder.png">';
-				else
-					data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mfolder.png">';
+				else//기본폴더
+					data += '<img class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/folderballoon_y.png">';
+				
 			}
 		}
 		
@@ -94,7 +151,13 @@ function outputList(list){
 		data += item.fileName;
 		data += '	</td>';
 		data += '</tr>';
+		if(item.isShared.toLowerCase()=='t'){//공유포올더 일때 줄바꿈 
+			data += '	<br>';//줄바끔 추가
+		}
 		data += '</table>';
+		}
+		
+
 	});
 	
 	$('#outputList').html(data);
@@ -123,10 +186,14 @@ function setNavRoot(nr){
 	}
 	else if(navRoot == 'Shared')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '공유 저장소</a>';
+	else if (navRoot == 'Recent')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '최근 작업 파일</a>';
 	else if (navRoot == 'Bookmark')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '즐겨 찾기</a>';
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '휴지통</a>';
+	else if (navRoot == 'Edit')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="' + navRoot + '">' + '영상편집</a>';
 	setNav();
 }
 

@@ -1,5 +1,6 @@
 package com.sc32c3.freemiere.dao;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.apache.ibatis.session.SqlSession;
@@ -53,6 +54,11 @@ public class FileFolderDAO {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 
 		return mapper.getMyRecentList(email);
+	}
+	public ArrayList<FileFolder> getSearchList(String title){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+
+		return mapper.getSearchList(title);
 	}
 	
 	
