@@ -1,10 +1,18 @@
-package com.sc32c3.freemiere.controller;
+	package com.sc32c3.freemiere.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -152,9 +160,6 @@ public class FileFolderController {
 		return rtn;
 	}
 	
-	
-	
-	
 	//여기서부터는 컨텍스트메뉴 관련
 	
 	@RequestMapping(value = "createMovie", method = RequestMethod.GET)
@@ -179,9 +184,107 @@ public class FileFolderController {
 		}
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="info", method=RequestMethod.POST)
+		public FileFolder info(int ffid, HttpSession session){
+			
+		
+		logger.info("너의 ffid는...? " + ffid);
+		
+		String email= (String)session.getAttribute("loginMem");
+		
+		FileFolder getFile = fileFolderDAO.boardread(ffid);
+		
+		System.out.println(getFile);
+		File f = new File(getFile.getPath());
+		
+		Path pathd = Paths.get(getFile.getPath());
+		
+		if (f.isDirectory()) {
+			try {
+				BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+				//최근 액세스 날짜
+				long lat = attr.creationTime().toMillis();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(lat);
+				
+				int mYear = cal.get(Calendar.YEAR);
+				int mMonth = cal.get(Calendar.MONTH);
+				int mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+				/*int mHour = cal.get(Calendar.HOUR);
+				int mMin = cal.get(Calendar.MINUTE);
+				int mSec = cal.get(Calendar.SECOND);
+				int mMilisec = cal.get(Calendar.MILLISECOND);*/
+				
+				String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+				
+				//
+				getFile.setLastModify(lastAccess);
+				//파일명
+				getFile.setFileName(f.getName());
+				
+			
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//파일일 경우
+		else {
+			try {
+				BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+				//생성날짜 = 업로드날짜
+				long lat2 = attr.creationTime().toMillis();
+				Calendar cal2 = Calendar.getInstance();
+				cal2.setTimeInMillis(lat2);
+				int mYear2 = cal2.get(Calendar.YEAR);
+				int mMonth2 = cal2.get(Calendar.MONTH);
+				int mDay2 = cal2.get(Calendar.DAY_OF_MONTH);
+				
+				
+				//최근 액세스 날짜
+				long lat = attr.lastAccessTime().toMillis();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(lat);
+				
+				int mYear = cal.get(Calendar.YEAR);
+				int mMonth = cal.get(Calendar.MONTH);
+				int mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+				int mHour = cal.get(Calendar.HOUR);
+				int mMin = cal.get(Calendar.MINUTE);
+				int mSec = cal.get(Calendar.SECOND);
+				int mMilisec = cal.get(Calendar.MILLISECOND);
+				
+				String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+				String uploadDate = mYear2 + "년"+(mMonth2+1)+"월"+mDay2+ "일";
+				
+				
+				//액세스날짜
+				getFile.setLastModify(lastAccess);
+				//파일명
+				getFile.setFileName(f.getName());
+				//파일크기
+				getFile.setVolume(f.length());
+				//업로드날짜
+				getFile.setUploadDate(uploadDate);
+			
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return getFile;
+	}
 	
 	
-	
+	/*
 	@ResponseBody
 	@RequestMapping(value = "download", method = RequestMethod.GET)
 	public String download(int ffid, HttpServletResponse response) {
@@ -205,7 +308,7 @@ public class FileFolderController {
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 
 }
 

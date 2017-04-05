@@ -13,6 +13,10 @@
 
     <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
+<!-- 음...일단 modal테스트를... -->
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
     <!-- Bootstrap Core CSS -->
     <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -330,9 +334,31 @@
 	<script>
 		var loginMem='${loginMem}';
 	</script>
+	
+	<div id="test"></div>
+  	<!-- <div class="w3-container">
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <header class="w3-container w3-teal"> 
+        <span onclick="document.getElementById('id01').style.display='none'" 
+        class="w3-button w3-display-topright">&times;</span>
+        <h2>Modal Header</h2>
+      </header>
+      <div class="w3-container">
+        <p>Some text..</p>
+        <p>Some text..</p>
+      </div>
+      <footer class="w3-container w3-teal">
+        <p>Modal Footer</p>
+      </footer>
+    </div>
+  </div>
+</div>  -->
+        
+  
     <!-- jQuery -->
-    <script src="resources/vendor/jquery/jquery.min.js"></script>
-
+   <!--  <script src="resources/vendor/jquery/jquery.min.js"></script>
+ -->
     <!-- Bootstrap Core JavaScript -->
     <script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 

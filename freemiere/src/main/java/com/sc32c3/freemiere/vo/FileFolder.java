@@ -15,7 +15,42 @@ public class FileFolder {
 	private String fileName;
 	
 	private char bookState;
+
+	private long volume;
+	//마지막수정
+	private String lastModify;
 	
+	private String uploadDate;
+	
+	
+	
+	public long getVolume() {
+		return volume;
+	}
+
+	public void setVolume(long volume) {
+		this.volume = volume;
+	}
+
+	public String getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(String uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	
+	
+	
+	public String getLastModify() {
+		return lastModify;
+	}
+
+	public void setLastModify(String string) {
+		this.lastModify = string;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -98,11 +133,13 @@ public class FileFolder {
 
 	@Override
 	public String toString() {
-		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", ffid="
-				+ ffid + ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName=" + fileName
-				+ ", bookState=" + bookState + "]";
+		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", auth="
+				+ auth + ", ffid=" + ffid + ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName="
+				+ fileName + ", bookState=" + bookState + ", lastModify=" + lastModify + ", uploadDate=" + uploadDate
+				+ ", volume=" + volume + "]";
 	}
 
+	
 
 
 }

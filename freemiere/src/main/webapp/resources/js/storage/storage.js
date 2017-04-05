@@ -134,6 +134,8 @@ $(document).ready(function(){
 		loadList();
 	});
 	
+	
+	
 });
 
 
@@ -167,6 +169,32 @@ function edit(){
 function init(){
 	loadList(nowPath);
 }
+
+function soksung(obj){
+
+	var test = '';
+		test +='<div id="id01" class="modal fade">';
+	 	test +='<div class="modal-dialog">';
+	 	test +='<div class="modal-content">';
+	 	test +='<h2 class="modal-title">'+obj.fileName+'<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+	 	test +='<div class="modal-body">';
+	 	test +='<p>'+obj.info+'</p>';
+	 		
+	 	test +='<p>파일 크기 '+obj.volume+'</p>';
+	 	test +='<p>업로드날짜 '+obj.uploadDate+'</p>';
+	 	test +='<p>수정 날짜  '+obj.lastModify+'</p>';
+	 	
+	 	test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +=' </div>';
+		
+	$('#test').html(test);				        		
+	$('#id01').modal();
+	
+}
+
 
 function outputList(list){
 	//alert(JSON.stringify(list));
@@ -211,10 +239,22 @@ function outputList(list){
 				    	 } },
 				       
 				         
-				       // {label:'중요',                 action:function() { 	  alert('clicked 5')       } },
-				         {label:'속성',                         action:function() { alert('clicked 5')
-				        	 
-				         } },
+				         {label:'속성',                         action:function() { 
+				        	 $.ajax({
+				    				url:'info',
+				    				type: 'POST',
+				    				dataType: 'json',
+				    				data: {ffid: item.ffid, path: item.path},
+				    				success: function(obj) {
+				    					
+				    					soksung(obj);
+				    				},
+				    				error: function(e) {
+				    					alert(JSON.stringify(e));
+				    					//alert('에-러');
+				    				}
+				    			});
+				        	  } },
 				         {label:'삭제',                         action:function() { alert('clicked 6') } }
 				         
 				       ]
@@ -264,7 +304,9 @@ function outputList(list){
 			
 			//현재 되게 만듬(0402)
 			//data += '<img id="file" src="./resources/img/storage/file.png">';
-			 $.ajax({
+		
+			//다운로드 잠시 주석처리
+			/* $.ajax({
  				url:'download',
  				type: 'GET',
  				data: {ffid: item.ffid, path: item.path},
@@ -275,7 +317,7 @@ function outputList(list){
  					alert(JSON.stringify(e));
  					//alert('에-러');
  				}
- 			});	
+ 			});	*/
 			
 			data += '<img id="file" src="'+item.path+'" onclick="window.open(this.src)">';
 			//data += '<img class="file" src="./resources/img/storage/file.png" onclick="window.open(this.src)">';
