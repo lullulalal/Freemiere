@@ -299,9 +299,9 @@
 							</li>
 							<!-- ================================================================= -->
 							<li><a href="#"><input type="button"
-									class="btn btn-outline-success" value="다운로드"></a></li>
+									class="btn btn-outline-success" id="btn-download" value="다운로드"></a></li>
 							<li><a href="#">
-									<form class="filebox" actuin="fileUpload" id="fileFolderUpload"
+									<form class="filebox" action="fileUpload" id="fileFolderUpload"
 										method="post" enctype="multipart/form-data">
 										<input type="hidden" name="">
 										<button class="btn btn-outline-success" value="업로드">
