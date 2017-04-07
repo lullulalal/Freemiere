@@ -11,10 +11,13 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Bootstrap Admin Theme</title>
+<title>FREEMIERE STORAGE</title>
+
+<!-- 새폴더 modal CSS -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <!-- Bootstrap Core CSS -->
-<link href="resources/vendor/bootstrap/css/bootstrap.min.css"
+<link href="resources/vendor/bootstrap/css/bootstrap.css"
 	rel="stylesheet">
 
 <!-- MetisMenu CSS -->
@@ -31,6 +34,7 @@
 <!-- Storage CSS -->
 <link href="resources/css/storage/storage.css" rel="stylesheet">
 
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -41,7 +45,9 @@
 </head>
 
 <body>
-
+<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
+<div id="newFolder" class="w3-modal"></div>
+<!-- ========================================================== -->
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -280,44 +286,74 @@
 				<!-- 하단메뉴 -->
 				<nav class="navbar navbar-inverse navbar-fixed-bottom">
 					<div class="container-fluid">
-							<ul class="nav navbar-nav">
-								<li class="active">
-									<a href="#"><input type="button" class="btn btn-outline-success" id="btn-all"value="전체선택"> </a>
-								</li>
-								<li>
-									<a href="#"><input type="button"class="btn btn-outline-success" id="btn-del" value="삭제"></a>
-								</li>
-								<li>
-									<a href="#"><input type="button" class="btn btn-outline-success" value="새폴더"></a>
-								</li>
-								<li>
-									<a href="#"><input type="button" class="btn btn-outline-success" value="다운로드"></a>
-								</li>
-								<li>
-									<a href="#">
-										 <form class="filebox"  actuin="fileUpload"id="fileFolderUpload" method="post" enctype="multipart/form-data">
-										 	<input type="hidden" name=""> 
-											<button class="btn btn-outline-success" value="업로드">
-											<input type="file" id="btn-upload"> <!-- <label  for="btn-upload">업로드</label>  --> 
-											</button>
-										</form>
-										<!-- <form id="fileForm" action="/testFile.do" enctype="multipart/form-data"> 
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#"><input type="button"
+									class="btn btn-outline-success" id="btn-all" value="전체선택">
+							</a></li>
+							<li><a href="#"><input type="button"
+									class="btn btn-outline-success" id="btn-del" value="삭제"></a>
+							</li>
+							<!--===================== 새폴더===================================== -->
+							<li><a href="#"><input type="button"
+									class="btn btn-outline-success" id="btn-add" value="새폴더"></a>
+							</li>
+							<!-- ================================================================= -->
+							<li><a href="#"><input type="button"
+									class="btn btn-outline-success" value="다운로드"></a></li>
+							<li><a href="#">
+									<form class="filebox" actuin="fileUpload" id="fileFolderUpload"
+										method="post" enctype="multipart/form-data">
+										<input type="hidden" name="">
+										<button class="btn btn-outline-success" value="업로드">
+											<input type="file" id="btn-upload">
+											<!-- <label  for="btn-upload">업로드</label>  -->
+										</button>
+									</form> <!-- <form id="fileForm" action="/testFile.do" enctype="multipart/form-data"> 
 										form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다
 										<input type="file" name="testFile" id="testFile"  />
 										</form>  -->
-									</a>
-								</li>
-							</ul>
-						</div>
-						</nav>
+							</a></li>
+						</ul>
 					</div>
+				</nav>
+			</div>
 			<!-- /.container-fluid -->
 
-			</div>
-		<!-- /#page-wrapper -->
 		</div>
+		<!-- /#page-wrapper -->
+	</div>
 
 	<!-- /#wrapper -->
+
+	<!-- MODAL -->
+	<div class="modal fade" id="modal-register" tabindex="-1" role="dialog"
+		aria-labelledby="modal-register-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>
+				</div>
+
+				<div class="modal-body">
+
+					<form role="form" action="" method="post" class="registration-form">
+						<div class="form-group">
+							<label class="sr-only" for="form-first-name">새폴더</label> <input
+								type="text" name="form-first-name" placeholder="폴더명을 입력하세요"
+								class="form-first-name form-control" id="form-first-name">
+						</div>
+						<button type="submit" class="btn">확인</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
 	
 	<script>
 		var loginMem = '${loginMem}';
@@ -336,6 +372,9 @@
 
 	<!-- Storage JavaScript -->
 	<script src="resources/js/storage/storage.js"></script>
+
+	<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
+	<script src="resources/newDirModal/js/scripts.js"></script>
 </body>
 
 </html>

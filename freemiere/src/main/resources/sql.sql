@@ -24,8 +24,66 @@ create sequence filefolders_seq;
 <!--테스트 sql --!>
 
 insert into filefolders values(
- 'ohayu@naver.com',
- 'C:\freemiere\ohayu@naver.com\bookmark\',
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\bookmark\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ 
+ 
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\나무발발이\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\따오기\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\말똥구리\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\뻐꾸기\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\새조롱이\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\오목눈이\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\지빠귀\',
+ 'yoo3',
+ default,
+ filefolders_seq.nextval,
+ default);
+ insert into filefolders values(
+ 'lhd@mail.com',
+ 'C:\freemiere\lhd@mail.com\직박구리\',
  'yoo3',
  default,
  filefolders_seq.nextval,

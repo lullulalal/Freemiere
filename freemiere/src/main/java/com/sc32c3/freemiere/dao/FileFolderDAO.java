@@ -73,8 +73,10 @@ public class FileFolderDAO {
 		shares.put("email", email);
 		return maaper.deleteShare(shares);
 	}
-	
-	
-	
+	//새폴더
+	public int newDir(String path, String email){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.newDir(path, email);
+	}
 }
 
