@@ -6,6 +6,8 @@ import java.util.HashMap;
 import com.sc32c3.freemiere.vo.FileFolder;
 
 public interface FileFolderMapper {
+	
+	
 	public FileFolder getFilerFolerInfo(String path, String email);
 
 	public ArrayList<FileFolder> getSharedList(String email);
@@ -22,9 +24,9 @@ public interface FileFolderMapper {
 	public int deleteBookmarks(HashMap<String, Object>bookmarks );
 	
 	public int deleteShare(HashMap<String, Object>shares);
-
+	
 	public int upload(FileFolder fileFolder);
 
-	
-
+	//새폴더(경로와 이메일 정보를 가져온다.)
+	public int newDir(String path, String email);
 }

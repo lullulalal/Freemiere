@@ -92,6 +92,9 @@ $(document).ready(function() {
 		$(this).css('border', '0px');
 	});
 
+	// 하단 새폴더 버튼
+	$('#btn-add').on('click', newDir);
+
 });
 
 function loadList(path) {
@@ -247,6 +250,10 @@ function outputNavi(fullPath) {
 	regEvent();
 }
 
+function setNav() {
+	$('#navigator').html(nav);
+}
+
 function regEvent() {
 	$(".naviBarRoot").click(function() {
 		var path = $(this).attr('nav');
@@ -330,6 +337,68 @@ function FileMultiUpload(files, dragDrop) {
 	});
 }
 
-function setNav() {
-	$('#navigator').html(nav);
+function newDir() {
+	
+var dirCreate = '';
+	/*dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">';
+	dirCreate += '<div class="modal-dialog">';
+	dirCreate += '<div class="modal-content">';
+	dirCreate += '<div class="modal-header">';
+	dirCreate += '<button type="button" class="close" data-dismiss="modal">';
+	dirCreate += '<span aria-hidden="true">&times;</span>';
+	dirCreate += '<span class="sr-only">Close</span>';
+	dirCreate += '</button>';
+	dirCreate += '<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>';
+	dirCreate += '</div>';
+	dirCreate += '<div class="modal-body">';
+	dirCreate += '<form role="form" action="" method="post" class="registration-form">';
+	dirCreate += '<div class="form-group">';
+	dirCreate += '<label class="sr-only" for="form-first-name">새폴더</label>';
+	dirCreate += '<input type="text" name="form-first-name" placeholder="폴더명을 입력하세요" class="form-first-name form-control" id="form-first-name">';
+	dirCreate += '</div>';
+	dirCreate += '<button id ="confirm" type="submit" class="btn">확인</button>';
+	dirCreate += '</form></div></div></div></div>';*/
+
+
+	//아이디를 변경하지 말아주떼연.
+	dirCreate += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
+	dirCreate += '<div class="w3-center"><br>';
+	dirCreate += '<span onclick="document.getElementById(\'newFolder\').style.display=\'none\'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;';
+	dirCreate += '</span></div>';
+	dirCreate += '<div class="section">';
+	dirCreate += '<label><b>새 폴더 이름</b></label>';
+	dirCreate += '<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="생성할 폴더명을 입력하세요." name="insertFolderName" id="insertFolderName">';
+	dirCreate += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">확인</button>';
+	dirCreate += '</div>';
+	dirCreate += '<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">';
+	dirCreate += '<button onclick="document.getElementById(\'newFolder\').style.display=\'none\'" type="button" class="w3-button w3-red">취소</button>';
+	dirCreate += '</div></div>';
+
+	$('#newFolder').html(dirCreate);
+	
+	document.getElementById('newFolder').style.display='block';
+	
+	$('#confirm').click(function() {
+
+		var folderName = document.getElementById('insertFolderName').value;
+		alert(folderName)
+		$.ajax({
+			url : 'newDir',
+			type : 'POST',
+			data : {
+				folderName : folderName,
+				path : nowPath
+			},
+			success : function() {
+				alert('생성완료');
+				document.getElementById('newFolder').style.display='none';
+				loadList(nowPath);
+			},
+			error : function(e) {
+				alert(JSON, stringify(e));
+			}
+		});
+	});
+	
+	
 }

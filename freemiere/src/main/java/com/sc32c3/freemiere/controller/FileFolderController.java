@@ -1,7 +1,5 @@
 package com.sc32c3.freemiere.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,34 +8,28 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
-import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.vo.FileFolder;
-
+import com.sc32c3.freemiere.vo.Member;
 @Controller
 public class FileFolderController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileFolderController.class);
-	
+
 	final String uploadPath = "/freemiere/"; // 파일 업로드 경로
- 
+
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
@@ -231,4 +223,34 @@ public class FileFolderController {
 		}//while
 
 	}
+	
+// 새폴더
+	@ResponseBody
+	@RequestMapping(value = "newDir", method = RequestMethod.POST)
+	public void newDir(String folderName, String path, HttpSession session) {
+		logger.debug("folderName : {}", folderName);
+		logger.debug("path : {}", path); //nowPath 현재의 경로
+		System.out.println("찌찌파티");
+		File directory = new File(path + folderName + "\\");
+		if (directory.exists() && directory.isFile()) {
+			System.out.println("찌찌파티");
+		} else {
+			try {
+				if (!directory.exists()) {
+					//파일을 확인 후 없으면 폴더를 생성한다.
+					//mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
+					boolean mkdirRst = directory.mkdirs();
+					if (mkdirRst == true) {
+						String email = (String) session.getAttribute("loginMem");
+						fileFolderDAO.newDir(path + folderName + "\\", email);
+					}
+				} else {
+					System.out.println("이거 실화냐?");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
