@@ -271,54 +271,49 @@
 		<div id="page-wrapper">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-lg-12">
-						<span id="navigator"> </span>
+						<div class="col-lg-12">
+							<span id="navigator"> </span>
+						</div>
 					</div>
-				</div>
-				<!-- /.row -->
-				<div id="outputList"></div>
-				<!-- 하단메뉴 -->
-				<nav class="navbar navbar-inverse navbar-fixed-bottom">
-					<div class="container-fluid">
+					<!-- /.row -->
+				<div id="dragDropZone" >
+					<div id="outputList"></div>
+					<!-- 하단메뉴 -->
+					<nav class="navbar navbar-inverse navbar-fixed-bottom">
+						<div class="container-fluid">
 							<ul class="nav navbar-nav">
-								<li class="active">
-									<a href="#"><input type="button" class="btn btn-outline-success" id="btn-all"value="전체선택"> </a>
-								</li>
-								<li>
-									<a href="#"><input type="button"class="btn btn-outline-success" id="btn-del" value="삭제"></a>
-								</li>
-								<li>
-									<a href="#"><input type="button" class="btn btn-outline-success" value="새폴더"></a>
-								</li>
-								<li>
-									<a href="#"><input type="button" class="btn btn-outline-success" value="다운로드"></a>
-								</li>
-								<li>
-									<a href="#">
-										 <form class="filebox"  actuin="fileUpload"id="fileFolderUpload" method="post" enctype="multipart/form-data">
-										 	<input type="hidden" name=""> 
-											<button class="btn btn-outline-success" value="업로드">
-											<input type="file" id="btn-upload"> <!-- <label  for="btn-upload">업로드</label>  --> 
-											</button>
+								<li class="active"><a href="#"> <input type="button"
+										class="btn btn-primary" id="btn-all" value="전체선택">
+								</a></li>
+								<li><a href="#"> <input type="button"
+										class="btn btn-primary" id="btn-del" value="삭제">
+								</a></li>
+								<li><a href="#"> <input type="button"
+										class="btn btn-primary" value="새폴더">
+								</a></li>
+								<li><a href="#"> <input type="button"
+										class="btn btn-primary" value="다운로드">
+								</a></li>
+								<li><a href="#">
+										<form id='fileUpForm' method="post"enctype="multipart/form-data">
+											<label for="file" class="btn btn-primary" >업로드</label> 
+											<input type="file" id="file" name="upload" class="btn btn-primary" multiple style="display: none;" />
 										</form>
-										<!-- <form id="fileForm" action="/testFile.do" enctype="multipart/form-data"> 
-										form에 두껍게 처리 된 부분은 ajaxForm에서 설정해주어도 괜찮지만 여기에 이렇게 명시해주어도 괜찮다
-										<input type="file" name="testFile" id="testFile"  />
-										</form>  -->
-									</a>
-								</li>
+
+								</a></li>
 							</ul>
 						</div>
-						</nav>
-					</div>
-			<!-- /.container-fluid -->
-
+					</nav>
+				</div>
+				<!-- /.container-fluid -->
 			</div>
-		<!-- /#page-wrapper -->
+			<!--/#dragDropZone  -->
 		</div>
+		<!-- /#page-wrapper -->
+	</div>
 
 	<!-- /#wrapper -->
-	
+
 	<script>
 		var loginMem = '${loginMem}';
 	</script>

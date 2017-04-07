@@ -23,6 +23,8 @@ public interface FileFolderMapper {
 	
 	public int deleteShare(HashMap<String, Object>shares);
 
+	public int upload(FileFolder fileFolder);
+
 	
 
 }
