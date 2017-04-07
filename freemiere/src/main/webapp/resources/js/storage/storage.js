@@ -87,7 +87,7 @@ $(document).ready(function() {
 		$(this).css('border', '0px');
 		FileMultiUpload(files, dragDrop);
 	});
-	$('#dragDropZone').on('dragleave', function(e) {
+	$('#dragDropZone').on('dragleave dragend', function(e) {
 		e.preventDefault();
 		$(this).css('border', '0px');
 	});
@@ -339,27 +339,6 @@ function FileMultiUpload(files, dragDrop) {
 
 function newDir() {
 	
-var dirCreate = '';
-	/*dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">';
-	dirCreate += '<div class="modal-dialog">';
-	dirCreate += '<div class="modal-content">';
-	dirCreate += '<div class="modal-header">';
-	dirCreate += '<button type="button" class="close" data-dismiss="modal">';
-	dirCreate += '<span aria-hidden="true">&times;</span>';
-	dirCreate += '<span class="sr-only">Close</span>';
-	dirCreate += '</button>';
-	dirCreate += '<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>';
-	dirCreate += '</div>';
-	dirCreate += '<div class="modal-body">';
-	dirCreate += '<form role="form" action="" method="post" class="registration-form">';
-	dirCreate += '<div class="form-group">';
-	dirCreate += '<label class="sr-only" for="form-first-name">새폴더</label>';
-	dirCreate += '<input type="text" name="form-first-name" placeholder="폴더명을 입력하세요" class="form-first-name form-control" id="form-first-name">';
-	dirCreate += '</div>';
-	dirCreate += '<button id ="confirm" type="submit" class="btn">확인</button>';
-	dirCreate += '</form></div></div></div></div>';*/
-
-
 	//아이디를 변경하지 말아주떼연.
 	dirCreate += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
 	dirCreate += '<div class="w3-center"><br>';
