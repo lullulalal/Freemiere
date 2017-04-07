@@ -22,17 +22,16 @@ public class MainController {
 	public String index() {
 		return "index";
 	}
-	
+
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String login(Member member, HttpSession session){
+	public String login(Member member, HttpSession session) {
 		Member memberInfo = memberDAO.getMember(member.getEmail());
-		if(memberInfo == null) return "redirect:/";
-		if(member.getPassword().equals(memberInfo.getPassword())) {
+		if (memberInfo == null)
+			return "redirect:/";
+		if (member.getPassword().equals(memberInfo.getPassword())) {
 			session.setAttribute("loginMem", member.getEmail());
 			return "storage";
-		}
-		else
+		} else
 			return "redirect:/";
 	}
 }
-
