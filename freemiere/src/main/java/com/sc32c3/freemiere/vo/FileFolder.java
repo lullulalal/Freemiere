@@ -12,6 +12,10 @@ public class FileFolder {
 	private String fileName;
 	private char bookState;
 	
+	public FileFolder(){
+		info = new String(" ");
+	}
+	
 	public String getEmail() {
 		return email;
 	}

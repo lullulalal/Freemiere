@@ -126,4 +126,18 @@
 			email = #{email}
 	</delete>
 	
+	<!--파일업로드  -->
+	<insert id="upload" parameterType="FileFolder">
+		insert into
+			filefolders
+		values(
+			#{email}
+			,#{path}
+			,#{info}
+			,default
+ 			,filefolders_seq.nextval
+ 			,default)
+	
+	</insert> 
+	
 </mapper>

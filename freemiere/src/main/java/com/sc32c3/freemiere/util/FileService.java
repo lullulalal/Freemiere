@@ -1,6 +1,7 @@
 package com.sc32c3.freemiere.util;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -34,11 +35,15 @@ public class FileService {
 		}
 
 		// 원본 파일명
-		String originalFilename = mfile.getOriginalFilename();
-
-		// 저장할 파일명을 오늘 날짜의 년월일로 생성
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String savedFilename = sdf.format(new Date());
+		String originalFilename = null;
+		 String fileName =null;
+		try {
+			originalFilename = new String(mfile.getOriginalFilename().getBytes("8859_1"), "UTF-8");
+			 fileName  = originalFilename.substring( 0, originalFilename.lastIndexOf(".") ); 
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		// 원본 파일의 확장자
 		String ext;
@@ -56,24 +61,28 @@ public class FileService {
 		File serverFile = null;
 
 		// 같은 이름의 파일이 있는 경우의 처리
+		int count = 0;
 		while (true) {
-			serverFile = new File(uploadPath + "/" + savedFilename + ext);
+			count++;
+			serverFile = new File(uploadPath + "/" + originalFilename );
+			
 			// 같은 이름의 파일이 없으면 나감.
 			if (!serverFile.isFile())
 				break;
-			// 같은 이름의 파일이 있으면 이름 뒤에 long 타입의 시간정보를 덧붙임.
-			savedFilename = savedFilename + new Date().getTime();
+			originalFilename = fileName+ "("+count+")"+ext;
+			
+			
 		}
 
 		// 파일 저장
 		try {
 			mfile.transferTo(serverFile);
 		} catch (Exception e) {
-			savedFilename = null;
+			originalFilename = null;
 			e.printStackTrace();
 		}
 
-		return savedFilename + ext;
+		return originalFilename;
 	}
 
 	/**

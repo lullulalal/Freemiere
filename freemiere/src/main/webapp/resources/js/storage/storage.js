@@ -8,8 +8,17 @@ $(document).ready(function() {
 	myRootDir += 'C:\\freemiere\\';
 	myRootDir += loginMem;
 	myRootDir += '\\';
-
+	nowPath = myRootDir;
 	loadList(myRootDir);
+
+	// 스크롤메뉴
+	var currentPosition = parseInt($(".navbar-nav").css("top"));
+	$(window).scroll(function() {
+		var position = $(window).scrollTop(); // 현재 스크롤바의 위치값을 반환합니다.
+		$(".navbar-nav").stop().animate({
+			"top" : position + currentPosition + "px"
+		}, 500);
+	});
 
 	$('#myStorage').click(function() {
 		menu = 'MyStorage';
@@ -38,8 +47,50 @@ $(document).ready(function() {
 	// 하단 삭제버튼
 	$('#btn-del').on('click', go_to_Trash);
 
-	// 하단 업로드버튼
-	$('#btn-upload').on('click', fileFolderUpload);
+	// 하단 업로드
+	$('#file').change(function() {
+		var formData = new FormData();
+		formData.append('upload', $('input[type=file]')[0].files[0]);
+		
+		//다중파일업로드
+		$($("#file")[0].files).each(function(index, file) {
+    		formData.append("multi_file[]", file);				
+    	   });
+		formData.append('nowPath', nowPath);
+
+		$.ajax({
+			url : 'fileUpload',
+			type : 'POST',
+			data : formData,
+			contentType : false,
+			processData : false,
+			success : function() {
+				alert("업로드 성공!!");
+				loadList(nowPath);
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	});
+	// 드래그앤 드롭
+	var dragDrop = $("#dragDropZone");
+	$('#dragDropZone').on('dragenter dragover', function(e) {
+		e.preventDefault();
+		$(this).css('border', '3px solid #00b386');
+	});
+	$('#dragDropZone').on('drop', function(e) {
+		e.preventDefault();
+		var files = e.originalEvent.dataTransfer.files;
+		if (files.length < 1)
+			return;
+		FileMultiUpload(files, dragDrop);
+		
+	});
+	$('#dragDropZone').on('dragend', function(e) {
+		e.preventDefault();
+		$(this).css('border', ' ');
+	});
 
 });
 
@@ -132,10 +183,6 @@ function outputList(list) {
 		});
 	});
 
-	$('.folder').dblclick(function() {
-		$('.file_check').attr("checked", "checked");
-	});
-
 	if (navRoot != 'Trash') {
 		$('.folder').dblclick(function() {
 			var path = $(this).attr('path');
@@ -219,13 +266,14 @@ function regEvent() {
 	});
 }
 
+// 휴지통으로 이동
 function go_to_Trash() {
 	var ffid = [];
 	var isshared = [];
 	var bookState = [];
 
 	$('.file_check').each(function(index, item) {
-		
+
 		if ($(item).is(":checked")) {
 			ffid.push($(item).attr('ffid'));
 			isshared.push($(item).attr('isshared'));
@@ -233,6 +281,7 @@ function go_to_Trash() {
 		}
 	});
 	alert(ffid);
+
 	jQuery.ajaxSettings.traditional = true;
 
 	$.ajax({
@@ -246,7 +295,7 @@ function go_to_Trash() {
 		success : function() {
 			alert('휴지통으로 이동 되었습니다.');
 			loadList(nowPath);
-			alert('hi2');
+
 		},
 		error : function(e) {
 			alert(JSON, stringify(e));
@@ -254,7 +303,33 @@ function go_to_Trash() {
 
 	});
 }
+// 드래그앤드롭 파일 업로드
+function FileMultiUpload(files, dragDrop) {
+	
+	var formData = new FormData();
+	formData.append('upload', $('input[type=file]')[0].files[0]);
+	
+	for (var i = 0; i < files.length; i++) {
+		formData.append('upload[]', files[i]);
+	}
+	formData.append('nowPath', nowPath);
 
+	$.ajax({
+		url : 'fileUpload',
+		type : 'POST',
+		data : formData,
+		contentType : false,
+		processData : false,
+		success : function() {
+			alert("업로드 성공!!");
+			loadList(nowPath);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+
+}
 
 function setNav() {
 	$('#navigator').html(nav);
