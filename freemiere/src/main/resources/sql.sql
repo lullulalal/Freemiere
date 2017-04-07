@@ -24,9 +24,9 @@ create sequence filefolders_seq;
 <!--테스트 sql --!>
 
 insert into filefolders values(
- 'ohayu@naver.com',
- 'C:\freemiere\ohayu@naver.com\bookmark\',
- 'yoo3',
+ 'lullulalal@naver.com',
+ 'C:\freemiere\lullulalal@naver.com\test\test\Tulips.jpg',
+ 'test',
  default,
  filefolders_seq.nextval,
  default);
