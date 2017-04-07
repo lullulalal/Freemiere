@@ -31,5 +31,7 @@
 </div>
 <div id='timeLine'></div>
 
+<input type='file' style="display:none;">
+
 </body>
 </html>

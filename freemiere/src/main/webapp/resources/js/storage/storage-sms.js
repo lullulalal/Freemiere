@@ -1,3 +1,5 @@
+var nowPath = 'root'
+
 function loadMyStorageForEditor() {
 	var url = 'loadMyStorageForEditor';
 	$.ajax({
@@ -40,6 +42,7 @@ function onClick(event, treeId, treeNode, clickFlag) {
 }	
 
 function requestFileList(path){
+	
 	$.ajax({
 		url : 'loadListFile',
 		type : 'GET',
@@ -48,6 +51,7 @@ function requestFileList(path){
 		},
 		dataType : 'json',
 		success : function(list) {
+			nowPath = path;
 			outputFileList(list);
 		},
 		error : function(e) {

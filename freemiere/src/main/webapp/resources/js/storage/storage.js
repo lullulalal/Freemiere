@@ -84,12 +84,12 @@ $(document).ready(function() {
 		var files = e.originalEvent.dataTransfer.files;
 		if (files.length < 1)
 			return;
+		$(this).css('border', '0px');
 		FileMultiUpload(files, dragDrop);
-		
 	});
-	$('#dragDropZone').on('dragend', function(e) {
+	$('#dragDropZone').on('dragleave', function(e) {
 		e.preventDefault();
-		$(this).css('border', ' ');
+		$(this).css('border', '0px');
 	});
 
 });
@@ -328,7 +328,6 @@ function FileMultiUpload(files, dragDrop) {
 			console.log(e);
 		}
 	});
-
 }
 
 function setNav() {

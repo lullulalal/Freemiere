@@ -1,6 +1,5 @@
 
 
-
 $(document).ready(function () {
 	$('#view').w2layout({
 		name: 'view',
@@ -16,11 +15,11 @@ $(document).ready(function () {
 
     loadMyStorageForEditor();
     requestFileList('root');
-
+    
 });
 
 function outputFileList(list){
-	var contents = '';
+	var contents = '<div id="dragDropZone">';
 	
 	$.each(list,function(index, item) {
 		contents += '<table class="fileBox"><tr><td class="fimage">';
@@ -32,11 +31,57 @@ function outputFileList(list){
 		contents += '</td></tr>';
 	});
 	
+	contents += '</div>';
+	
 	w2ui.view.content('main', contents);
+	
+	var dragDrop = $("#dragDropZone");
+	$('#dragDropZone').on('dragenter dragover', function(e) {
+		e.preventDefault();
+		$(this).css('border', '2px solid #ff0080');
+	});
+	$('#dragDropZone').on('drop', function(e) {
+		e.preventDefault();
+		var files = e.originalEvent.dataTransfer.files;
+		if (files.length < 1)
+			return;
+		$(this).css('border', '0px');
+		FileMultiUpload(files, dragDrop);
+	});
+	$('#dragDropZone').on('dragleave dragend', function(e) {
+		e.preventDefault();
+		$(this).css('border', '0px');
+	});
 }
 
 function initFileList(){
 	w2ui.view.content('main', '');
+}
+
+function FileMultiUpload(files, dragDrop) {
+	
+	var formData = new FormData();
+	formData.append('upload', $('input[type=file]')[0].files[0]);
+	
+	for (var i = 0; i < files.length; i++) {
+		formData.append('upload[]', files[i]);
+	}
+	formData.append('nowPath', nowPath);
+
+	$.ajax({
+		url : 'fileUpload',
+		type : 'POST',
+		data : formData,
+		contentType : false,
+		processData : false,
+		success : function() {
+			alert("업로드 성공!!");
+			requestFileList(nowPath);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
 }
 
 $(document).ready(function () {
