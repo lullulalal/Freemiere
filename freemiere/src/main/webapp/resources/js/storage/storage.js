@@ -11,10 +11,10 @@ $(document).ready(function() {
 	nowPath = myRootDir;
 	loadList(myRootDir);
 
-	// 스크롤메뉴
+	// �크롤메
 	var currentPosition = parseInt($(".navbar-nav").css("top"));
 	$(window).scroll(function() {
-		var position = $(window).scrollTop(); // 현재 스크롤바의 위치값을 반환합니다.
+		var position = $(window).scrollTop(); // �재 �크롤바�치값을 반환�니
 		$(".navbar-nav").stop().animate({
 			"top" : position + currentPosition + "px"
 		}, 500);
@@ -44,15 +44,15 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		loadList();
 	});
-	// 하단 삭제버튼
+	// �단 ��버튼
 	$('#btn-del').on('click', go_to_Trash);
 
-	// 하단 업로드
+	// �단 �로
 	$('#file').change(function() {
 		var formData = new FormData();
 		//formData.append('upload', $('input[type=file]')[0].files[0]);
 
-		// 다중파일업로드
+		// �중�일�로
 		$($("#file")[0].files).each(function(index, file) {
 			formData.append("multi_file[]", file);
 		});
@@ -65,7 +65,7 @@ $(document).ready(function() {
 			contentType : false,
 			processData : false,
 			success : function() {
-				alert("업로드 성공!!");
+				alert("�로�공!!");
 				loadList(nowPath);
 			},
 			error : function(e) {
@@ -73,7 +73,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	// 드래그앤 드롭
+	// �래그앤 �롭
 	var dragDrop = $("#dragDropZone");
 	$('#dragDropZone').on('dragenter dragover', function(e) {
 		e.preventDefault();
@@ -89,11 +89,16 @@ $(document).ready(function() {
 		var files = e.originalEvent.dataTransfer.files;
 		if (files.length < 1)
 			return;
+		$(this).css('border', '0px');
 		FileMultiUpload(files, dragDrop);
-
-	});
-	//체크 박스 클릭시 표시
+//체크 박스 �릭�시
 	$('.fileBox').on('click', changeColor);
+	});
+	//체크 박스 �릭�시
+	$('.fileBox').on('click', changeColor);
+	// �단 �폴버튼
+	$('#btn-add').on('click', newDir);
+
 });
 
 function loadList(path) {
@@ -179,16 +184,16 @@ function outputList(list) {
 
 	$('#outputList').html(data);
 
-	// 하단 전체선택/해지 메뉴버튼
+	// �단 �체�택/�� 메뉴버튼
 	$('#btn-all').click(function() {
 		alert('hi1');
 		if ($('.file_check').is(':checked')) {
-			// 해지
+			// ��
 			$('.file_check').each(function(index, item) {
 				$(this).prop("checked", false);
 			});
 		} else {
-			// 선택
+			// �택
 			$('.file_check').each(function(index, item) {
 				$(this).prop("checked", true);
 			});
@@ -209,23 +214,23 @@ function outputList(list) {
 
 var navRoot = 'MyStorage';
 var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-		+ navRoot + '">' + '내 저장소</a>';
+		+ navRoot + '">' + '��소</a>';
 
 function setNavRoot(nr) {
 	navRoot = nr;
 	if (navRoot == 'MyStorage') {
 		alert('haha');
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '내 저장소</a>';
+				+ navRoot + '">' + '��소</a>';
 	} else if (navRoot == 'Shared')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '공유저장소</a>';
+				+ navRoot + '">' + '공유��소</a>';
 	else if (navRoot == 'Bookmark')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '즐겨 찾기</a>';
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '휴지통</a>';
+				+ navRoot + '">' + '��/a>';
 	setNav();
 }
 
@@ -261,6 +266,10 @@ function outputNavi(fullPath) {
 	regEvent();
 }
 
+function setNav() {
+	$('#navigator').html(nav);
+}
+
 function regEvent() {
 	$(".naviBarRoot").click(function() {
 		var path = $(this).attr('nav');
@@ -280,7 +289,7 @@ function regEvent() {
 	});
 }
 
-// 휴지통으로 이동
+// ��으롴동
 function go_to_Trash() {
 	var ffid = [];
 	var isshared = [];
@@ -307,7 +316,7 @@ function go_to_Trash() {
 			bookState : bookState,
 		},
 		success : function() {
-			alert('휴지통으로 이동 되었습니다.');
+			alert('��으롴동 �었�니');
 			loadList(nowPath);
 
 		},
@@ -317,7 +326,7 @@ function go_to_Trash() {
 
 	});
 }
-// 드래그앤드롭 파일 업로드
+// �래그앤�롭 �일 �로
 function FileMultiUpload(files, dragDrop) {
 
 	var formData = new FormData();
@@ -335,22 +344,54 @@ function FileMultiUpload(files, dragDrop) {
 		contentType : false,
 		processData : false,
 		success : function() {
-			alert("업로드 성공!!");
+			alert("�로�공!!");
 			loadList(nowPath);
 		},
 		error : function(e) {
 			console.log(e);
 		}
 	});
-
-}
-//체크박스 클릭시 배경색 변경
+}//체크박스 �릭배경변�
 function changeColor(){
 	if($('fileBox').is(':checked')){
 		$()
 	}
-}
 
-function setNav() {
-	$('#navigator').html(nav);
+	dirCreate += '</span></div>';
+	dirCreate += '<div class="section">';
+	dirCreate += '<label><b>�더 �름</b></label>';
+	dirCreate += '<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="�성�더명을 �력�세" name="insertFolderName" id="insertFolderName">';
+	dirCreate += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">�인</button>';
+	dirCreate += '</div>';
+	dirCreate += '<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">';
+	dirCreate += '<button onclick="document.getElementById(\'newFolder\').style.display=\'none\'" type="button" class="w3-button w3-red">취소</button>';
+	dirCreate += '</div></div>';
+
+	$('#newFolder').html(dirCreate);
+	
+	document.getElementById('newFolder').style.display='block';
+	
+	$('#confirm').click(function() {
+
+		var folderName = document.getElementById('insertFolderName').value;
+		alert(folderName)
+		$.ajax({
+			url : 'newDir',
+			type : 'POST',
+			data : {
+				folderName : folderName,
+				path : nowPath
+			},
+			success : function() {
+				alert('�성�료');
+				document.getElementById('newFolder').style.display='none';
+				loadList(nowPath);
+			},
+			error : function(e) {
+				alert(JSON, stringify(e));
+			}
+		});
+	});
+	
+	
 }

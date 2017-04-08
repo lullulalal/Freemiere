@@ -1,27 +1,18 @@
 package com.sc32c3.freemiere.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,16 +21,12 @@ import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
 import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.vo.FileFolder;
-
 @Controller
 public class FileFolderController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileFolderController.class);
 
-	// xml에 설정된 리소스 참조
-	// bean의 id가 uploadPath인 태그를 참조
-	// @Resource(name="uploadPath")
-	// String uploadPath;
+	final String uploadPath = "/freemiere/"; // 파일 업로드 경로
 
 	@Autowired
 	FileFolderDAO fileFolderDAO;
@@ -200,6 +187,7 @@ public class FileFolderController {
 		return result;
 	}
 
+
 	// 파일폴더업로드
 	@ResponseBody
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
@@ -209,6 +197,7 @@ public class FileFolderController {
 			System.out.println("폭신폭신 식빵");
 		
 		String email = (String) session.getAttribute("loginMem");
+		if(nowPath.equals("root")) nowPath = "c:\\freemiere\\" + email + "\\"; 
 		
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
@@ -231,5 +220,34 @@ public class FileFolderController {
 			}//for
 		}//while
 
+	}
+	
+// 새폴더
+	@ResponseBody
+	@RequestMapping(value = "newDir", method = RequestMethod.POST)
+	public void newDir(String folderName, String path, HttpSession session) {
+		logger.debug("folderName : {}", folderName);
+		logger.debug("path : {}", path); //nowPath 현재의 경로
+		System.out.println("찌찌파티");
+		File directory = new File(path + folderName + "\\");
+		if (directory.exists() && directory.isFile()) {
+			System.out.println("찌찌파티");
+		} else {
+			try {
+				if (!directory.exists()) {
+					//파일을 확인 후 없으면 폴더를 생성한다.
+					//mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
+					boolean mkdirRst = directory.mkdirs();
+					if (mkdirRst == true) {
+						String email = (String) session.getAttribute("loginMem");
+						fileFolderDAO.newDir(path + folderName + "\\", email);
+					}
+				} else {
+					System.out.println("이거 실화냐?");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

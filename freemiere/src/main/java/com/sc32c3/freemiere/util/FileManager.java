@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.sc32c3.freemiere.vo.FolderVo;
+
 /**
  * 
  * @author minsu
@@ -57,5 +59,29 @@ public class FileManager {
 		//	else 
 		//		result.add(f);
 		//}
+	}
+	
+	public static void findFolderVoRecursive(String path, int pid, ArrayList<FolderVo> folderList)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		int fNum = 1;
+		for( int i = 0; i < files.length; ++i )
+		{
+			if ( files[i].isDirectory() ) {
+				
+				int id = Integer.parseInt( Integer.toString(pid) + Integer.toString(fNum) );
+
+				FolderVo nfv = new FolderVo( files[i].getAbsolutePath(), 
+									id, pid, files[i].getName(), 
+									true, false );
+				
+				folderList.add(nfv);
+				findFolderVoRecursive( files[i].getAbsolutePath() , id, folderList );
+				fNum++;
+			}
+			else 
+				continue;
+		}
 	}
 }

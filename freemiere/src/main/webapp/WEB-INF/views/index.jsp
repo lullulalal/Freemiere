@@ -82,7 +82,6 @@
 </video> -->
   <span class="brand-heading"><h1>F R E E M I E R E</h1></span>
 				<div class="row">
-
 					<!--         <div class="col-md-10 col-md-offset-1">
           <video autoplay loop muted poster="screenshot.jpg" class="video">
     <source src="http://techslides.com/demos/sample-videos/small.mp4" type="video/mp4">

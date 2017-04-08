@@ -1586,6 +1586,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  z-index: -100;
 }
 @media (min-width: 768px) {
   .container {
@@ -1607,6 +1608,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  z-index: -100;
 }
 .row {
   margin-right: -15px;
@@ -4243,7 +4245,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-static-top {
-  z-index: 1000;
+  z-index: /* 1000 */0;
   border-width: 0 0 1px;
 }
 @media (min-width: 768px) {
