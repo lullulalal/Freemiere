@@ -1,25 +1,58 @@
 @CHARSET "UTF-8";
 
+.fileTable {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+
+.fileItem {
+	position: relative;
+	float: left;
+	margin: 15px;
+}
+
 .fileBox {
 	display: inline;
+	table-layout: fixed;
+}
+
+.fileName {
+	max-width: 0px;
+	table-layout: fixed;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .naviBar {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
 .sideMenu {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
 .folder {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
 .file {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
+	background-color: 
 }
 
-#dragDropZone{
-
+#dragDropZone {
+	position: absolute;
+	min-height: 700px;
+	min-width: 882px;
 }

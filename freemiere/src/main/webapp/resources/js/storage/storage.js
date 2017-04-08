@@ -50,12 +50,12 @@ $(document).ready(function() {
 	// 하단 업로드
 	$('#file').change(function() {
 		var formData = new FormData();
-		formData.append('upload', $('input[type=file]')[0].files[0]);
-		
-		//다중파일업로드
+		//formData.append('upload', $('input[type=file]')[0].files[0]);
+
+		// 다중파일업로드
 		$($("#file")[0].files).each(function(index, file) {
-    		formData.append("multi_file[]", file);				
-    	   });
+			formData.append("multi_file[]", file);
+		});
 		formData.append('nowPath', nowPath);
 
 		$.ajax({
@@ -77,7 +77,12 @@ $(document).ready(function() {
 	var dragDrop = $("#dragDropZone");
 	$('#dragDropZone').on('dragenter dragover', function(e) {
 		e.preventDefault();
-		$(this).css('border', '3px solid #00b386');
+		//$(this).css('border', '3px solid #00b386');
+	});
+	$('#dragDropZone').on('dragleave', function(e) {
+
+		e.preventDefault();
+		// $(this).css('border','');
 	});
 	$('#dragDropZone').on('drop', function(e) {
 		e.preventDefault();
@@ -85,13 +90,10 @@ $(document).ready(function() {
 		if (files.length < 1)
 			return;
 		FileMultiUpload(files, dragDrop);
-		
-	});
-	$('#dragDropZone').on('dragend', function(e) {
-		e.preventDefault();
-		$(this).css('border', ' ');
-	});
 
+	});
+	//체크 박스 클릭시 표시
+	$('.fileBox').on('click', changeColor);
 });
 
 function loadList(path) {
@@ -120,9 +122,10 @@ function outputList(list) {
 	// alert(JSON.stringify(list));
 	var data = '';
 
+	data += '<ul class="fileTable">'
 	$.each(list,function(index, item) {
+						data +='<li class="fileItem">'
 						data += '<table class="fileBox">';
-
 						data += '<tr><td>';
 						data += '<input type="checkbox" class="file_check" ffid="'
 								+ item.ffid
@@ -136,7 +139,6 @@ function outputList(list) {
 								+ 'id="file_check'
 								+ index + '">';
 						data += '</td></tr>';
-
 						data += '<tr align="center">';
 						data += '	<td>';
 						if (item.isFolder == false) {
@@ -166,22 +168,34 @@ function outputList(list) {
 						data += '	</td>';
 						data += '</tr>';
 						data += '<tr align="center">';
-						data += '	<td>';
+						data += '	<td class="fileName">';
 						data += item.fileName;
 						data += '	</td>';
 						data += '</tr>';
 						data += '</table>';
+						data +='</li>';
 					});
+	data += '</ul>';
 
 	$('#outputList').html(data);
 
-	// 하단 전체선택 메뉴버튼
+	// 하단 전체선택/해지 메뉴버튼
 	$('#btn-all').click(function() {
-		// alert('hi');
-		$('.file_check').each(function(index, item) {
-			$(this).attr("checked", "checked");
-		});
+		alert('hi1');
+		if ($('.file_check').is(':checked')) {
+			// 해지
+			$('.file_check').each(function(index, item) {
+				$(this).prop("checked", false);
+			});
+		} else {
+			// 선택
+			$('.file_check').each(function(index, item) {
+				$(this).prop("checked", true);
+			});
+		}
+
 	});
+	
 
 	if (navRoot != 'Trash') {
 		$('.folder').dblclick(function() {
@@ -305,9 +319,9 @@ function go_to_Trash() {
 }
 // 드래그앤드롭 파일 업로드
 function FileMultiUpload(files, dragDrop) {
-	
+
 	var formData = new FormData();
-	formData.append('upload', $('input[type=file]')[0].files[0]);
+	//formData.append('upload', $('input[type=file]')[0].files[0]);
 	
 	for (var i = 0; i < files.length; i++) {
 		formData.append('upload[]', files[i]);
@@ -329,6 +343,12 @@ function FileMultiUpload(files, dragDrop) {
 		}
 	});
 
+}
+//체크박스 클릭시 배경색 변경
+function changeColor(){
+	if($('fileBox').is(':checked')){
+		$()
+	}
 }
 
 function setNav() {
