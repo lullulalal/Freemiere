@@ -13,5 +13,13 @@ public interface FileFolderMapper {
 	public ArrayList<FileFolder> getSharedBookmarkList(String email);
 	public ArrayList<FileFolder> getMyStorageBookmarkList(String email);
 	public int bookmarkUpdate(HashMap<String, Object> map);
+	public int bookmarkInsert(HashMap<String, Object> map);
 	public FileFolder boardread(int ffid);
+	public int conDelete(int ffid);
+	public int conRemove(int ffid);
+	public int conBookDelete(int ffid);
+	public int conAllRemove(int ffid);
+	public FileFolder bookmarkSearch(int ffid);
+	public int folderShare(HashMap<String, Object> map);
+	
 }

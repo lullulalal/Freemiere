@@ -31,16 +31,16 @@ create sequence filefolders_seq;
 insert into filefolders values(
  'kty2589a@naver.com',
  'C:\freemiere\kty2589a@naver.com\shared\test1.jpg',
- 'test',
+ 'asdasdasdas',
  default,
  filefolders_seq.nextval,
  default);
 
 insert into filefolders values(
- 'duk@naver.com',
- 'C:\freemiere\duk@naver.com\shared\',
+ 'kty2589a@naver.com',
+ 'C:\freemiere\kty2589a@naver.com\test2.jpg',
  'test',
- 't',
+ default,
  filefolders_seq.nextval,
  default);
 

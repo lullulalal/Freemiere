@@ -335,7 +335,11 @@
 		var loginMem='${loginMem}';
 	</script>
 	
+	<div id="test2"></div>
 	<div id="test"></div>
+	
+	
+	<div id="sharedSet"></div>
   	<!-- <div class="w3-container">
   <div id="id01" class="w3-modal">
     <div class="w3-modal-content">

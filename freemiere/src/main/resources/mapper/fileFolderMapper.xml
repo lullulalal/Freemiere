@@ -115,5 +115,38 @@
 	where ffid=#{ffid}
 	</select>
 	
+	<!-- 컨텍스트메뉴에서 삭제하기 -->
+	<update id="conDelete" parameterType="int">
+	update filefolders set isdeleted='t' where ffid = #{ffid}
+	</update>
 	
+	<update id="conRemove" parameterType="int">
+	update filefolders set isdeleted='f' where ffid = #{ffid}
+	</update>
+	
+	<delete id="conAllRemove" parameterType="int">
+	delete from filefolders where ffid=#{ffid}
+	</delete>
+	
+	<delete id="conBookDelete" parameterType="int">
+	delete from bookmarks where ffid=#{ffid}
+	</delete>
+	
+	<insert id="bookmarkInsert" parameterType="map">
+	insert into bookmarks values(
+	#{ffid},#{email},'t'
+	)
+	</insert>
+	
+	<select id="bookmarkSearch" parameterType="int" resultType="FileFolder">
+	select * from bookmarks where ffid = #{ffid}
+	</select>
+	
+	
+	<update id="folderShare" parameterType="map" >
+	update bookmarks set  
+	   <if test='isShared=="f"'>isshared='T'</if>
+
+	 where ffid= #{ffid}
+	</update>
 </mapper>
