@@ -24,11 +24,35 @@ audio, canvas, progress, video {
 	vertical-align: baseline
 }
 
+<<<<<<< HEAD
+audio
+:not
+ 
+(
+[
+controls
+]
+ 
+){
+display
+:
+ 
+none
+;
+
+	
+height
+:
+ 
+0
+}
+=======
 audio:not ([controls] ){
 	display: none;
 	height: 0
 }
 
+>>>>>>> LeeHD
 [hidden], template {
 	display: none
 }
@@ -86,10 +110,27 @@ img {
 	border: 0
 }
 
+<<<<<<< HEAD
+svg
+:not
+ 
+(
+:root
+ 
+){
+overflow
+:
+ 
+hidden
+
+
+}
+=======
 svg:not (:root ){
 	overflow: hidden
 }
 
+>>>>>>> LeeHD
 figure {
 	margin: 1em 40px
 }
@@ -193,7 +234,11 @@ table {
 td, th {
 	padding: 0
 }
+<<<<<<< HEAD
+/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+=======
 	/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+>>>>>>> LeeHD
 @media print {
 	*, :after, :before {
 		color: #000 !important;
@@ -2796,8 +2841,13 @@ legend {
 label {
 	display: inline-block;
 	max-width: 100%;
+<<<<<<< HEAD
+	margin-bottom: 0px;
+	font-weight: 900;
+=======
 	margin-bottom: 5px;
 	font-weight: 700
+>>>>>>> LeeHD
 }
 
 input[type=search] {
@@ -3416,9 +3466,15 @@ a.btn.disabled, fieldset[disabled] a.btn {
 }
 
 .btn-primary {
+<<<<<<< HEAD
+	color: #337ab7;
+	background-color: #ccc;
+	/* border-color: #2e6da4 */
+=======
 	color: #fff;
 	background-color: #337ab7;
 	border-color: #2e6da4
+>>>>>>> LeeHD
 }
 
 .btn-primary.focus, .btn-primary:focus {
@@ -3920,6 +3976,10 @@ tbody.collapse.in {
 	border-top: 0;
 	border-bottom: 4px dashed;
 	border-bottom: 4px solid\9
+<<<<<<< HEAD
+
+=======
+>>>>>>> LeeHD
 }
 
 .dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu {
@@ -3974,15 +4034,101 @@ tbody.collapse.in {
 	margin-left: 5px
 }
 
+<<<<<<< HEAD
+.btn-group
+>
+.btn
+:not
+ 
+(
+:first-child
+ 
+)
+:not
+ 
+(
+:last-child
+ 
+)
+:not
+ 
+(
+.dropdown-toggle
+
+	
+){
+border-radius
+:
+ 
+0
+}
+=======
 .btn-group>.btn:not (:first-child ):not (:last-child ):not (.dropdown-toggle
 	){
 	border-radius: 0
 }
 
+>>>>>>> LeeHD
 .btn-group>.btn:first-child {
 	margin-left: 0
 }
 
+<<<<<<< HEAD
+.btn-group
+>
+.btn
+:first-child
+:not
+ 
+(
+:last-child
+ 
+)
+:not
+ 
+(
+.dropdown-toggle
+ 
+){
+border-top-right-radius
+:
+ 
+0;
+border-bottom-right-radius
+:
+ 
+0
+}
+.btn-group
+>
+.btn
+:last-child
+:not
+ 
+(
+:first-child
+ 
+),
+.btn-group
+>
+.dropdown-toggle
+:not
+
+	
+(
+:first-child
+ 
+){
+border-top-left-radius
+:
+ 
+0;
+border-bottom-left-radius
+:
+ 
+0
+}
+=======
 .btn-group>.btn:first-child:not (:last-child ):not (.dropdown-toggle ){
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0
@@ -3994,6 +4140,7 @@ tbody.collapse.in {
 	border-bottom-left-radius: 0
 }
 
+>>>>>>> LeeHD
 .btn-group>.btn-group {
 	float: left
 }
@@ -4069,6 +4216,97 @@ tbody.collapse.in {
 	margin-left: 0
 }
 
+<<<<<<< HEAD
+.btn-group-vertical
+>
+.btn
+:not
+ 
+(
+:first-child
+ 
+)
+:not
+ 
+(
+:last-child
+ 
+){
+border-radius
+:
+ 
+0
+}
+.btn-group-vertical
+>
+.btn
+:first-child
+:not
+ 
+(
+:last-child
+ 
+){
+border-top-left-radius
+:
+ 
+4
+px
+;
+
+	
+border-top-right-radius
+:
+ 
+4
+px
+;
+
+	
+border-bottom-right-radius
+:
+ 
+0;
+border-bottom-left-radius
+:
+ 
+0
+}
+.btn-group-vertical
+>
+.btn
+:last-child
+:not
+ 
+(
+:first-child
+ 
+){
+border-top-left-radius
+:
+ 
+0;
+border-top-right-radius
+:
+ 
+0;
+border-bottom-right-radius
+:
+ 
+4
+px
+;
+
+	
+border-bottom-left-radius
+:
+ 
+4
+px
+
+
+}
+=======
 .btn-group-vertical>.btn:not (:first-child ):not (:last-child ){
 	border-radius: 0
 }
@@ -4087,6 +4325,7 @@ tbody.collapse.in {
 	border-bottom-left-radius: 4px
 }
 
+>>>>>>> LeeHD
 .btn-group-vertical>.btn-group:not (:first-child ):not (:last-child )>.btn
 	{
 	border-radius: 0
@@ -4206,12 +4445,61 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 	display: table-cell
 }
 
+<<<<<<< HEAD
+.input-group
+ 
+.form-control
+:not
+ 
+(
+:first-child
+ 
+)
+:not
+ 
+(
+:last-child
+ 
+),
+.input-group-addon
+:not
+ 
+(
+:first-child
+ 
+)
+:not
+ 
+(
+:last-child
+ 
+),
+.input-group-btn
+:not
+ 
+(
+:first-child
+ 
+)
+:not
+ 
+(
+:last-child
+ 
+){
+border-radius
+:
+ 
+0
+}
+=======
 .input-group .form-control:not (:first-child ):not (:last-child ),
 	.input-group-addon:not (:first-child ):not (:last-child ),
 	.input-group-btn:not (:first-child ):not (:last-child ){
 	border-radius: 0
 }
 
+>>>>>>> LeeHD
 .input-group-addon, .input-group-btn {
 	width: 1%;
 	white-space: nowrap;
@@ -4247,6 +4535,72 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 	margin-top: 0
 }
 
+<<<<<<< HEAD
+.input-group
+ 
+.form-control
+:first-child
+,
+.input-group-addon
+:first-child
+,
+.input-group-btn
+:first-child
+>
+.btn
+,
+.input-group-btn
+:first-child
+>
+.btn-group
+>
+.btn
+,
+.input-group-btn
+:first-child
+>
+.dropdown-toggle
+,
+.input-group-btn
+:last-child
+>
+.btn-group
+:not
+
+	
+(
+:last-child
+ 
+)>
+.btn
+,
+.input-group-btn
+:last-child
+>
+.btn
+:not
+ 
+(
+:last-child
+
+	
+)
+:not
+ 
+(
+.dropdown-toggle
+ 
+){
+border-top-right-radius
+:
+ 
+0;
+border-bottom-right-radius
+:
+ 
+0
+}
+=======
 .input-group .form-control:first-child, .input-group-addon:first-child,
 	.input-group-btn:first-child>.btn, .input-group-btn:first-child>.btn-group>.btn,
 	.input-group-btn:first-child>.dropdown-toggle, .input-group-btn:last-child>.btn-group:not
@@ -4256,6 +4610,7 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 	border-bottom-right-radius: 0
 }
 
+>>>>>>> LeeHD
 .input-group-addon:first-child {
 	border-right: 0
 }
@@ -4996,8 +5351,17 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 }
 
 .navbar-inverse {
+<<<<<<< HEAD
+	position:fixed;
+	bottom:0px;
+	margin-left:250px;
+	background-color: #fff;
+	background-color: transparent
+	
+=======
 	background-color: #222;
 	border-color: #080808
+>>>>>>> LeeHD
 }
 
 .navbar-inverse .navbar-brand {
@@ -5015,7 +5379,11 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 }
 
 .navbar-inverse .navbar-nav>li>a {
+<<<<<<< HEAD
+	color: #337ab7
+=======
 	color: #9d9d9d
+>>>>>>> LeeHD
 }
 
 .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover
@@ -5026,8 +5394,13 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus,
 	.navbar-inverse .navbar-nav>.active>a:hover {
+<<<<<<< HEAD
+	color: #337ab7;
+	background-color: transparent;
+=======
 	color: #fff;
 	background-color: #080808
+>>>>>>> LeeHD
 }
 
 .navbar-inverse .navbar-nav>.disabled>a, .navbar-inverse .navbar-nav>.disabled>a:focus,
@@ -7138,268 +7511,6 @@ button.close {
 	margin-left: auto
 }
 
-.pull-right {
-	float: right !important
-}
-
-.pull-left {
-	float: left !important
-}
-
-.hide {
-	display: none !important
-}
-
-.show {
-	display: block !important
-}
-
-.invisible {
-	visibility: hidden
-}
-
-.text-hide {
-	font: 0/0 a;
-	color: transparent;
-	text-shadow: none;
-	background-color: transparent;
-	border: 0
-}
-
-.hidden {
-	display: none !important
-}
-
-.affix {
-	position: fixed
-}
-
-@
--ms-viewport {
-	width: device-width
-}
-
-.visible-lg, .visible-md, .visible-sm, .visible-xs {
-	display: none !important
-}
-
-.visible-lg-block, .visible-lg-inline, .visible-lg-inline-block,
-	.visible-md-block, .visible-md-inline, .visible-md-inline-block,
-	.visible-sm-block, .visible-sm-inline, .visible-sm-inline-block,
-	.visible-xs-block, .visible-xs-inline, .visible-xs-inline-block {
-	display: none !important
-}
-
-@media ( max-width :767px) {
-	.visible-xs {
-		display: block !important
-	}
-	table.visible-xs {
-		display: table !important
-	}
-	tr.visible-xs {
-		display: table-row !important
-	}
-	td.visible-xs, th.visible-xs {
-		display: table-cell !important
-	}
-}
-
-@media ( max-width :767px) {
-	.visible-xs-block {
-		display: block !important
-	}
-}
-
-@media ( max-width :767px) {
-	.visible-xs-inline {
-		display: inline !important
-	}
-}
-
-@media ( max-width :767px) {
-	.visible-xs-inline-block {
-		display: inline-block !important
-	}
-}
-
-@media ( min-width :768px) and (max-width:991px) {
-	.visible-sm {
-		display: block !important
-	}
-	table.visible-sm {
-		display: table !important
-	}
-	tr.visible-sm {
-		display: table-row !important
-	}
-	td.visible-sm, th.visible-sm {
-		display: table-cell !important
-	}
-}
-
-@media ( min-width :768px) and (max-width:991px) {
-	.visible-sm-block {
-		display: block !important
-	}
-}
-
-@media ( min-width :768px) and (max-width:991px) {
-	.visible-sm-inline {
-		display: inline !important
-	}
-}
-
-@media ( min-width :768px) and (max-width:991px) {
-	.visible-sm-inline-block {
-		display: inline-block !important
-	}
-}
-
-@media ( min-width :992px) and (max-width:1199px) {
-	.visible-md {
-		display: block !important
-	}
-	table.visible-md {
-		display: table !important
-	}
-	tr.visible-md {
-		display: table-row !important
-	}
-	td.visible-md, th.visible-md {
-		display: table-cell !important
-	}
-}
-
-@media ( min-width :992px) and (max-width:1199px) {
-	.visible-md-block {
-		display: block !important
-	}
-}
-
-@media ( min-width :992px) and (max-width:1199px) {
-	.visible-md-inline {
-		display: inline !important
-	}
-}
-
-@media ( min-width :992px) and (max-width:1199px) {
-	.visible-md-inline-block {
-		display: inline-block !important
-	}
-}
-
-@media ( min-width :1200px) {
-	.visible-lg {
-		display: block !important
-	}
-	table.visible-lg {
-		display: table !important
-	}
-	tr.visible-lg {
-		display: table-row !important
-	}
-	td.visible-lg, th.visible-lg {
-		display: table-cell !important
-	}
-}
-
-@media ( min-width :1200px) {
-	.visible-lg-block {
-		display: block !important
-	}
-}
-
-@media ( min-width :1200px) {
-	.visible-lg-inline {
-		display: inline !important
-	}
-}
-
-@media ( min-width :1200px) {
-	.visible-lg-inline-block {
-		display: inline-block !important
-	}
-}
-
-@media ( max-width :767px) {
-	.hidden-xs {
-		display: none !important
-	}
-}
-
-@media ( min-width :768px) and (max-width:991px) {
-	.hidden-sm {
-		display: none !important
-	}
-}
-
-@media ( min-width :992px) and (max-width:1199px) {
-	.hidden-md {
-		display: none !important
-	}
-}
-
-@media ( min-width :1200px) {
-	.hidden-lg {
-		display: none !important
-	}
-}
-
-.visible-print {
-	display: none !important
-}
-
-@media print {
-	.visible-print {
-		display: block !important
-	}
-	table.visible-print {
-		display: table !important
-	}
-	tr.visible-print {
-		display: table-row !important
-	}
-	td.visible-print, th.visible-print {
-		display: table-cell !important
-	}
-}
-
-.visible-print-block {
-	display: none !important
-}
-
-@media print {
-	.visible-print-block {
-		display: block !important
-	}
-}
-
-.visible-print-inline {
-	display: none !important
-}
-
-@media print {
-	.visible-print-inline {
-		display: inline !important
-	}
-}
-
-.visible-print-inline-block {
-	display: none !important
-}
-
-@media print {
-	.visible-print-inline-block {
-		display: inline-block !important
-	}
-}
-
-@media print {
-	.hidden-print {
-		display: none !important
-	}
-}
 .pull-right {
 	float: right !important
 }

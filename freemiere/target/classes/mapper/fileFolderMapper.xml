@@ -126,7 +126,19 @@
 			email = #{email}
 	</delete>
 	
-	<!--파일업로드  -->
+	<!-- 새폴더 -->
+	<insert id="newDir"> <!-- FileFolderController의 newDir메서드 참조 -->
+		insert into filefolders values(
+			 #{1},
+			 #{0},
+			 ' ',
+			 default,
+			 filefolders_seq.nextval,
+			 default
+		)
+	</insert>
+
+<!--파일업로드  -->
 	<insert id="upload" parameterType="FileFolder">
 		insert into
 			filefolders
@@ -137,6 +149,8 @@
 			,default
  			,filefolders_seq.nextval
  			,default)
+	
+	</insert> 
 	
 	</insert> 
 	

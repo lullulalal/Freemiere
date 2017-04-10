@@ -1,34 +1,30 @@
 package com.sc32c3.freemiere.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
-import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.vo.FileFolder;
 
 @Controller
@@ -100,7 +96,6 @@ public class FileFolderController {
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 		}
-
 		return myStorageList;
 	}
 
@@ -167,9 +162,9 @@ public class FileFolderController {
 	@RequestMapping(value = "deleteFileFolder", method = RequestMethod.POST)
 	public int deleteFileFolder(String[] ffid, String[] isshared, String[] bookState, HttpSession session) {
 
-		/*
-		 * logger.debug("ffid={}",ffid); logger.debug("issshared{}",isshared);
-		 * logger.debug("book{}",bookState);
+		logger.debug("ffid={}", ffid);
+		logger.debug("issshared{}", isshared);
+		logger.debug("book{}", bookState);
 		 */
 
 		int result = 0;
@@ -199,7 +194,7 @@ public class FileFolderController {
 
 		return result;
 	}
-
+	
 	// 파일폴더업로드
 	@ResponseBody
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
@@ -231,5 +226,62 @@ public class FileFolderController {
 			}//for
 		}//while
 
+
+	// 테스트 페이지 콘츄-롤라
+	@RequestMapping(value = "test", method = RequestMethod.GET)
+	public String test() {
+		return "test";
 	}
+
+	// 새폴더
+	@ResponseBody
+	@RequestMapping(value = "newDir", method = RequestMethod.POST)
+	public void newDir(String folderName, String path, HttpSession session) {
+		logger.debug("folderName : {}", folderName);
+		logger.debug("path : {}", path); // nowPath 현재의 경로
+		System.out.println("찌찌파티");
+		File directory = new File(path + folderName + "\\");
+		if (directory.exists() && directory.isFile()) {
+			System.out.println("찌찌파티");
+		} else {
+			try {
+				if (!directory.exists()) {
+					// 파일을 확인 후 없으면 폴더를 생성한다.
+					// mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
+					boolean mkdirRst = directory.mkdirs();
+					if (mkdirRst == true) {
+						String email = (String) session.getAttribute("loginMem");
+						fileFolderDAO.newDir(path + folderName + "\\", email);
+					}
+				} else {
+					System.out.println("이거 실화냐?");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@RequestMapping(value = "saveFile", method = RequestMethod.GET)
+	public String saveFile(String path, HttpServletResponse response) throws Exception {
+
+		fileFolderDAO.saveFile(path+"\\");
+		// 원래의 파일명을 보여준다.
+		response.setHeader("Content-Disposition",
+				"attachment;filename=" + URLEncoder.encode("UTF-8"));
+
+		// 서버에 저장된 파일을 읽어서
+		// 클라이언트로 전달할 줄력 스트림으로 복사
+		String fullPath = path + "/";
+		FileInputStream in = new FileInputStream(fullPath);
+		ServletOutputStream out = response.getOutputStream();
+
+		FileCopyUtils.copy(in, out);
+		in.close();
+		out.close();
+
+		return null;
+	}
+	
+	
 }

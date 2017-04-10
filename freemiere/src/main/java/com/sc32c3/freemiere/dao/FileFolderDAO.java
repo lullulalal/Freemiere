@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sc32c3.freemiere.vo.FileFolder;
 
@@ -81,8 +82,15 @@ public class FileFolderDAO {
 		
 		return mapper.upload(fileFolder);
 	}
-	
-	
-	
+	// 새폴더
+	public int newDir(String path, String email){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.newDir(path, email);
+	}
+	// 파일 다운로드
+	public int saveFile(String path){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.saveFile(path);
+	}
 }
 
