@@ -81,8 +81,10 @@ public class FileFolderDAO {
 		
 		return mapper.upload(fileFolder);
 	}
-	
-	
-	
+	//새폴더
+	public int newDir(String path, String email){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.newDir(path, email);
+	}
 }
 

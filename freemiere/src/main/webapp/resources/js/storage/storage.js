@@ -84,13 +84,16 @@ $(document).ready(function() {
 		var files = e.originalEvent.dataTransfer.files;
 		if (files.length < 1)
 			return;
+		$(this).css('border', '0px');
 		FileMultiUpload(files, dragDrop);
-		
 	});
-	$('#dragDropZone').on('dragend', function(e) {
+	$('#dragDropZone').on('dragleave dragend', function(e) {
 		e.preventDefault();
-		$(this).css('border', ' ');
+		$(this).css('border', '0px');
 	});
+
+	// 하단 새폴더 버튼
+	$('#btn-add').on('click', newDir);
 
 });
 
@@ -247,6 +250,10 @@ function outputNavi(fullPath) {
 	regEvent();
 }
 
+function setNav() {
+	$('#navigator').html(nav);
+}
+
 function regEvent() {
 	$(".naviBarRoot").click(function() {
 		var path = $(this).attr('nav');
@@ -328,9 +335,49 @@ function FileMultiUpload(files, dragDrop) {
 			console.log(e);
 		}
 	});
-
 }
 
-function setNav() {
-	$('#navigator').html(nav);
+function newDir() {
+	
+	//아이디를 변경하지 말아주떼연.
+	dirCreate += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
+	dirCreate += '<div class="w3-center"><br>';
+	dirCreate += '<span onclick="document.getElementById(\'newFolder\').style.display=\'none\'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;';
+	dirCreate += '</span></div>';
+	dirCreate += '<div class="section">';
+	dirCreate += '<label><b>새 폴더 이름</b></label>';
+	dirCreate += '<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="생성할 폴더명을 입력하세요." name="insertFolderName" id="insertFolderName">';
+	dirCreate += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">확인</button>';
+	dirCreate += '</div>';
+	dirCreate += '<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">';
+	dirCreate += '<button onclick="document.getElementById(\'newFolder\').style.display=\'none\'" type="button" class="w3-button w3-red">취소</button>';
+	dirCreate += '</div></div>';
+
+	$('#newFolder').html(dirCreate);
+	
+	document.getElementById('newFolder').style.display='block';
+	
+	$('#confirm').click(function() {
+
+		var folderName = document.getElementById('insertFolderName').value;
+		alert(folderName)
+		$.ajax({
+			url : 'newDir',
+			type : 'POST',
+			data : {
+				folderName : folderName,
+				path : nowPath
+			},
+			success : function() {
+				alert('생성완료');
+				document.getElementById('newFolder').style.display='none';
+				loadList(nowPath);
+			},
+			error : function(e) {
+				alert(JSON, stringify(e));
+			}
+		});
+	});
+	
+	
 }

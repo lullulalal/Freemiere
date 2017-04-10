@@ -137,7 +137,19 @@
 			,default
  			,filefolders_seq.nextval
  			,default)
+ 			
+ 	</insert>
 	
+	<!-- 새폴더 -->
+	<insert id="newDir"> <!-- FileFolderController의 newDir메서드 참조 -->
+		insert into filefolders values(
+			 #{1},
+			 #{0},
+			 ' ',
+			 default,
+			 filefolders_seq.nextval,
+			 default
+		)
 	</insert> 
 	
 </mapper>
