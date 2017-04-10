@@ -111,9 +111,18 @@ $(document).ready(function(){
 	myRootDir += 'C:\\freemiere\\';
 	myRootDir += loginMem; // 사용자 email 로 고쳐야함
 	myRootDir += '\\';
-	
+	nowPath = myRootDir;
 	loadList(myRootDir); 
 	
+	// 스크롤메뉴
+	var currentPosition = parseInt($(".navbar-nav").css("top"));
+	$(window).scroll(function() {
+		var position = $(window).scrollTop(); // 현재 스크롤바의 위치값을 반환합니다.
+		$(".navbar-nav").stop().animate({
+			"top" : position + currentPosition + "px"
+		}, 500);
+	});
+
 	$('#myStorage').click(function(){
 		menu='MyStorage';
 		setNavRoot(menu);
@@ -138,10 +147,53 @@ $(document).ready(function(){
 		setNavRoot(menu);
 		loadList();
 	});
-	
-	
-	
-	
+	// 하단 삭제버튼
+	$('#btn-del').on('click', go_to_Trash);
+
+	// 하단 업로드
+	$('#file').change(function() {
+		var formData = new FormData();
+		formData.append('upload', $('input[type=file]')[0].files[0]);
+		
+		//다중파일업로드
+		$($("#file")[0].files).each(function(index, file) {
+    		formData.append("multi_file[]", file);				
+    	   });
+		formData.append('nowPath', nowPath);
+
+		$.ajax({
+			url : 'fileUpload',
+			type : 'POST',
+			data : formData,
+			contentType : false,
+			processData : false,
+			success : function() {
+				alert("업로드 성공!!");
+				loadList(nowPath);
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	});
+	// 드래그앤 드롭
+	var dragDrop = $("#dragDropZone");
+	$('#dragDropZone').on('dragenter dragover', function(e) {
+		e.preventDefault();
+		$(this).css('border', '3px solid #00b386');
+	});
+	$('#dragDropZone').on('drop', function(e) {
+		e.preventDefault();
+		var files = e.originalEvent.dataTransfer.files;
+		if (files.length < 1)
+			return;
+		FileMultiUpload(files, dragDrop);
+		
+	});
+	$('#dragDropZone').on('dragend', function(e) {
+		e.preventDefault();
+		$(this).css('border', ' ');
+	});
 	
 });
 
@@ -149,8 +201,8 @@ $(document).ready(function(){
 function loadList(path){
 	if (menu == 'MyStorage')
 		path = myRootDir;
-	// alert(path);
-	var url='load' + menu;
+
+	var url = 'load' + menu;
 	// alert(url);
 	$.ajax({
 		url: url,
@@ -300,7 +352,24 @@ function outputList(list){
 	var data = '';
 
 	$.each(list, function(index, item){
-		data += '<table class="fileBox">';
+			data += '<table class="fileBox">';
+
+						data += '<tr><td>';
+						data += '<input type="checkbox" class="file_check" ffid="'
+								+ item.ffid
+								+ '" '
+								+ 'bookState="'
+								+ item.bookState
+								+ '"'
+								+ 'isshared="'
+								+ item.isShared
+								+ '" '
+								+ 'id="file_check'
+								+ index + '">';
+						data += '</td></tr>';
+
+
+		
 		data += '<tr align="center">';
 		data += '	<td>';
 		
@@ -911,7 +980,14 @@ function outputList(list){
 	});
 			
 
-	
+	// 하단 전체선택 메뉴버튼
+	$('#btn-all').click(function() {
+		// alert('hi');
+		$('.file_check').each(function(index, item) {
+			$(this).attr("checked", "checked");
+		});
+	});
+
 	$('#outputList').html(data);
 
 	if(navRoot != 'Trash') {
@@ -996,6 +1072,70 @@ function regEvent(){
 	});
 }
 
+// 휴지통으로 이동
+function go_to_Trash() {
+	var ffid = [];
+	var isshared = [];
+	var bookState = [];
+
+	$('.file_check').each(function(index, item) {
+
+		if ($(item).is(":checked")) {
+			ffid.push($(item).attr('ffid'));
+			isshared.push($(item).attr('isshared'));
+			bookState.push($(item).attr('bookState'))
+		}
+	});
+	alert(ffid);
+
+	jQuery.ajaxSettings.traditional = true;
+
+	$.ajax({
+		url : 'deleteFileFolder',
+		type : 'POST',
+		data : {
+			ffid : ffid,
+			isshared : isshared,
+			bookState : bookState,
+		},
+		success : function() {
+			alert('휴지통으로 이동 되었습니다.');
+			loadList(nowPath);
+
+		},
+		error : function(e) {
+			alert(JSON, stringify(e));
+		}
+
+	});
+}
+// 드래그앤드롭 파일 업로드
+function FileMultiUpload(files, dragDrop) {
+	
+	var formData = new FormData();
+	formData.append('upload', $('input[type=file]')[0].files[0]);
+	
+	for (var i = 0; i < files.length; i++) {
+		formData.append('upload[]', files[i]);
+	}
+	formData.append('nowPath', nowPath);
+
+	$.ajax({
+		url : 'fileUpload',
+		type : 'POST',
+		data : formData,
+		contentType : false,
+		processData : false,
+		success : function() {
+			alert("업로드 성공!!");
+			loadList(nowPath);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+
+}
 function setNav(){
 	$('#navigator').html(nav);
 }

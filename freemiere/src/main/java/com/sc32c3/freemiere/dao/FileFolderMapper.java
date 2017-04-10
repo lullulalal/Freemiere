@@ -21,5 +21,8 @@ public interface FileFolderMapper {
 	public int conAllRemove(int ffid);
 	public FileFolder bookmarkSearch(int ffid);
 	public int folderShare(HashMap<String, Object> map);
-	
+	public int deleteFileFolder(int ffid);
+	public int deleteBookmarks(HashMap<String, Object>bookmarks );	
+	public int deleteShare(HashMap<String, Object>shares);
+	public int upload(FileFolder fileFolder);
 }

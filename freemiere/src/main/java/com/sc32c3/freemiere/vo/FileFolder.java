@@ -16,6 +16,10 @@ public class FileFolder {
 	
 	private char bookState;
 
+	public FileFolder(){
+		info = new String(" ");
+	}
+	
 	private long volume;
 	//마지막수정
 	private String lastModify;
