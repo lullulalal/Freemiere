@@ -45,9 +45,9 @@
 </head>
 
 <body>
-<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
-<div id="newFolder" class="w3-modal"></div>
-<!-- ========================================================== -->
+	<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
+	<div id="newFolder" class="w3-modal"></div>
+	<!-- ========================================================== -->
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -298,8 +298,14 @@
 									class="btn btn-outline-success" id="btn-add" value="새폴더"></a>
 							</li>
 							<!-- ================================================================= -->
-							<li><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-download" value="다운로드"></a></li>
+
+							<li><a href="#">
+									<form class="filebox" action="fileDownload" id="fileDownload"
+										method="post" enctype="multipart/form-data">
+										<input type="button" class="btn btn-outline-success"
+											id="btn-download" value="다운로드">
+							</a></li>
+							</form>
 							<li><a href="#">
 									<form class="filebox" action="fileUpload" id="fileFolderUpload"
 										method="post" enctype="multipart/form-data">
@@ -353,8 +359,8 @@
 		</div>
 	</div>
 
-	
-	
+
+
 	<script>
 		var loginMem = '${loginMem}';
 	</script>

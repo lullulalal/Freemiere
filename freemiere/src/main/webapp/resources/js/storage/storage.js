@@ -1,13 +1,13 @@
 var myRootDir = '';
 var menu = 'MyStorage';
-var nowPath = '';
+var nowPath = ''; // 이름을 정하기 전까지의 현재경로
 
 $(document).ready(function() {
 
 	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
 	myRootDir += loginMem;
-	myRootDir += '\\';
+	myRootDir += '\\'; // 경로를 정할때 '\\'주의
 
 	nowPath = myRootDir;
 	loadList(myRootDir);
@@ -45,6 +45,8 @@ $(document).ready(function() {
 	// 하단 새폴더 버튼
 	$('#btn-add').on('click', newDir);
 
+	// 하단 다운로드 버튼
+	$('#btn-download').on('click', fileDownLoad);
 });
 
 function loadList(path) {
@@ -267,29 +269,28 @@ function go_to_Trash() {
 }
 
 function newDir() {
-	
-var dirCreate = '';
-	/*dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">';
-	dirCreate += '<div class="modal-dialog">';
-	dirCreate += '<div class="modal-content">';
-	dirCreate += '<div class="modal-header">';
-	dirCreate += '<button type="button" class="close" data-dismiss="modal">';
-	dirCreate += '<span aria-hidden="true">&times;</span>';
-	dirCreate += '<span class="sr-only">Close</span>';
-	dirCreate += '</button>';
-	dirCreate += '<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>';
-	dirCreate += '</div>';
-	dirCreate += '<div class="modal-body">';
-	dirCreate += '<form role="form" action="" method="post" class="registration-form">';
-	dirCreate += '<div class="form-group">';
-	dirCreate += '<label class="sr-only" for="form-first-name">새폴더</label>';
-	dirCreate += '<input type="text" name="form-first-name" placeholder="폴더명을 입력하세요" class="form-first-name form-control" id="form-first-name">';
-	dirCreate += '</div>';
-	dirCreate += '<button id ="confirm" type="submit" class="btn">확인</button>';
-	dirCreate += '</form></div></div></div></div>';*/
 
+	var dirCreate = '';
+	/*
+	 * dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1"
+	 * role="dialog" aria-labelledby="modal-register-label"
+	 * aria-hidden="true">'; dirCreate += '<div class="modal-dialog">';
+	 * dirCreate += '<div class="modal-content">'; dirCreate += '<div
+	 * class="modal-header">'; dirCreate += '<button type="button"
+	 * class="close" data-dismiss="modal">'; dirCreate += '<span
+	 * aria-hidden="true">&times;</span>'; dirCreate += '<span
+	 * class="sr-only">Close</span>'; dirCreate += '</button>'; dirCreate += '<h3 class="modal-title" id="modal-register-label">새
+	 * 폴더 만들기</h3>'; dirCreate += '</div>'; dirCreate += '<div
+	 * class="modal-body">'; dirCreate += '<form role="form" action=""
+	 * method="post" class="registration-form">'; dirCreate += '<div
+	 * class="form-group">'; dirCreate += '<label class="sr-only"
+	 * for="form-first-name">새폴더</label>'; dirCreate += '<input type="text"
+	 * name="form-first-name" placeholder="폴더명을 입력하세요" class="form-first-name
+	 * form-control" id="form-first-name">'; dirCreate += '</div>'; dirCreate += '<button
+	 * id ="confirm" type="submit" class="btn">확인</button>'; dirCreate += '</form></div></div></div></div>';
+	 */
 
-	//아이디를 변경하지 말아주떼연.
+	// 아이디를 변경하지 말아주떼연.
 	dirCreate += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
 	dirCreate += '<div class="w3-center"><br>';
 	dirCreate += '<span onclick="document.getElementById(\'newFolder\').style.display=\'none\'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;';
@@ -304,9 +305,9 @@ var dirCreate = '';
 	dirCreate += '</div></div>';
 
 	$('#newFolder').html(dirCreate);
-	
-	document.getElementById('newFolder').style.display='block';
-	
+
+	document.getElementById('newFolder').style.display = 'block';
+
 	$('#confirm').click(function() {
 
 		var folderName = document.getElementById('insertFolderName').value;
@@ -320,7 +321,7 @@ var dirCreate = '';
 			},
 			success : function() {
 				alert('생성완료');
-				document.getElementById('newFolder').style.display='none';
+				document.getElementById('newFolder').style.display = 'none';
 				loadList(nowPath);
 			},
 			error : function(e) {
@@ -328,6 +329,5 @@ var dirCreate = '';
 			}
 		});
 	});
-	
-	
+
 }
