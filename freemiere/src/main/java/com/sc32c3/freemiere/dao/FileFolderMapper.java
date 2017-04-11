@@ -3,8 +3,6 @@ package com.sc32c3.freemiere.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.sc32c3.freemiere.vo.FileFolder;
 
 public interface FileFolderMapper {
@@ -28,10 +26,7 @@ public interface FileFolderMapper {
 	public int deleteShare(HashMap<String, Object>shares);
 	
 	public int upload(FileFolder fileFolder);
-	
-	// 새폴더(경로와 이메일 정보를 가져온다.)
+
+	//새폴더(경로와 이메일 정보를 가져온다.)
 	public int newDir(String path, String email);
-	
-	// 파일 다운로드
-	public int saveFile(String path);
 }

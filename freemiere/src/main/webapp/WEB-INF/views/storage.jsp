@@ -34,7 +34,7 @@
 <!-- Storage CSS -->
 <link href="resources/css/storage/storage.css" rel="stylesheet">
 
-
+<link href="resources/vendor/colorBox/colorbox.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -45,9 +45,9 @@
 </head>
 
 <body>
-	<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
-	<div id="newFolder" class="w3-modal"></div>
-	<!-- ========================================================== -->
+<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
+<div id="newFolder" class="w3-modal"></div>
+<!-- ========================================================== -->
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -60,9 +60,11 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand">FreeMiere</a>
+				<a class="navbar-brand">Freemiere - Storage :</a>
+				<span id="navigator"> </span>
 			</div>
 			<!-- /.navbar-header -->
+			
 
 			<ul class="nav navbar-top-links navbar-right">
 				<li class="dropdown"><a class="dropdown-toggle"
@@ -278,7 +280,7 @@
 			<div class="container-fluid">
 				<div class="row">
 						<div class="col-lg-12">
-							<span id="navigator"> </span>
+							여기에 아이콘
 						</div>
 					</div>
 					<!-- /.row -->
@@ -288,45 +290,29 @@
 					<nav class="navbar navbar-inverse navbar-fixed-bottom">
 						<div class="container-fluid">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-all" value="전체선택">
-							</a></li>
-							<li><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-del" value="삭제"></a>
-							</li>
-							<!--===================== 새폴더===================================== -->
-							<li><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-add" value="새폴더"></a>
-							</li>
-							<!-- ================================================================= -->
-							
+								<li class="active"><a href="#"> <input type="button"
+										class="btn btn-primary" id="btn-all" value="전체선택">
+								</a></li>
+								<li><a href="#"> <input type="button"
+										class="btn btn-primary" id="btn-del" value="삭제">
+								</a></li>
+								<li><a href="#"> <input type="button"
+										class="btn btn-primary" id="btn-add" value="새폴더">
+								</a></li>
+								<li><a href="#"> <input type="button"
+										class="btn btn-primary" value="다운로드">
+								</a></li>
 								<li><a href="#">
 										<form id='fileUpForm' method="post"enctype="multipart/form-data">
 											<label for="file" class="btn btn-primary" >업로드</label> 
 											<input type="file" id="file" name="upload" class="btn btn-primary" multiple style="display: none;" />
+										</form>
 
-							<li><a href="#">
-									<form class="filebox" action="fileDownload" id="fileDownload"
-										method="post" enctype="multipart/form-data">
-										<input type="button" class="btn btn-outline-success"
-											id="btn-download" value="다운로드">
-							</a></li>
-							</form>
-							<li><a href="#">
-									<form class="filebox" action="fileUpload" id="fileFolderUpload"
-										method="post" enctype="multipart/form-data">
-										<input type="hidden" name="">
-										<button class="btn btn-outline-success" value="업로드">
-											<input type="file" id="btn-upload">
-											<!-- <label  for="btn-upload">업로드</label>  -->
-										</button>
-									</form> <!-- <form id="fileForm" action="/testFile.do" enctype="multipart/form-data"> 
 								</a></li>
-							</a></li>
 						</ul>
 					</div>
-				</nav>
-			</div>
+					</nav>
+				</div>
 				<!-- /.container-fluid -->
 			</div>
 			<!--/#dragDropZone  -->
@@ -335,37 +321,8 @@
 	</div>
 
 	<!-- /#wrapper -->
-
-	<!-- MODAL -->
-	<div class="modal fade" id="modal-register" tabindex="-1" role="dialog"
-		aria-labelledby="modal-register-label" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>
-				</div>
-
-				<div class="modal-body">
-
-					<form role="form" action="" method="post" class="registration-form">
-						<div class="form-group">
-							<label class="sr-only" for="form-first-name">새폴더</label> <input
-								type="text" name="form-first-name" placeholder="폴더명을 입력하세요"
-								class="form-first-name form-control" id="form-first-name">
-						</div>
-						<button type="submit" class="btn">확인</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
+	
+	
 	<script>
 		var loginMem = '${loginMem}';
 	</script>
@@ -377,6 +334,8 @@
 
 	<!-- Metis Menu Plugin JavaScript -->
 	<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
+
+	<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
 
 	<!-- Custom Theme JavaScript -->
 	<script src="resources/dist/js/sb-admin-2.js"></script>

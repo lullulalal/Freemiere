@@ -4,16 +4,12 @@ public class FileFolder {
 	private String email;
 	private String path;
 	private String info;
-	
 	private char isShared;
 	private String auth;
-	
 	private int ffid;
 	private char isDeleted; 
-	
 	private boolean isFolder;
 	private String fileName;
-	
 	private char bookState;
 	
 	public FileFolder(){
