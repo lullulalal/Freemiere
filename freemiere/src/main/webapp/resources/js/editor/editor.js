@@ -9,14 +9,43 @@ $(document).ready(function () {
 			{ type:'right', style: 'background: #262626', size:'40%'}
 		]
 	});
-	
+	 outputPlayer();
 	var fileTreeContents = '<div><ul id="treeDemo" class="ztree"></ul></div>';
 	w2ui.view.content('left', fileTreeContents);
-
+	
     loadMyStorageForEditor();
-    requestFileList('root');
+    requestFileList('root');    
     
+   
 });
+
+function outputPlayer(){
+    var player = '';
+    player += '<div class="video-wrapper js-video-wrapper">';
+    player += 	'<div class="video-responsive">';
+    player += 		'<video class="video js-video" muted>';
+    player += 			'<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.webm" type="video/webm">';
+    player += 			'<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">';
+    player += 			'<source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.ogv" type="video/ogg">';
+    player += 			'Your browser does not support HTML5 video.';
+    player += 		'</video>';
+    player += 		'<canvas class="canvas js-canvas"></canvas>';
+    player += 		'<div class="video-timeline js-timeline">';
+    player += 			'<div class="video-timeline-passed js-timeline-passed">';
+    player += 			'</div>';
+    player += 		'</div>';
+    player += 	'</div>';
+    player += '</div>';
+    
+    w2ui.view.content('right', player);
+
+	var canvasVideo = new CanvasVideoPlayer({
+		videoSelector: '.js-video',
+		canvasSelector: '.js-canvas',
+		timelineSelector: '.js-timeline',
+		audio: true
+	});
+}
 
 function outputFileList(list){
 	var contents = '<div id="dragDropZone">';

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
 import com.sc32c3.freemiere.util.FileService;
+import com.sc32c3.freemiere.util.ImageFileManager;
 import com.sc32c3.freemiere.vo.FileFolder;
 @Controller
 public class FileFolderController {
@@ -216,6 +217,26 @@ public class FileFolderController {
 					file.setEmail(email);
 					
 					fileFolderDAO.upload(file);
+					
+					
+					//sms 썸네일 추가. 파일 실제로 삭제 할때 함께 삭제 해야됨~!
+					//썸네일 파일 규칙 (영상 + 이미지) : (원본파일이름.확장자.png)
+					String ext = ImageFileManager.checkImageFile(savefile);
+					if(ext != null){
+						ImageFileManager.saveImageFile(
+								ImageFileManager.resizeImageHighQuality(nowPath + savefile)
+								, ext
+								, nowPath+".thumb\\"+savefile+".png");
+					}
+					else if (ImageFileManager.checkVideoFile(savefile) != null) {
+						ImageFileManager.videoThumbGender(nowPath + savefile,
+								nowPath+".thumb\\"+savefile+".png");
+						ImageFileManager.saveImageFile(
+								ImageFileManager.resizeImageHighQuality(nowPath+".thumb\\"+savefile+".png")
+								, "png"
+								, nowPath+".thumb\\"+savefile+".png");
+					}
+						
 				}//if
 			}//for
 		}//while
@@ -241,6 +262,11 @@ public class FileFolderController {
 					if (mkdirRst == true) {
 						String email = (String) session.getAttribute("loginMem");
 						fileFolderDAO.newDir(path + folderName + "\\", email);
+						
+						//sms - 썸네일 폴더 만들기
+						File newThumbFolder = new File(path + folderName + "\\" + "." + "thumb\\");
+						if(!newThumbFolder.exists())
+							newThumbFolder.mkdirs();
 					}
 				} else {
 					System.out.println("이거 실화냐?");

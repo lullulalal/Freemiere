@@ -1,5 +1,6 @@
 package com.sc32c3.freemiere.util;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,8 @@ import com.sc32c3.freemiere.vo.FolderVo;
  * @author minsu
  *
  */
+
+
 public class FileManager {
 	
 	public static String[] findByExtension(String path, String ext)
@@ -49,16 +52,6 @@ public class FileManager {
 		File file = new File (path);	
 		File[] files = file.listFiles();
 		return files;
-		//for( File f : files )
-		//{
-		//	if ( f.isDirectory() ) {
-		//		result.add(f);
-				//if(isRecursive == true)
-				//	findFileRecursive( f.getAbsolutePath() , result, isRecursive );
-		//	}
-		//	else 
-		//		result.add(f);
-		//}
 	}
 	
 	public static void findFolderVoRecursive(String path, int pid, ArrayList<FolderVo> folderList)
@@ -69,7 +62,8 @@ public class FileManager {
 		for( int i = 0; i < files.length; ++i )
 		{
 			if ( files[i].isDirectory() ) {
-				
+				if( ".thumb".equals(files[i].getName()) )
+					continue;
 				int id = Integer.parseInt( Integer.toString(pid) + Integer.toString(fNum) );
 
 				FolderVo nfv = new FolderVo( files[i].getAbsolutePath(), 
@@ -85,3 +79,4 @@ public class FileManager {
 		}
 	}
 }
+

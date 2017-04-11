@@ -66,7 +66,7 @@ $(document).ready(function() {
 			processData : false,
 			success : function() {
 				alert("업로드 성공!!");
-				loadList(nowPath);
+				loadListUnchangNav(nowPath);
 			},
 			error : function(e) {
 				console.log(e);
@@ -115,8 +115,26 @@ function loadList(path) {
 			alert(JSON.stringify(e));
 		}
 	});
-
 	outputNavi(path);
+}
+function loadListUnchangNav(path) {
+	if (menu == 'MyStorage')
+		path = myRootDir;
+
+	var url = 'load' + menu;
+	// alert(url);
+	$.ajax({
+		url : url,
+		type : 'GET',
+		data : {
+			'path' : path
+		},
+		dataType : 'json',
+		success : outputList,
+		error : function(e) {
+			alert(JSON.stringify(e));
+		}
+	});
 }
 
 function outputList(list) {
@@ -141,15 +159,55 @@ function outputList(list) {
 						data += '</td></tr>';
 
 						data += '<tr align="center">';
-						data += '	<td>';
+						data += '	<td class="filebox-td">';
 						if (item.isFolder == false) {
-							data += '<img class="file" src="./resources/img/storage/file.png">';
+							var path = item.path;
+							var pathArray = path.split('\\');
+							var thumbPath = './storageResources/';
+							var imgPath = './storageResources/';
+							for (var j = 2; j < pathArray.length; j++) {
+								imgPath += pathArray[j];
+								thumbPath += pathArray[j] ;
+								if(j < (pathArray.length-1) ) {
+									thumbPath += '/';
+									imgPath += '/';
+								}
+								if(j == (pathArray.length-2) )
+									thumbPath += '.thumb/';
+							}
+							thumbPath += '.png';
+							
+							var fileType = getFileType(item.path);
+							if( fileType == 'image'){
+								data += '<img class="file fimage" path="' + imgPath + '" src="' + thumbPath +'">';
+							}
+							else if(fileType == 'video'){
+								
+								var p = item.path;
+								var videoPathrray = p.split('\\');
+								var videoPath = './storageResources/';
+								for (var j = 2; j < videoPathrray.length; j++) {
+									videoPath += videoPathrray[j] ;
+									if(j < (videoPathrray.length-1) )
+										videoPath += '/';
+								}
+								
+								data += '<video width=156 height=156 controls poster="' + thumbPath +'">';
+								data +=   '<source src="' + videoPath + '" type="video/mp4">';
+								data +=   '<source src="' + item.path + '" type="video/ogg">';
+								data +=   '<source src="' + item.path + '" type="video/webm">';
+								data +=   'Your browser does not support the video tag.';
+								data += '</video>';
+							}
+							else {
+								data += '<img class="file" src="./resources/img/storage/file.png">';
+							}
 						} else {
 							if (item.isShared.toLowerCase() == 't') {
 								if (item.bookState.toLowerCase() == 't')
 									data += '<img class="folder sfolder" path="'
 											+ item.path
-											+ '" src="./resources/img/storage/sbfolder.png">';
+											+ '" src="./resources/img/storage/file.png">';
 								else
 									data += '<img class="folder sfolder" path="'
 											+ item.path
@@ -194,6 +252,13 @@ function outputList(list) {
 			loadList(path);
 		});
 	}
+	
+	$('.fimage').on('dblclick', function(){
+		var path = $(this).attr('path');
+		$.colorbox({maxWidth:"75%", maxHeight:"75%", href:path});
+	});
+	
+
 }
 
 var navRoot = 'MyStorage';
@@ -203,7 +268,7 @@ var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 function setNavRoot(nr) {
 	navRoot = nr;
 	if (navRoot == 'MyStorage') {
-		alert('haha');
+		//alert('haha');
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '내 저장소</a>';
 	} else if (navRoot == 'Shared')
@@ -244,9 +309,7 @@ function outputNavi(fullPath) {
 			nav += dirArray[iEnd] + '</a>';
 		}
 	}
-
 	setNav();
-
 	regEvent();
 }
 
@@ -257,19 +320,37 @@ function setNav() {
 function regEvent() {
 	$(".naviBarRoot").click(function() {
 		var path = $(this).attr('nav');
+		if(path='MyStorage')
+			nowPath = myRootDir;
+		else
+			nowPath = '';
 		menu = path;
 		setNavRoot(menu)
 		loadList();
 	});
 
 	$(".naviBar").click(function() {
-		var path = $(this).attr('path');
-
-		if (nowPath != path) {
-			nowPath = path;
-			menu = 'List';
-			loadList(path);
+		var naviArray = $('.naviBar');
+		var num = 0;
+		for (var i = 0; i < naviArray.length; i++) {
+			if(naviArray[i].outerHTML == $(this)[0].outerHTML){
+				num = i;
+				break;
+			}
 		}
+		var path = $(this).attr('path');
+		
+		if(nowPath.length >= path.length){
+			nav = '';
+			setNavRoot(navRoot);
+			for (var i = 0; i < num; i++) {
+				nav += '<a class="navbar-brand">/</a>';
+				nav += naviArray[i].outerHTML;
+			}
+		}
+		nowPath = path;
+		menu = 'List';
+		loadList(path);
 	});
 }
 
@@ -301,7 +382,7 @@ function go_to_Trash() {
 		},
 		success : function() {
 			alert('휴지통으로 이동 되었습니다.');
-			loadList(nowPath);
+			loadListUnchangNav(nowPath);
 
 		},
 		error : function(e) {
@@ -319,6 +400,7 @@ function FileMultiUpload(files, dragDrop) {
 	for (var i = 0; i < files.length; i++) {
 		formData.append('upload[]', files[i]);
 	}
+	alert(nowPath);
 	formData.append('nowPath', nowPath);
 
 	$.ajax({
@@ -329,7 +411,7 @@ function FileMultiUpload(files, dragDrop) {
 		processData : false,
 		success : function() {
 			alert("업로드 성공!!");
-			loadList(nowPath);
+			loadListUnchangNav(nowPath);
 		},
 		error : function(e) {
 			console.log(e);
@@ -338,7 +420,7 @@ function FileMultiUpload(files, dragDrop) {
 }
 
 function newDir() {
-	
+	var dirCreate = '';
 	//아이디를 변경하지 말아주떼연.
 	dirCreate += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
 	dirCreate += '<div class="w3-center"><br>';
@@ -360,7 +442,7 @@ function newDir() {
 	$('#confirm').click(function() {
 
 		var folderName = document.getElementById('insertFolderName').value;
-		alert(folderName)
+		alert(nowPath)
 		$.ajax({
 			url : 'newDir',
 			type : 'POST',
@@ -371,13 +453,34 @@ function newDir() {
 			success : function() {
 				alert('생성완료');
 				document.getElementById('newFolder').style.display='none';
-				loadList(nowPath);
+				loadListUnchangNav(nowPath);
 			},
 			error : function(e) {
 				alert(JSON, stringify(e));
 			}
 		});
 	});
+}
+
+function getFileType(path){
+	var imgExtarr = new Array('jpg', 'jpeg', 'png');
+	var vdoExtarr = new Array('mp4', 'wemb', 'ogg');
 	
+	var rtn = 'file';
 	
+	var pathArray = path.split('\\');
+	var fileArray = pathArray[pathArray.length-1].split('.');
+	var ext = fileArray[fileArray.length-1];
+	
+	for (var i in imgExtarr) {
+		if(imgExtarr[i] == ext.toLowerCase())
+			return 'image';
+	}
+	
+	for (var i in vdoExtarr) {
+		if(vdoExtarr[i] == ext.toLowerCase())
+			return 'video';
+	}
+	
+	return rtn;
 }

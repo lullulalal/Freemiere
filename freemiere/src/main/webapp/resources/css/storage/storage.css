@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+.filebox-td{
+	width: 156px;
+	height: 161px;
+}
+
 .fileBox {
 	display: inline;
 }
