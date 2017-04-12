@@ -25,7 +25,7 @@ create sequence filefolders_seq;
 
 insert into filefolders values(
  'lullulalal@naver.com',
- 'C:\freemiere\lullulalal@naver.com\test\test\Tulips.jpg',
+ 'C:\freemiere\ohayu@naver.com\코코팜\코코\',
  'test',
  default,
  filefolders_seq.nextval,
@@ -33,19 +33,20 @@ insert into filefolders values(
 
 insert into filefolders values(
  'duk@naver.com',
- 'C:\freemiere\duk@naver.com\shared\',
+ 'C:\freemiere\ohayu@naver.com\공유\',
  'test',
  't',
  filefolders_seq.nextval,
  default);
 
  insert into shares values(
-   89,
-   'owner',
+   125,
+   'editor',
    'lullulalal@naver.com');
 
  insert into shares values(
-   89,
+   
+   101,
    'editor',
    'oahyu@naver.com');
 
