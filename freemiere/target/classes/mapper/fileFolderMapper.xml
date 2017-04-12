@@ -137,8 +137,8 @@
 			 default
 		)
 	</insert>
-
-<!--파일업로드  -->
+	
+	<!--파일업로드  -->
 	<insert id="upload" parameterType="FileFolder">
 		insert into
 			filefolders
@@ -152,6 +152,20 @@
 	
 	</insert> 
 	
-	</insert> 
+	<!--휴지통에서 삭제  -->
+	<delete id="completeDeleteFileFolder" parameterType="int">
+		delete filefolders 
+		where 
+			ffid = #{ffid}
+	</delete>
 	
+	<!--복원  -->
+	<update id="restore" parameterType="int">
+		update filefolders
+		set
+			isdeleted
+	
+	
+	</update>
+
 </mapper>

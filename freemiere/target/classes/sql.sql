@@ -25,7 +25,7 @@ create sequence filefolders_seq;
 
 insert into filefolders values(
  'ohayu@naver.com',
- 'C:\freemiere\ohayu@naver.com\test\',
+ 'C:\freemiere\ohayu@naver.com\코코팜\코코\',
  'yoo3',
  default,
  filefolders_seq.nextval,
@@ -33,7 +33,7 @@ insert into filefolders values(
 
 insert into filefolders values(
  'ohayu@naver.com',
- 'C:\freemiere\ohayu@naver.com\share\',
+ 'C:\freemiere\ohayu@naver.com\공유\',
  'test',
  't',
  filefolders_seq.nextval,

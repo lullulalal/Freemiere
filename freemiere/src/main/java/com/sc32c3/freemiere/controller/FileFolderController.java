@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.io.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -17,15 +17,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
+import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.vo.FileFolder;
+
 
 @Controller
 public class FileFolderController {
@@ -76,7 +80,7 @@ public class FileFolderController {
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 		}
-
+		
 		return rtn;
 	}
 
@@ -153,7 +157,7 @@ public class FileFolderController {
 			ff.setFileName(f.getName());
 			rtn.add(ff);
 		}
-
+		
 		return rtn;
 	}
 
@@ -165,7 +169,6 @@ public class FileFolderController {
 		logger.debug("ffid={}", ffid);
 		logger.debug("issshared{}", isshared);
 		logger.debug("book{}", bookState);
-		 */
 
 		int result = 0;
 		String email = (String) session.getAttribute("loginMem");
@@ -225,7 +228,7 @@ public class FileFolderController {
 				}//if
 			}//for
 		}//while
-
+	}
 
 	// 테스트 페이지 콘츄-롤라
 	@RequestMapping(value = "test", method = RequestMethod.GET)
@@ -283,5 +286,44 @@ public class FileFolderController {
 		return null;
 	}
 	
+	//휴지통에서 삭제
+	@ResponseBody
+	@RequestMapping(value="completeDeleteFileFolder", method = RequestMethod.POST)
+	public void completeDeleteFileFolder(String[] ffid
+										,String[] path){
+
+		for(int i=0; i<ffid.length;i++){
+			File file = new File(path[i]);
+			System.out.println(file.listFiles());
+			//폴더&하위 폴더파일 삭제
+			if(file.isDirectory()){
+				File[] fileList = file.listFiles();
+				for(int j=0; j<fileList.length; j++){
+					if(fileList[j].isFile()){
+						fileList[j].delete();
+					}
+					if(fileList[j].isDirectory()){
+						
+					}
+				}
+				file.delete();
+			}else{
+				//파일 삭제
+				FileService.deleteFile(path[i]);
+			}
+			//DB에서 컬럼삭제
+			fileFolderDAO.completeDeleteFileFolder(Integer.parseInt(ffid[i]));
+		}
+	}
+/*	
+//복원
+	@ResponseBody
+	@RequestMapping(value="restore", method=RequestMethod.POST)
+	public int resotre(String[] ffid){
+		
+		fileFolderDAO.restore(ffid);
+		return 0;
+	}
+	*/
 	
 }

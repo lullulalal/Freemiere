@@ -10,6 +10,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
+<!--파일 폴더 클릭시 배경색 변경  -->
+<style type="text/css">
+	.highlight{
+ 		background: '#ccebff';
+		}
+</style>
 
 <title>FREEMIERE STORAGE</title>
 
@@ -61,6 +67,9 @@
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand">FreeMiere</a>
+				
+							<span id="navigator"> </span>
+					
 			</div>
 			<!-- /.navbar-header -->
 
@@ -254,8 +263,7 @@
 								</span>
 							</div> <!-- /input-group -->
 						</li>
-						<li><a id='myStorage' class='sideMenu'><i
-								class="fa fa-dashboard fa-fw"></i> 내 저장소</a></li>
+						<li><a id='myStorage' class='sideMenu'><i class="fa fa-dashboard fa-fw"></i> 내 저장소</a></li>
 						<li><a id='shared' class='sideMenu'><i
 								class="fa fa-sitemap fa-fw"></i> 공유 저장소</a></li>
 						<li><a id='recent' class='sideMenu'><i
@@ -277,115 +285,76 @@
 		<div id="page-wrapper">
 			<div class="container-fluid">
 				<div class="row">
-						<div class="col-lg-12">
-							<span id="navigator"> </span>
+					<div class="col-lg-12">
+						<nav class="navbar navbar-inverse ">
+						<div class="container-fluid" id = "setNavTop">
 						</div>
+						</nav>
 					</div>
-					<!-- /.row -->
-				<div id="dragDropZone" >
+				</div>
+				<!-- /.row -->
+				<div id="dragDropZone">
 					<div id="outputList"></div>
-					<!-- 하단메뉴 -->
-					<nav class="navbar navbar-inverse navbar-fixed-bottom">
-						<div class="container-fluid">
-						<ul class="nav navbar-nav">
-							<li class="active"><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-all" value="전체선택">
-							</a></li>
-							<li><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-del" value="삭제"></a>
-							</li>
-							<!--===================== 새폴더===================================== -->
-							<li><a href="#"><input type="button"
-									class="btn btn-outline-success" id="btn-add" value="새폴더"></a>
-							</li>
-							<!-- ================================================================= -->
-							
-								<li><a href="#">
-										<form id='fileUpForm' method="post"enctype="multipart/form-data">
-											<label for="file" class="btn btn-primary" >업로드</label> 
-											<input type="file" id="file" name="upload" class="btn btn-primary" multiple style="display: none;" />
-
-							<li><a href="#">
-									<form class="filebox" action="fileDownload" id="fileDownload"
-										method="post" enctype="multipart/form-data">
-										<input type="button" class="btn btn-outline-success"
-											id="btn-download" value="다운로드">
-							</a></li>
-							</form>
-							<li><a href="#">
-									<form class="filebox" action="fileUpload" id="fileFolderUpload"
-										method="post" enctype="multipart/form-data">
-										<input type="hidden" name="">
-										<button class="btn btn-outline-success" value="업로드">
-											<input type="file" id="btn-upload">
-											<!-- <label  for="btn-upload">업로드</label>  -->
-										</button>
-									</form> <!-- <form id="fileForm" action="/testFile.do" enctype="multipart/form-data"> 
-								</a></li>
-							</a></li>
-						</ul>
-					</div>
-				</nav>
-			</div>
-				<!-- /.container-fluid -->
-			</div>
-			<!--/#dragDropZone  -->
-		</div>
-		<!-- /#page-wrapper -->
-	</div>
-
-	<!-- /#wrapper -->
-
-	<!-- MODAL -->
-	<div class="modal fade" id="modal-register" tabindex="-1" role="dialog"
-		aria-labelledby="modal-register-label" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>
+			
+						<!--/#dragDropZone  -->
 				</div>
+				<!-- /#page-wrapper -->
+			</div>
 
-				<div class="modal-body">
+			<!-- /#wrapper -->
 
-					<form role="form" action="" method="post" class="registration-form">
-						<div class="form-group">
-							<label class="sr-only" for="form-first-name">새폴더</label> <input
-								type="text" name="form-first-name" placeholder="폴더명을 입력하세요"
-								class="form-first-name form-control" id="form-first-name">
+			<!-- MODAL -->
+			<div class="modal fade" id="modal-register" tabindex="-1"
+				role="dialog" aria-labelledby="modal-register-label"
+				aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+							<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>
 						</div>
-						<button type="submit" class="btn">확인</button>
-					</form>
+
+						<div class="modal-body">
+
+							<form role="form" action="" method="post"
+								class="registration-form">
+								<div class="form-group">
+									<label class="sr-only" for="form-first-name">새폴더</label> <input
+										type="text" name="form-first-name" placeholder="폴더명을 입력하세요"
+										class="form-first-name form-control" id="form-first-name">
+								</div>
+								<button type="submit" class="btn">확인</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
 
 
-	<script>
-		var loginMem = '${loginMem}';
-	</script>
-	<!-- jQuery -->
-	<script src="resources/vendor/jquery/jquery.min.js"></script>
+			<script>
+				var loginMem = '${loginMem}';
+			</script>
+			<!-- jQuery -->
+			<script src="resources/vendor/jquery/jquery.min.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+			<!-- Bootstrap Core JavaScript -->
+			<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Metis Menu Plugin JavaScript -->
-	<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
+			<!-- Metis Menu Plugin JavaScript -->
+			<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-	<!-- Custom Theme JavaScript -->
-	<script src="resources/dist/js/sb-admin-2.js"></script>
+			<!-- Custom Theme JavaScript -->
+			<script src="resources/dist/js/sb-admin-2.js"></script>
 
-	<!-- Storage JavaScript -->
-	<script src="resources/js/storage/storage.js"></script>
+			<!-- Storage JavaScript -->
+			<script src="resources/js/storage/storage.js"></script>
 
-	<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
-	<script src="resources/newDirModal/js/scripts.js"></script>
+			<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
+			<script src="resources/newDirModal/js/scripts.js"></script>
 </body>
 
 </html>

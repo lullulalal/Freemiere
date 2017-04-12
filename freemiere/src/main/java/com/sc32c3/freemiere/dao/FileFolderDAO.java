@@ -92,5 +92,19 @@ public class FileFolderDAO {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		return mapper.saveFile(path);
 	}
+
+	//휴지통에서 삭제
+	public void completeDeleteFileFolder(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		
+		mapper.completeDeleteFileFolder(ffid);
+	}
+	
+	//복원
+	public int restore(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		
+		return mapper.restore(ffid);
+	}
 }
 
