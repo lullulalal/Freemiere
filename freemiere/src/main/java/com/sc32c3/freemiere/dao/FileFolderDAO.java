@@ -49,13 +49,15 @@ public class FileFolderDAO {
 	
 	public FileFolder getFilerFolerInfo(String path, String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	
+		
 		return mapper.getFilerFolerInfo(path, email);
 	}
-	public ArrayList<FileFolder> getMyRecentList(String email){
+	public int getMyRecentList(String path, String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-
-		return mapper.getMyRecentList(email);
+		HashMap<String, Object> recentlist = new HashMap<>();
+		recentlist.put("path", path);
+		recentlist.put("email", email);
+		return mapper.getMyRecentList(recentlist);
 	}
 	public ArrayList<FileFolder> getSearchList(String title){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);

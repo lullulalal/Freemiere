@@ -17,14 +17,18 @@ public interface FileFolderMapper {
 	public ArrayList<FileFolder> getSharedBookmarkList(String email);
 
 	public ArrayList<FileFolder> getMyStorageBookmarkList(String email);
-public ArrayList<FileFolder> getMyRecentList(String email);
+
+	//public ArrayList<FileFolder> getMyRecentList( String email);
+	
 	public ArrayList<FileFolder> getSearchList(String title);
 
-public int deleteFileFolder(int ffid);
+	public int deleteFileFolder(int ffid);
 
 	public int deleteBookmarks(HashMap<String, Object>bookmarks );
 	
 	public int deleteShare(HashMap<String, Object>shares);
+
+	public int getMyRecentList(HashMap<String, Object> recentlist);
 
 	
 

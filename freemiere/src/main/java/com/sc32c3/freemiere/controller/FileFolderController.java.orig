@@ -1,38 +1,46 @@
 package com.sc32c3.freemiere.controller;
 
+import static org.hamcrest.CoreMatchers.is;
+
+import java.awt.List;
 import java.io.File;
-import java.rmi.server.SocketSecurityException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
+import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.vo.FileFolder;
 
 @Controller
 public class FileFolderController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileFolderController.class);
+<<<<<<< HEAD
 
+=======
+	
+	final String uploadPath = "/freemiere/"; // 파일 업로드 경로
+ 
+>>>>>>> origin/master
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
@@ -124,12 +132,12 @@ public class FileFolderController {
 
 	@ResponseBody
 	@RequestMapping(value = "loadRecent", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-	public HashMap<String, Object> loadRecent(
-			String path,
-			HttpSession session) {
+	public ArrayList<FileFolder> loadRecent(String path, HttpSession session) {
 		logger.info("서버:recentList 실행 " + path);
 		String email = (String) session.getAttribute("loginMem");
 		
+		 //SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd / HH:mm:ss");//파일 수정 날짜 확인
+		 //System.out.println(sf.format(f.lastModified()));
 		 
 		HashMap<Integer, FileFolder> all = new HashMap<>();
 		//ArrayList<FileFolder> all = new ArrayList<>();// 파일 하나하나가 담길 리스트
@@ -142,82 +150,38 @@ public class FileFolderController {
 		// 아래 for문 안에서 findfilerecursive 함수를 호출 하여 모든 파일을 읽어 mystoragelist에
 		// add한다.
 		for (FileFolder ff : sharedList) {
-			FileManager.findFileRecursive(ff.getPath(), myStorageList);// findfilerecursive함수호출
+			FileManager.findFileRecursive(ff.getPath(), myStorageList);// findfilerecursive함수
+																		// 호출
 		}
-		//DateFormat datepasing = DateFormat.getDateInstance(DateFormat.MEDIUM);
-		
-		DateFormat format3 = DateFormat.getDateInstance(DateFormat.MEDIUM);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/DD");
+	
 		// vo에 수정날짜 추가. updatedate 추가함
-		
 		for (File f : myStorageList) {
 			String p = f.getAbsolutePath();
 			if (f.isDirectory() == true)
 				p += "\\";
 			
-			Date updatedate = new Date(f.lastModified());//모디파이 날짜 형식을 바꿈
-			String momodate = format3.format(updatedate);//모드파이 날짜의 형식을 바꾼다 
-			
+			/*dateFormat을 거치면서 날짜 형태가 이상하게 바뀜*/
+			Date updatedate = new Date(f.lastModified());
+			//System.out.println(updatedate);
+			System.out.println(dateFormat.format(updatedate));
+			System.out.println(p + ", " + f.lastModified());
 
 			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email);
 			if (ff == null)
 				continue;
 			ff.setIsFolder(f.isDirectory());
-			ff.setFileName(f.getName());//파일 이름을 저장한다
-			ff.setStrUpdate(format3.format(updatedate));//바뀐형식의  모디파이 날짜를 vo에 저장한다
+			ff.setFileName(f.getName());
+			ff.setStrUpdate(dateFormat.format(updatedate));
 			ff.setLnUpdate(f.lastModified());
-			
 			all.put(ff.getFfid(), ff);
-			//여기까지 파일 가져오는 부분
 		}
-		System.out.println("해쉬맴에 담긴 파일"+ all);
-		//가져온 파일을 해쉬맴으로 날짜별로 구분해보자 
-		//ArrayList<String> dateinfo = new ArrayList<>();
-		HashSet<String> dateinfo = new HashSet<>();//날짜정보를 저장할 해시샛, 중복이 허용되지 않아 저장된 중복값은 하나로 된다
-		HashMap<String, Object> dateFile = new HashMap<>();
-		
-		ArrayList<FileFolder> rtn = new ArrayList<FileFolder>(all.values());//모든 파일 정보를 array리스트에 넣는다
-		//날짜 정보 저장
-		for (FileFolder fileFolder : rtn) {//모든 파일 정보의 날짜 정보를 하나씩 꺼내 hashset에 넣는다. 
-			dateinfo.add(fileFolder.getStrUpdate());//날짜정보를 담고 있다 
-		}
-		System.out.println("날짜정보" + dateinfo);
-		
-		
-		for (String date : dateinfo) {//날짜 정보가 담긴 dateinfo에서 날짜를 하나씩 꺼내본다
-		//for (int i=0; i<dateinfo.size(); i++){
-			ArrayList<FileFolder> dateFile2 = new ArrayList<>();	
-			//String date = dateinfo.get(i);
-		for (FileFolder fileFolder : rtn) {//모든 파일 정보를 하나씩 꺼내면서
-			if(date.equals(fileFolder.getStrUpdate())){// 날짜 정보와 비교하여 같으면 
-					dateFile2.add(fileFolder);//array리스트에 넣는다.
-			 	}//if
-			}//inner for
-		//dateFile.put("length", dateinfo.size());
-		//dateFile.put("date" + i, dateFile2);
-		System.out.println("해쉬맵의 키값으로 있는 date" + date);
-		System.out.println("해쉬맵의 날짜정보를 array에 넣음" + dateFile2);//테스트 출력해보자
 
-		dateFile.put(date, dateFile2);//해쉬맵에 날짜를 키값으로 하고 그날짜에 해당되는  파일 정보(datefile2)를 담는다.
-		//해당 날짜에 대한 파일을 가지고 있다 
-		}
+		ArrayList<FileFolder> rtn = new ArrayList<FileFolder>(all.values());
+		Collections.sort(rtn);
+		//Collections.reverse(rtn);
 		
-		System.out.println("해쉬맵에 최종 저장 파일??"+ dateFile);
-		//테스트 출력 해봄
-		/*for (String  date : dateinfo) {//날짜를 가져온다
-			ArrayList<FileFolder> test = (ArrayList<FileFolder>) dateFile.get(date);//가져온 날짜를 어레이 리스트에 넣는다.
-			System.out.println("날짜 : " +date );//날짜를 출력해본다
-			for (FileFolder fileFolder : test) {//가져온 날짜에 해당하는 파일을 모두 가져온다 
-				System.out.println(fileFolder);//그 날짜에 해당되는 파일을 출력해본다
-			}
-			
-		}*/
-	
-		
-		Collections.sort(rtn);//오른차순 솔트
-		//Iterator<String> filesort = dateFile.keySet().iterator();//해수맵 정렬이라는데....
-		//Collections.reverse(rtn);내 림차순 솔트
-		
-		return dateFile;
+		return rtn;
 		
 		// myStorageList for문 돌면서 각각 파일의 정보를 db에서 가져온다
 		// db에서 가져 오면서 FileFolder 객체를 만들어(필드 셋팅) all 에 넣어준다.
@@ -269,6 +233,7 @@ public class FileFolderController {
 
 		return rtn;
 	}
+<<<<<<< HEAD
 	/*@ResponseBody
 	@RequestMapping(value = "loadSearch", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
 	public ArrayList<FileFolder> loadSrarch(String title, HttpSession session) {
@@ -307,4 +272,46 @@ public class FileFolderController {
 	 * 
 	 * return editForm; }
 	 */
+=======
+	//휴지통으로 이동
+	@ResponseBody
+	@RequestMapping(value="deleteFileFolder", method = RequestMethod.POST)
+	public int deleteFileFolder(String[] ffid
+								,String[] isshared
+								,String[] bookState
+								,HttpSession session){
+		
+		logger.debug("ffid={}",ffid);
+		logger.debug("issshared{}",isshared);
+		logger.debug("book{}",bookState);
+		
+		int result = 0;
+		String email = (String) session.getAttribute("loginMem");
+
+		for(int i=0; i<isshared.length;i++){
+			
+			//공유 아닌 파일
+			if(isshared[i].equalsIgnoreCase("F")){
+				if(bookState[i].equalsIgnoreCase("F")){
+				fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
+			}else{
+				//공유는 아니고 북파크 표시 폴더
+				fileFolderDAO.deleteBookmarks(Integer.parseInt(ffid[i]),bookState[i]);
+				fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
+				}
+			}else if(isshared[i].equalsIgnoreCase("T")){
+				if(bookState[i].equalsIgnoreCase("T")){
+					//공유&북마크폴더
+					fileFolderDAO.deleteShare(Integer.parseInt(ffid[i]), email);
+					fileFolderDAO.deleteBookmarks(Integer.parseInt(ffid[i]),bookState[i]);
+				}else{
+					fileFolderDAO.deleteShare(Integer.parseInt(ffid[i]), email);
+				}
+			}
+		}
+		
+		return result;
+	}
+
+>>>>>>> origin/master
 }

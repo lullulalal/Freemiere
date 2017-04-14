@@ -133,5 +133,13 @@ public class FileFolder implements Comparable<FileFolder> {
 		if(o1.lastModified() < o2.last)
 	}*/
 
+	@Override
+	public String toString() {
+		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", strUpdate=" + strUpdate
+				+ ", lnUpdate=" + lnUpdate + ", isShared=" + isShared + ", auth=" + auth + ", ffid=" + ffid
+				+ ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName=" + fileName + ", bookState="
+				+ bookState + "]";
+	}
+
 
 }

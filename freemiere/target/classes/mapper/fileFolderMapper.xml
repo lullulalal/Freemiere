@@ -61,15 +61,22 @@
 		      
 	</select> -->
 	
-	<select id="getMyRecentList" parameterType="string" resultType="FileFolder">
-		<!-- select * from filefolders
-		where email=#{email}
-		group by updatedate 
-		order by updatedate desc -->
-		select updatedate from filefolders
-		where email=#{email}
-		group by updatedate 
-		order by updatedate desc
+	<select id="getMyRecentList" parameterType="map" resultType="FileFolder">
+		select myffs.ffs_email email, myffs.ffs_path path,
+		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
+		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		       bm.bookstate bookstate
+		from	(select ffs.email ffs_email, ffs.path ffs_path, 
+				ffs.info ffs_info, ffs.isshared ffs_isshared, 
+				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+			from filefolders ffs
+			where LOWER(ffs.path)=LOWER(#{path}) ) myffs, bookmarks bm
+		where ffs.ffid=s.ffid
+		      and (bm.email=#{email} or bm.email is null) 
+		      and LOWER(myffs.ffs_isshared)='f'
+		      and LOWER(myffs.ffs_isdeleted)='f'
+		
+		
 	</select>
 	
 	
