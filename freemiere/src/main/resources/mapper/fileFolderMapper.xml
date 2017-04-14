@@ -153,19 +153,19 @@
  	</insert>
 	
 	<!--휴지통에서 삭제  -->
-	<delete id="completeDeleteFileFolder" parameterType="int">
+	<delete id="completeDelete" parameterType="String">
 		delete filefolders 
 		where 
-			ffid = #{ffid}
+			path = #{path}
 	</delete>
 	
 	<!--복원  -->
-	<update id="restore" parameterType="int">
+	<update id="restore" parameterType="String">
 		update filefolders
 		set
-			isdeleted
-	
-	
+			isdeleted = 'F'
+		where 
+			path = #{path}
 	</update>
 
 </mapper>

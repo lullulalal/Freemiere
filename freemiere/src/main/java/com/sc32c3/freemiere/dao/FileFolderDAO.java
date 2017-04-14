@@ -1,6 +1,8 @@
 package com.sc32c3.freemiere.dao;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
@@ -94,18 +96,55 @@ public class FileFolderDAO {
 		return mapper.saveFile(path);
 	}
 
-	//휴지통에서 삭제
-	public void completeDeleteFileFolder(int ffid) {
+	// 휴지통에서 삭제
+	public void completeDelete(ArrayList<File>fileList,String email) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		
-		mapper.completeDeleteFileFolder(ffid);
+		 String thumPath = "c:\\freemiere\\" + email+"\\"+"." + "thumb\\" ;
+		 
+		for(int i=fileList.size()-1; i>=0; i--){
+			String deletePath = fileList.get(i).getAbsolutePath();
+			
+			if(fileList.get(i).isDirectory()==true){
+				deletePath +="\\";
+				fileList.get(i).delete();
+			}else{
+				fileList.get(i).delete();
+				//썸네일 파일 삭제
+				File thumbFile = new File(thumPath);
+				File[] thumbFiles = thumbFile.listFiles();
+				for (File thumb : thumbFiles) {
+					if((thumb.getName()).equals(fileList.get(i).getName()+".png")){
+						thumb.delete();
+						System.out.println("성공");
+					}
+				}
+				
+			}
+			fileList.get(i).delete();
+			mapper.completeDelete(deletePath);
+		}
+		
+
 	}
 	
 	//복원
-	public int restore(int ffid) {
+	public void restore(ArrayList<File> reFileList) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		for(int i=0; i<reFileList.size();i++){
+			
+			if(reFileList.get(i).isDirectory()==true){
+ 				String reFilePath = reFileList.get(i).getAbsolutePath()+"\\";
+ 				System.out.println("dao:"+reFilePath);
+				mapper.restore(reFilePath);
+			}else{
+				String reFilePath = reFileList.get(i).getAbsolutePath();
+				mapper.restore(reFilePath);
+			}
+		}
 		
-		return mapper.restore(ffid);
 	}
+
+	
 }
 

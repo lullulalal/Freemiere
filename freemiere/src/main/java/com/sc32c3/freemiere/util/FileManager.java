@@ -78,5 +78,29 @@ public class FileManager {
 				continue;
 		}
 	}
+	public static void getAllSubFile(String path, ArrayList<File> list)
+	   {
+		
+	      File file = new File (path); 
+	     
+	     System.out.println("파일매니저"+path);
+	       if ( !file.isDirectory() ) {
+		            list.add(file);
+		            return;
+		   }else{
+			   list.add(file);
+		   }
+	       File[] files = file.listFiles();
+	      for( int i = 0; i < files.length; ++i )
+	      {
+	         if ( files[i].isDirectory() ) {
+	            getAllSubFile( files[i].getAbsolutePath() , list);
+	         }
+	         else {
+	            list.add(files[i]);
+	            continue;
+	         }
+	      }
+	   }
 }
 

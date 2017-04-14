@@ -1,6 +1,7 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,6 @@ import com.sc32c3.freemiere.util.FileManager;
 import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.util.ImageFileManager;
 import com.sc32c3.freemiere.vo.FileFolder;
-
 
 @Controller
 public class FileFolderController {
@@ -80,7 +80,7 @@ public class FileFolderController {
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 		}
-		
+
 		return rtn;
 	}
 
@@ -158,7 +158,7 @@ public class FileFolderController {
 			ff.setFileName(f.getName());
 			rtn.add(ff);
 		}
-		
+
 		return rtn;
 	}
 
@@ -167,7 +167,6 @@ public class FileFolderController {
 	@RequestMapping(value = "deleteFileFolder", method = RequestMethod.POST)
 	public int deleteFileFolder(String[] ffid, String[] isshared, String[] bookState, HttpSession session) {
 
-	
 		logger.debug("ffid={}", ffid);
 		logger.debug("issshared{}", isshared);
 		logger.debug("book{}", bookState);
@@ -200,7 +199,6 @@ public class FileFolderController {
 		return result;
 	}
 
-
 	// 파일폴더업로드
 	@ResponseBody
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
@@ -208,50 +206,45 @@ public class FileFolderController {
 
 		if (upload == null)
 			System.out.println("폭신폭신 식빵");
-		
+
 		String email = (String) session.getAttribute("loginMem");
-		if(nowPath.equals("root")) nowPath = "c:\\freemiere\\" + email + "\\"; 
-		
+		if (nowPath.equals("root"))
+			nowPath = "c:\\freemiere\\" + email + "\\";
+
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
-			
+
 			List<MultipartFile> multiFiles = upload.getFiles(filesName.next());
 
 			for (int i = 0; i < multiFiles.size(); i++) {
 				System.out.println("길이" + multiFiles.size());
 				if (!multiFiles.get(i).isEmpty()) {
 					FileFolder file = new FileFolder();
-					
+
 					String savefile = FileService.saveFile(multiFiles.get(i), nowPath);
-					
+
 					file.setFileName(savefile);
 					file.setPath(nowPath + savefile);
 					file.setEmail(email);
-					
+
 					fileFolderDAO.upload(file);
-					
-					
-					//sms 썸네일 추가. 파일 실제로 삭제 할때 함께 삭제 해야됨~!
-					//썸네일 파일 규칙 (영상 + 이미지) : (원본파일이름.확장자.png)
+
+					// sms 썸네일 추가. 파일 실제로 삭제 할때 함께 삭제 해야됨~!
+					// 썸네일 파일 규칙 (영상 + 이미지) : (원본파일이름.확장자.png)
 					String ext = ImageFileManager.checkImageFile(savefile);
-					if(ext != null){
+					if (ext != null) {
+						ImageFileManager.saveImageFile(ImageFileManager.resizeImageHighQuality(nowPath + savefile), ext,
+								nowPath + ".thumb\\" + savefile + ".png");
+					} else if (ImageFileManager.checkVideoFile(savefile) != null) {
+						ImageFileManager.videoThumbGender(nowPath + savefile, nowPath + ".thumb\\" + savefile + ".png");
 						ImageFileManager.saveImageFile(
-								ImageFileManager.resizeImageHighQuality(nowPath + savefile)
-								, ext
-								, nowPath+".thumb\\"+savefile+".png");
+								ImageFileManager.resizeImageHighQuality(nowPath + ".thumb\\" + savefile + ".png"),
+								"png", nowPath + ".thumb\\" + savefile + ".png");
 					}
-					else if (ImageFileManager.checkVideoFile(savefile) != null) {
-						ImageFileManager.videoThumbGender(nowPath + savefile,
-								nowPath+".thumb\\"+savefile+".png");
-						ImageFileManager.saveImageFile(
-								ImageFileManager.resizeImageHighQuality(nowPath+".thumb\\"+savefile+".png")
-								, "png"
-								, nowPath+".thumb\\"+savefile+".png");
-					}
-						
-				}//if
-			}//for
-		}//while
+
+				} // if
+			} // for
+		} // while
 	}
 
 	// 테스트 페이지 콘츄-롤라
@@ -259,13 +252,13 @@ public class FileFolderController {
 	public String test() {
 		return "test";
 	}
-	
-// 새폴더
+
+	// 새폴더
 	@ResponseBody
 	@RequestMapping(value = "newDir", method = RequestMethod.POST)
 	public void newDir(String folderName, String path, HttpSession session) {
 		logger.debug("folderName : {}", folderName);
-		logger.debug("path : {}", path); //nowPath 현재의 경로
+		logger.debug("path : {}", path); // nowPath 현재의 경로
 		System.out.println("찌찌파티");
 		File directory = new File(path + folderName + "\\");
 		if (directory.exists() && directory.isFile()) {
@@ -273,16 +266,16 @@ public class FileFolderController {
 		} else {
 			try {
 				if (!directory.exists()) {
-					//파일을 확인 후 없으면 폴더를 생성한다.
-					//mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
+					// 파일을 확인 후 없으면 폴더를 생성한다.
+					// mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
 					boolean mkdirRst = directory.mkdirs();
 					if (mkdirRst == true) {
 						String email = (String) session.getAttribute("loginMem");
 						fileFolderDAO.newDir(path + folderName + "\\", email);
-						
-						//sms - 썸네일 폴더 만들기
+
+						// sms - 썸네일 폴더 만들기
 						File newThumbFolder = new File(path + folderName + "\\" + "." + "thumb\\");
-						if(!newThumbFolder.exists())
+						if (!newThumbFolder.exists())
 							newThumbFolder.mkdirs();
 					}
 				} else {
@@ -297,10 +290,9 @@ public class FileFolderController {
 	@RequestMapping(value = "saveFile", method = RequestMethod.GET)
 	public String saveFile(String path, HttpServletResponse response) throws Exception {
 
-		fileFolderDAO.saveFile(path+"\\");
+		fileFolderDAO.saveFile(path + "\\");
 		// 원래의 파일명을 보여준다.
-		response.setHeader("Content-Disposition",
-				"attachment;filename=" + URLEncoder.encode("UTF-8"));
+		response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("UTF-8"));
 
 		// 서버에 저장된 파일을 읽어서
 		// 클라이언트로 전달할 줄력 스트림으로 복사
@@ -314,45 +306,34 @@ public class FileFolderController {
 
 		return null;
 	}
-	
-	//휴지통에서 삭제
-	@ResponseBody
-	@RequestMapping(value="completeDeleteFileFolder", method = RequestMethod.POST)
-	public void completeDeleteFileFolder(String[] ffid
-										,String[] path){
 
-		for(int i=0; i<ffid.length;i++){
-			File file = new File(path[i]);
-			System.out.println(file.listFiles());
-			//폴더&하위 폴더파일 삭제
-			if(file.isDirectory()){
-				File[] fileList = file.listFiles();
-				for(int j=0; j<fileList.length; j++){
-					if(fileList[j].isFile()){
-						fileList[j].delete();
-					}
-					if(fileList[j].isDirectory()){
-						
-					}
-				}
-				file.delete();
-			}else{
-				//파일 삭제
-				FileService.deleteFile(path[i]);
-			}
-			//DB에서 컬럼삭제
-			fileFolderDAO.completeDeleteFileFolder(Integer.parseInt(ffid[i]));
+	// 휴지통에서 삭제
+	@ResponseBody
+	@RequestMapping(value = "completeDeleteFileFolder", method = RequestMethod.POST)
+	public void completeDeleteFileFolder(String[] path, HttpSession session) {
+		String email = (String) session.getAttribute("loginMem");
+
+		for (int i = 0; i < path.length; i++) {
+			ArrayList<File> fileList = new ArrayList<>();
+			FileManager.getAllSubFile(path[i], fileList);
+			fileFolderDAO.completeDelete(fileList, email);
 		}
 	}
-/*	
-//복원
+
+	// 복원
 	@ResponseBody
-	@RequestMapping(value="restore", method=RequestMethod.POST)
-	public int resotre(String[] ffid){
+	@RequestMapping(value = "restore", method = RequestMethod.POST)
+	public void resotre(String[] path) {
 		
-		fileFolderDAO.restore(ffid);
-		return 0;
+		for(int i=0; i< path.length;i++){
+			ArrayList<File> reFileList = new ArrayList<>();
+			FileManager.getAllSubFile(path[i], reFileList);
+			System.out.println("컨트롤러:"+reFileList.get(i));
+			fileFolderDAO.restore(reFileList);
+			
+		}
+		
+		
 	}
-	*/
-	
+
 }
