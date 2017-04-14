@@ -1,5 +1,6 @@
 package com.sc32c3.freemiere.util;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,8 @@ import com.sc32c3.freemiere.vo.FileFolder;
  * @author minsu
  *
  */
+
+
 public class FileManager {
 	
 	public static String[] findByExtension(String path, String ext)
@@ -49,17 +52,31 @@ public class FileManager {
 		File file = new File (path);	
 		File[] files = file.listFiles();
 		return files;
-		//for( File f : files )
-		//{
-		//	if ( f.isDirectory() ) {
-		//		result.add(f);
-				//if(isRecursive == true)
-				//	findFileRecursive( f.getAbsolutePath() , result, isRecursive );
-		//	}
-		//	else 
-		//		result.add(f);
-		//}
 	}
+	
+	public static void findFolderVoRecursive(String path, int pid, ArrayList<FolderVo> folderList)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		int fNum = 1;
+		for( int i = 0; i < files.length; ++i )
+		{
+			if ( files[i].isDirectory() ) {
+				if( ".thumb".equals(files[i].getName()) )
+					continue;
+				int id = Integer.parseInt( Integer.toString(pid) + Integer.toString(fNum) );
+
+				FolderVo nfv = new FolderVo( files[i].getAbsolutePath(), 
+									id, pid, files[i].getName(), 
+									true, false );
+				
+				folderList.add(nfv);
+				findFolderVoRecursive( files[i].getAbsolutePath() , id, folderList );
+				fNum++;
+			}
+			else 
+				continue;
+		}
 	public static void findFileRecursive(String path, ArrayList<File> result)//사용자컴터에서 폴더를 확인해 파일을 담아온다
 	{
 		File file = new File (path);	//경로를 받아온다
@@ -76,4 +93,6 @@ public class FileManager {
 		}
 	}
 	
+	}
 }
+

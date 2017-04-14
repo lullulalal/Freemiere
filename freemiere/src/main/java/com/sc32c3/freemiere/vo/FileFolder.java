@@ -19,6 +19,10 @@ public class FileFolder implements Comparable<FileFolder> {
 	
 	private char bookState;
 	
+	public FileFolder(){
+		info = new String(" ");
+	}
+	
 	
 	public String getEmail() {
 		return email;

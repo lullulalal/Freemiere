@@ -33,9 +33,9 @@ create sequence filefolders_seq;
 <!--테스트 sql --!>
 
 insert into filefolders values(
- 'ohayu@naver.com',
- 'C:\freemiere\ohayu@naver.com\bookmark\',
- 'yoo3',
+ 'lullulalal@naver.com',
+ 'C:\freemiere\ohayu@naver.com\코코팜\코코\',
+ 'test',
  default,
 	 filefolders_seq.nextval,
  default);
@@ -48,21 +48,28 @@ insert into filefolders values(
 	 filefolders_seq.nextval,
  default);
 
+<<<<<<< HEAD
 insert into filefolders(email, path, info, isshared, ffid, isdeleted) values(
  'moominjava@gmail.com',
  'C:\freemiere\moominjava@gmail.com\sharetest\',
+=======
+insert into filefolders values(
+ 'duk@naver.com',
+ 'C:\freemiere\ohayu@naver.com\공유\',
+>>>>>>> origin/master
  'test',
  't',
  filefolders_seq.nextval,
  default);
 
  insert into shares values(
-   89,
-   'owner',
+   125,
+   'editor',
    'lullulalal@naver.com');
 
  insert into shares values(
-   89,
+   
+   101,
    'editor',
    'oahyu@naver.com');
 

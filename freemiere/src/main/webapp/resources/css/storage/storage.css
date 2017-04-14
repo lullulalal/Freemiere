@@ -1,49 +1,64 @@
-@CHARSET "UTF-8";
+CHARSET "UTF-8 "; #fileTable {
+	position: absolute;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+
+.fileItem {
+	position: relative;
+	float: left;
+	margin: 15px;
+}
+
+.filebox-td{
+	width: 156px;
+	height: 161px;
+}
 
 .fileBox {
 	display: inline;
+	table-layout: fixed;
+}
+
+.fileName {
+	max-width: 0px;
+	table-layout: fixed;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 15px;
 }
 
 .naviBar {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
 .sideMenu {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
 .folder {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
 .file {
 	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
 }
 
-/* .filebox label {
-	position : absolute;
-	bottom: 0px;
-	padding:100px;
-	display: inline-block;
-	padding: .5em .75em;
-	color: #428bca;
-	font-size: inherit;
-	line-height: normal;
-	vertical-align: middle;
-	background-color: #e6e6e6;
-	cursor: pointer;
-	border: 1px solid #ebebeb;
-	border-bottom-color: #e2e2e2;
-	border-radius: .25em;
-} */
-
-.filebox input[type="file"] { /* 파일 필드 숨기기 */
+#dragDropZone {
 	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	border: 0;
+	top:100px;
+	min-height: 700px;
+	min-width: 882px;
 }
+
