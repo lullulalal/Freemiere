@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.sc32c3.freemiere.vo.FileFolder;
+import com.sc32c3.freemiere.vo.FolderVo;
 
 /**
  * 
@@ -77,6 +78,7 @@ public class FileManager {
 			else 
 				continue;
 		}
+	}
 	public static void findFileRecursive(String path, ArrayList<File> result)//사용자컴터에서 폴더를 확인해 파일을 담아온다
 	{
 		File file = new File (path);	//경로를 받아온다
@@ -93,6 +95,6 @@ public class FileManager {
 		}
 	}
 	
-	}
+	
 }
 

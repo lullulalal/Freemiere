@@ -131,7 +131,7 @@ $(document).ready(function() {
 	$('#btncompleteDel').on('click', completeDelete);
 
 });
-//최근작업파일
+// 최근작업파일
 function loadRecentList(path) {
 	if (menu == 'Recent')
 		path = myRootDir;
@@ -163,72 +163,44 @@ function outputRecentList(dateFile) {
 		alert(key + ': ' + JSON.stringify(value)); 
 		alert(value.path);
 		consol.log(JSON.stringify(value).ffid);
-	/*for(var i=0; i<length; i++){
-		var key = "date"+i;
-		//	console.log(dateFile.key);
-	}*/
+	/*
+	 * for(var i=0; i<length; i++){ var key = "date"+i; //
+	 * console.log(dateFile.key); }
+	 */
 
 			/*
-			data += JSON.stringify(value).path;
-			//data += item.path;
-			data += '<table class="fileBox">';
-			data += '<tr><td>';
-			data += '<input type="checkbox" class="file_check" ffid="'
-				+ JSON.stringify(value).ffid
-				+ '" '
-				+ 'bookState="'
-				+ JSON.stringify(value).bookState
-				+ '"'
-				+ 'isshared="'
-				+ JSON.stringify(value).isShared
-				+ '" '
-				+ 'id="file_check'
-				+ key + '">';
-			data += '</td></tr>';
-
-			data += '<tr align="center">'
-			data += '	<td>';
-			if (JSON.stringify(value).isFolder == false) {// 폴더 안에 들어있는 파일
-				data += '<img class="file" src="./resources/img/storage/file.png">';
-			} else {
-				if (JSON.stringify(value).isShared.toLowerCase() == 't') {
-				if (JSON.stringify(value).bookState.toLowerCase() == 't')// 북마크
-								// 찍은
-										// 폴더
-					data += '<img class="folder sfolder" path="'
-					+ JSON.stringify(value).path
-					+ '" src="./resources/img/storage/sbfolder.png">';
-				else
-					// 파빨 공유 폴더
-					data += '<img class="folder sfolder" path="'
-					+ JSON.stringify(value).path
-					+ '" src="./resources/img/storage/folderballoon.png">';
-				} else {
-					if (JSON.stringify(value).bookState.toLowerCase() == 't')// 북마크찍은
-										// 폴더
-
-						data += '<img class="folder mfolder" path="'
-								+ JSON.stringify(value).path
-								+ '" src="./resources/img/storage/mbfolder.png">';
-					else
-								// 기본폴더
-						data += '<img class="folder mfolder" path="'
-												+ JSON.stringify(value).path
-												+ '" src="./resources/img/storage/folderballoon_y.png">';
-					}
-				}
-				data += '	</td>';
-				data += '</tr>';
-				data += '<tr align="center">';
-				data += '	<td>';
-				data += JSON.stringify(value).fileName;
-				data += '	</td>';
-				data += '</tr>';
-				data += '</table>';
-				if(dateFile){
-					data += '<br>';
-				}
-		//})	*/
+			 * data += JSON.stringify(value).path; //data += item.path; data += '<table
+			 * class="fileBox">'; data += '<tr><td>'; data += '<input
+			 * type="checkbox" class="file_check" ffid="' +
+			 * JSON.stringify(value).ffid + '" ' + 'bookState="' +
+			 * JSON.stringify(value).bookState + '"' + 'isshared="' +
+			 * JSON.stringify(value).isShared + '" ' + 'id="file_check' + key +
+			 * '">'; data += '</td></tr>';
+			 * 
+			 * data += '<tr align="center">' data += ' <td>'; if
+			 * (JSON.stringify(value).isFolder == false) {// 폴더 안에 들어있는 파일 data += '<img
+			 * class="file" src="./resources/img/storage/file.png">'; } else {
+			 * if (JSON.stringify(value).isShared.toLowerCase() == 't') { if
+			 * (JSON.stringify(value).bookState.toLowerCase() == 't')// 북마크 //
+			 * 찍은 // 폴더 data += '<img class="folder sfolder" path="' +
+			 * JSON.stringify(value).path + '"
+			 * src="./resources/img/storage/sbfolder.png">'; else // 파빨 공유 폴더
+			 * data += '<img class="folder sfolder" path="' +
+			 * JSON.stringify(value).path + '"
+			 * src="./resources/img/storage/folderballoon.png">'; } else { if
+			 * (JSON.stringify(value).bookState.toLowerCase() == 't')// 북마크찍은 //
+			 * 폴더
+			 * 
+			 * data += '<img class="folder mfolder" path="' +
+			 * JSON.stringify(value).path + '"
+			 * src="./resources/img/storage/mbfolder.png">'; else // 기본폴더 data += '<img
+			 * class="folder mfolder" path="' + JSON.stringify(value).path + '"
+			 * src="./resources/img/storage/folderballoon_y.png">'; } } data += '
+			 * </td>'; data += '</tr>'; data += '<tr align="center">'; data += '
+			 * <td>'; data += JSON.stringify(value).fileName; data += ' </td>';
+			 * data += '</tr>'; data += '</table>'; if(dateFile){ data += '<br>'; }
+			 * //})
+			 */
 
 	});
 	
@@ -259,7 +231,7 @@ function outputRecentList(dateFile) {
 
 
 
-//내저장소
+// 내저장소
 function loadList(path) {
 	if (menu == 'MyStorage')
 		path = myRootDir;
@@ -279,7 +251,7 @@ function loadList(path) {
 		}
 	});
 	outputNavi(path);
-	//setNavTop(menu);
+	// setNavTop(menu);
 }
 function loadListUnchangNav(path) {
 	if (menu == 'MyStorage')
@@ -450,9 +422,10 @@ function outputList(list) {
 
 	$('.folder').click(function() {
 		$(this).toggleClass('highlight');
+	});
 	$('.folder').dblclick(function() {
 		$('.file_check').attr("checked", "checked");
-
+	});	
 	
 	if (navRoot != 'Trash') {
 		$('.folder').dblclick(function() {
@@ -468,11 +441,12 @@ function outputList(list) {
 		$.colorbox({maxWidth:"75%", maxHeight:"75%", href:path});
 	});
 	
-
 }
 
-// 객체화 하자
+	
 
+// 객체화 하자
+	
 var navRoot = 'MyStorage';
 var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 		+ navRoot + '">' + '내 저장소</a>';
@@ -480,7 +454,7 @@ var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 function setNavRoot(nr) {
 	navRoot = nr;
 	if (navRoot == 'MyStorage') {
-		//alert('haha');
+		// alert('haha');
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '내 저장소</a>';
 	} else if (navRoot == 'Shared')
@@ -537,7 +511,7 @@ function setNavTop(nr) {
 		data += '				<label for="file" class="btn btn-primary">업로드</label>';
 		data += '				<input type="file" id="file" name="upload" class="btn btn-primary" multiple style="display: none;" />';
 		data += '			</form>';
-		//data += '		</a>';
+		// data += ' </a>';
 		data += '	</li>';
 		data += '</ul>';
 
@@ -781,7 +755,7 @@ function newDir() {
 	alert('hell');
 
 	var dirCreate = '';
-	//아이디를 변경하지 말아주떼연.
+	// 아이디를 변경하지 말아주떼연.
 	/*
 	 * dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1"
 	 * role="dialog" aria-labelledby="modal-register-label"
@@ -863,9 +837,10 @@ function getFileType(path){
 	}
 	
 	return rtn;
-	}
-
 }
+
+
+
 
 // 복원
 function restore() {
@@ -897,7 +872,7 @@ function restore() {
 	});
 
 }
-	//휴지통에서 삭제
+	// 휴지통에서 삭제
 function completeDelete() {
 		alert('hi~~~');
 		var ffid = [];
@@ -930,6 +905,6 @@ function completeDelete() {
 				alert(JSON, stringify(e));
 			}
 
-		});
-	}
+	});
+}
 

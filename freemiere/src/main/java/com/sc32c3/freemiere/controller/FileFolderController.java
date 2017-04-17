@@ -1,6 +1,8 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
 import java.rmi.server.SocketSecurityException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +28,14 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
+import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.util.ImageFileManager;
 import com.sc32c3.freemiere.vo.FileFolder;
 

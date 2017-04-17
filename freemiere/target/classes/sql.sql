@@ -48,15 +48,9 @@ insert into filefolders values(
 	 filefolders_seq.nextval,
  default);
 
-<<<<<<< HEAD
 insert into filefolders(email, path, info, isshared, ffid, isdeleted) values(
  'moominjava@gmail.com',
  'C:\freemiere\moominjava@gmail.com\sharetest\',
-=======
-insert into filefolders values(
- 'duk@naver.com',
- 'C:\freemiere\ohayu@naver.com\공유\',
->>>>>>> origin/master
  'test',
  't',
  filefolders_seq.nextval,
