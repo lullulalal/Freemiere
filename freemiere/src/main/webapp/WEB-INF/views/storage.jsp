@@ -19,6 +19,9 @@
 
 <title>FREEMIERE STORAGE</title>
 
+
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ 
 <!-- 새폴더 modal CSS -->
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -39,6 +42,8 @@
 
 <!-- Storage CSS -->
 <link href="resources/css/storage/storage.css" rel="stylesheet">
+<!-- Storage context -->
+<link href="resources/css/storage/context.css" rel="stylesheet">
 
 <link href="resources/vendor/colorBox/colorbox.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -53,6 +58,8 @@
 <body>
 <!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
 <div id="newFolder" class="w3-modal"></div>
+<!-- ========================================================== -->
+<div id="sharedSet"></div>
 <!-- ========================================================== -->
 	<div id="wrapper">
 
@@ -353,6 +360,12 @@
 			<script>
 				var loginMem = '${loginMem}';
 			</script>
+			
+			<div id="test2"></div>
+			<div id="test"></div>
+	
+	
+			
 			<!-- jQuery -->
 			<script src="resources/vendor/jquery/jquery.min.js"></script>
 
@@ -362,14 +375,16 @@
 			<!-- Metis Menu Plugin JavaScript -->
 			<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-	<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
+			<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
 
 			<!-- Custom Theme JavaScript -->
 			<script src="resources/dist/js/sb-admin-2.js"></script>
 
 			<!-- Storage JavaScript -->
 			<script src="resources/js/storage/storage.js"></script>
-
+			<!-- Storage 우클릭 이벤트 -->
+			<script src="resources/js/storage/rightMouse.js"></script>
+			
 			<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
 			<script src="resources/newDirModal/js/scripts.js"></script>
 </body>

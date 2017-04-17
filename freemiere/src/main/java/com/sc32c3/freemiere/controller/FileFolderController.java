@@ -2,6 +2,10 @@ package com.sc32c3.freemiere.controller;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,10 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sc32c3.freemiere.dao.FileFolderDAO;
+import com.sc32c3.freemiere.dao.MemberDAO;
 import com.sc32c3.freemiere.util.FileManager;
 import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.util.ImageFileManager;
 import com.sc32c3.freemiere.vo.FileFolder;
+import com.sc32c3.freemiere.vo.Member;
 
 @Controller
 public class FileFolderController {
@@ -44,6 +50,8 @@ public class FileFolderController {
 	@Autowired
 	FileFolderDAO fileFolderDAO;
 
+	@Autowired
+	MemberDAO memberDAO;
 	// @RequestMapping(value = "storage", method = RequestMethod.GET)
 	// public String storage() {
 	// System.out.println("??");
@@ -336,4 +344,406 @@ public class FileFolderController {
 		
 	}
 
+	
+	
+	@ResponseBody
+	@RequestMapping(value="bookmarkUpdate", method=RequestMethod.POST)
+	public void bookmarkUpdate(int ffid, String bookstate, HttpSession session){
+		
+		FileFolder search = fileFolderDAO.bookmarkSearch(ffid);
+		String email= (String)session.getAttribute("loginMem");
+		
+		System.out.println("너는 과연 있니?" + search);
+		int result = 0;
+		int insert = 0;
+		if(search == null){
+			try {
+				insert = fileFolderDAO.bookmarkInsert(ffid, email);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else{
+			try{
+				result = fileFolderDAO.bookmarkUpdate(ffid,bookstate); 
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		/*int result = 0;
+		String email= (String)session.getAttribute("loginMem");
+		System.out.print("ffid가 무엇이더냐 : "+ffid);
+		System.out.println("bookstate는 무었이더냐"+bookstate);
+		try{
+			result = fileFolderDAO.bookmarkUpdate(ffid,bookstate); 
+		}catch (Exception e) {
+			// TODO: handle exception
+			result = fileFolderDAO.bookmarkInsert(ffid, email);
+		}*/
+	}
+	
+	
+	//속성내부에서 수정하기 기능
+	@ResponseBody
+	@RequestMapping(value="sokUpdate", method=RequestMethod.POST)
+	public FileFolder sokUpdate(int ffid, String info, String filename,String path){
+		
+		FileFolder result = fileFolderDAO.boardread(ffid);
+		String path1 = path + filename;
+		String path2 = path1 + File.separator;
+		
+		System.out.println("path2야 !!!!!!!!!1" + path2);
+		File f = new File(result.getPath());
+		File movePath = new File(path1);
+		File movePath2 = new File(path2);
+		int fol = 0;
+		
+		//폴더일경우
+		if(f.isDirectory()){
+			if(result != null){
+				
+				try{
+					//디렉토리 파일내에서 이름변경 
+					f.renameTo(movePath2);
+					
+					//DB update
+					fol = fileFolderDAO.sokUpdate(ffid,info,path2);
+					//Filename VO에 담음.
+					result.setFileName(filename);
+				}catch (Exception e) {
+					fol = 0;
+				}
+			}
+		}
+		//파일일경우
+		else{
+			if(result != null){
+				
+				try{
+					//디렉토리 파일내에서 이름변경 
+					f.renameTo(movePath);
+					
+					//DB update
+					fol = fileFolderDAO.sokUpdate(ffid,info,path1);
+					//Filename VO에 담음.
+					result.setFileName(filename);
+				}catch (Exception e) {
+					fol = 0;
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		return result;
+	}
+	
+	
+	
+	//폴더공유버튼
+	@ResponseBody
+	@RequestMapping(value="folderShare", method=RequestMethod.POST)
+	public ArrayList<FileFolder> folderShare(int ffid){
+		
+		System.out.println("ffid : " + ffid);
+		ArrayList<FileFolder> rtn = fileFolderDAO.shareList(ffid);
+		System.out.println("얘두라 나오렴~{}"+rtn);
+		return rtn;
+	}
+	
+	//폴더공유버튼
+		@ResponseBody
+		@RequestMapping(value="folderShare2", method=RequestMethod.POST)
+		public FileFolder folderShare2(int ffid){
+			
+			System.out.println("ffid : " + ffid);
+			FileFolder rtn = fileFolderDAO.boardread(ffid);
+			System.out.println("얘두라 나오렴~{}"+rtn);
+			return rtn;
+		}
+	
+	
+	//
+	@ResponseBody
+	@RequestMapping(value="pathUpdate", method=RequestMethod.POST)
+	public FileFolder pathUpdate(int ffid, String isShared, HttpSession session){
+		
+		logger.info("너의 ffid는...? " + ffid);
+		
+		String email= (String)session.getAttribute("loginMem");
+		
+		FileFolder getFile = fileFolderDAO.boardread(ffid);
+		
+		System.out.println(getFile);
+		File f = new File(getFile.getPath());
+		
+		//f.rename();
+		
+		Path pathd = Paths.get(getFile.getPath());
+		
+		//폴더일경우
+		if (f.isDirectory()) {
+			try {
+				BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+				//파일명
+				getFile.setFileName(f.getName());
+				
+			
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//파일일 경우
+		else {
+			try {
+				BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+				//생성날짜 = 업로드날짜
+				long lat2 = attr.creationTime().toMillis();
+				Calendar cal2 = Calendar.getInstance();
+				cal2.setTimeInMillis(lat2);
+				int mYear2 = cal2.get(Calendar.YEAR);
+				int mMonth2 = cal2.get(Calendar.MONTH);
+				int mDay2 = cal2.get(Calendar.DAY_OF_MONTH);
+				
+				
+				//최근 액세스 날짜
+				long lat = attr.lastAccessTime().toMillis();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(lat);
+				
+				int mYear = cal.get(Calendar.YEAR);
+				int mMonth = cal.get(Calendar.MONTH);
+				int mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+				/*int mHour = cal.get(Calendar.HOUR);
+				int mMin = cal.get(Calendar.MINUTE);
+				int mSec = cal.get(Calendar.SECOND);
+				int mMilisec = cal.get(Calendar.MILLISECOND);*/
+				
+				String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+				String uploadDate = mYear2 + "년"+(mMonth2+1)+"월"+mDay2+ "일";
+				
+				
+				//액세스날짜
+				getFile.setLastModify(lastAccess);
+				//파일명
+				getFile.setFileName(f.getName());
+				//파일크기
+				getFile.setVolume(f.length());
+				//업로드날짜
+				getFile.setUploadDate(uploadDate);
+			
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return getFile;
+	}
+	
+	
+	//속성
+	@ResponseBody
+	@RequestMapping(value="info", method=RequestMethod.POST)
+		public FileFolder info(int ffid, HttpSession session){
+			
+		
+		logger.info("너의 ffid는...? " + ffid);
+		
+		String email= (String)session.getAttribute("loginMem");
+		
+		FileFolder getFile = fileFolderDAO.boardread(ffid);
+		
+		System.out.println(getFile);
+		File f = new File(getFile.getPath());
+		
+		Path pathd = Paths.get(getFile.getPath());
+		
+		if (f.isDirectory()) {
+			try {
+				BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+				//최근 액세스 날짜
+				long lat = attr.creationTime().toMillis();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(lat);
+				
+				int mYear = cal.get(Calendar.YEAR);
+				int mMonth = cal.get(Calendar.MONTH);
+				int mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+				/*int mHour = cal.get(Calendar.HOUR);
+				int mMin = cal.get(Calendar.MINUTE);
+				int mSec = cal.get(Calendar.SECOND);
+				int mMilisec = cal.get(Calendar.MILLISECOND);*/
+				
+				String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+				
+				//
+				getFile.setLastModify(lastAccess);
+				//파일명
+				getFile.setFileName(f.getName());
+				
+			
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//파일일 경우
+		else {
+			try {
+				BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+				//생성날짜 = 업로드날짜
+				long lat2 = attr.creationTime().toMillis();
+				Calendar cal2 = Calendar.getInstance();
+				cal2.setTimeInMillis(lat2);
+				int mYear2 = cal2.get(Calendar.YEAR);
+				int mMonth2 = cal2.get(Calendar.MONTH);
+				int mDay2 = cal2.get(Calendar.DAY_OF_MONTH);
+				
+				
+				//최근 액세스 날짜
+				long lat = attr.lastAccessTime().toMillis();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(lat);
+				
+				int mYear = cal.get(Calendar.YEAR);
+				int mMonth = cal.get(Calendar.MONTH);
+				int mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+				/*int mHour = cal.get(Calendar.HOUR);
+				int mMin = cal.get(Calendar.MINUTE);
+				int mSec = cal.get(Calendar.SECOND);
+				int mMilisec = cal.get(Calendar.MILLISECOND);*/
+				
+				String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+				String uploadDate = mYear2 + "년"+(mMonth2+1)+"월"+mDay2+ "일";
+				
+				
+				//액세스날짜
+				getFile.setLastModify(lastAccess);
+				//파일명
+				getFile.setFileName(f.getName());
+				//파일크기
+				getFile.setVolume(f.length());
+				//업로드날짜
+				getFile.setUploadDate(uploadDate);
+			
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return getFile;
+	}
+	
+	// 컨텍스트메뉴 삭제기능
+	@ResponseBody
+	@RequestMapping(value="conDelete", method=RequestMethod.POST)
+	public void conDelete(int ffid){
+		int result = 0;
+		System.out.print("ffid가 무엇이더냐 : "+ffid);
+		try{
+			result = fileFolderDAO.conDelete(ffid);
+		}catch (Exception e) {
+			// TODO: handle exception
+			result = 1;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="conRemove", method=RequestMethod.POST)
+	public void conRemove(int ffid){
+		int result = 0;
+		System.out.print("ffid가 무엇이더냐 : "+ffid);
+		try{
+			result = fileFolderDAO.conRemove(ffid);
+		}catch (Exception e) {
+			// TODO: handle exception
+			result = 1;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="conAllRemove", method=RequestMethod.POST)
+	public void conAllRemove(int ffid){
+		FileFolder search2 = fileFolderDAO.boardread(ffid);
+		int result = 0;
+		int result1= 0;
+
+		File f2 = new File(search2.getPath());
+		File[] folder = f2.listFiles();
+		
+		if(search2 != null){
+			if(f2.isDirectory()){
+				for(int i=0; i<folder.length; i++){
+					folder[i].delete();
+					f2.delete();
+				}
+			}else if(f2.exists()){
+				f2.delete();
+			}
+			result1 = fileFolderDAO.conBookDelete(ffid);
+			result = fileFolderDAO.conAllRemove(ffid);
+		}
+	}
+	
+	//폴더 공유눌렀을경우 사용자 검색
+	@ResponseBody
+	@RequestMapping(value="searchUser", method=RequestMethod.POST)
+	public Member searchUser(String email){
+		
+		
+		System.out.print("email이 무엇이더냐 : "+ email);
+		Member search = memberDAO.getMember(email);
+		
+		return search;
+	}
+	
+	
+	//폴더 공유 권한 설정하였을때 행해지는 것들
+		@ResponseBody
+		@RequestMapping(value="setAuth", method=RequestMethod.POST)
+		public void setAuth(int ffid, String auth, String email, HttpSession session){
+			
+		String myEmail = (String)session.getAttribute("loginMem");
+		int insertResult = 0;
+		int updateResult = 0;
+		FileFolder search = fileFolderDAO.searchShare(ffid, email);
+		int updateFileFolder = 0;
+		int firstOwner = 0;
+		if (search != null){
+			try{
+				updateResult = fileFolderDAO.updateAuth(ffid, email, auth);
+				updateFileFolder = fileFolderDAO.updateFileShare(ffid);
+			}catch (Exception e) {
+				e.printStackTrace();
+				// TODO: handle exception
+			}
+		}else{
+			try {
+				firstOwner = fileFolderDAO.firstOwner(ffid, myEmail);
+				updateFileFolder = fileFolderDAO.updateFileShare(ffid);	
+				insertResult = fileFolderDAO.shareInsert(ffid, email, auth);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		}
+	
 }

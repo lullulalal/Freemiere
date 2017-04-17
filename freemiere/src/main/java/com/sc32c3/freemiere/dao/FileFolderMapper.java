@@ -45,4 +45,22 @@ public interface FileFolderMapper {
 
 	//휴지통에서 삭제
 	public void completeDelete(String path);
+	
+	
+	public int bookmarkUpdate(HashMap<String, Object> map);
+	public int bookmarkInsert(HashMap<String, Object> map);
+	public FileFolder boardread(int ffid);
+	public int conDelete(int ffid);
+	public int conRemove(int ffid);
+	public int conBookDelete(int ffid);
+	public int conAllRemove(int ffid);
+	public FileFolder bookmarkSearch(int ffid);
+	public int folderShare(HashMap<String, Object> map);
+	public int sokUpdate(HashMap<String, Object> map);
+	public ArrayList<FileFolder> shareList(int ffid);
+	public int shareInsert(HashMap<String, Object> map);
+	public FileFolder searchShare(HashMap<String, Object> map);
+	public int updateAuth(HashMap<String, Object> map);
+	public int updateFileShare(int ffid);
+	public int firstOwner(HashMap<String, Object> map);
 }

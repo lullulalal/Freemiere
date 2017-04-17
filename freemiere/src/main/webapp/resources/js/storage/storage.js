@@ -2,6 +2,104 @@ var myRootDir = '';
 var menu = 'MyStorage';
 var nowPath = '';
 
+//마우스 우클릭버튼
+jQuery.fn.contextPopup = function(menuData) {
+	// Define default settings
+	var settings = {
+		contextMenuClass: 'contextMenuPlugin',
+      linkClickerClass: 'contextMenuLink',
+		gutterLineClass: 'gutterLine',
+		headerClass: 'header',
+		seperatorClass: 'divider',
+		title: '',
+		items: []
+	};
+	
+	// merge them
+	$.extend(settings, menuData);
+
+// Build popup menu HTML
+function createMenu(e) {
+  var menu = $('<ul class="' + settings.contextMenuClass + '"><div class="' + settings.gutterLineClass + '"></div></ul>')
+    .appendTo(document.body);
+  if (settings.title) {
+    $('<li class="' + settings.headerClass + '"></li>').text(settings.title).appendTo(menu);
+  }
+  settings.items.forEach(function(item) {
+    if (item) {
+      var rowCode = '<li><a href="#" class="'+settings.linkClickerClass+'"><span class="itemTitle"></span></a></li>';
+      // if(item.icon)
+      // rowCode += '<img>';
+      // rowCode += '<span></span></a></li>';
+      var row = $(rowCode).appendTo(menu);
+      if(item.icon){
+        var icon = $('<img>');
+        icon.attr('src', item.icon);
+        icon.insertBefore(row.find('.itemTitle'));
+      }
+      row.find('.itemTitle').text(item.label);
+        
+      if (item.isEnabled != undefined && !item.isEnabled()) {
+          row.addClass('disabled');
+      } else if (item.action) {
+          row.find('.'+settings.linkClickerClass).click(function () { item.action(e); });
+      }
+
+    } else {
+      $('<li class="' + settings.seperatorClass + '"></li>').appendTo(menu);
+    }
+  });
+  menu.find('.' + settings.headerClass ).text(settings.title);
+  return menu;
+}
+
+// On contextmenu event (right click)
+this.on('contextmenu', function(e) {
+  var menu = createMenu(e)
+    .show();
+  
+  var left = e.pageX + 5, /*
+							 * nudge to the right, so the pointer is covering
+							 * the title
+							 */
+      top = e.pageY;
+  if (top + menu.height() >= $(window).height()) {
+      top -= menu.height();
+  }
+  if (left + menu.width() >= $(window).width()) {
+      left -= menu.width();
+  }
+
+  // Create and show menu
+  menu.css({zIndex:1000001, left:left, top:top})
+    .on('contextmenu', function() { return false; });
+
+  // Cover rest of page with invisible div that when clicked will cancel the
+	// popup.
+  var bg = $('<div></div>')
+    .css({left:0, top:0, width:'100%', height:'100%', position:'absolute', zIndex:1000000})
+    .appendTo(document.body)
+    .on('contextmenu click', function() {
+      // If click or right click anywhere else on page: remove clean up.
+      bg.remove();
+      menu.remove();
+      return false;
+    });
+
+  // When clicking on a link in menu: clean up (in addition to handlers on
+	// link already)
+  menu.find('a').click(function() {
+    bg.remove();
+    menu.remove();
+  });
+
+  // Cancel event, so real browser popup doesn't appear.
+  return false;
+});
+
+return this;
+};
+
 $(document).ready(function() {
 
 	alert(loginMem);
@@ -176,6 +274,411 @@ function loadListUnchangNav(path) {
 	});
 }
 
+
+//편집버튼 눌렀을때 이동되는 경로
+function edit(){
+	location.href="createMovie";
+}
+
+function init(){
+	loadList(nowPath);
+}
+
+//파일속성
+function soksung(obj){
+	sokObject = obj;
+	
+	$(document).ready(function() {
+		$("#myBtn").click(function(){
+	        $("#fName").attr("readonly",false);
+	    });	
+		$("#conUp").click(function(){
+	        $("#content").attr("readonly",false);
+	    });	
+		
+		$("#subm").click(function(){
+			var fName = $('#fName').val();	
+			var info = $('#content').val();
+			var ffid = obj.ffid;
+			var nowPa = nowPath;
+			$.ajax({
+				url:'sokUpdate',
+				type: 'POST',
+				dataType: 'json',
+				data: {ffid: ffid, filename: fName, info: info, path: nowPa},
+				success: function(obj) {
+					alert('성공하였습니다.');
+					init();
+				},
+				error: function(e) {
+					alert(JSON.stringify(e));
+					// alert('에-러');
+				}
+			});
+	    });	
+	});
+	
+	var test = '';
+		test +='<form id= "updateForm">';
+		test +='<div id="id01" class="modal fade">';
+	 	test +='<div class="modal-dialog">';
+	 	test +='<div class="modal-content">';
+	 	
+	 	test +='<h2 class="modal-title">';
+	 	
+	 	test +='<input id="fName" type="text" placeholder='+obj.fileName+' readonly=readonly>';
+	 	
+	 	test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+	 	
+	 	test +='<button type="button"class="btn btn-info btn-lg" id="myBtn">제목수정</button>';
+	 	
+	 	test +='<div class="modal-body">';
+	 	test += '<textarea id="content" rows="10" cols="30" readonly=readonly>'+obj.info+'</textarea>';
+	 	test +='<button type="button"class="btn btn-info btn-lg" id="conUp">내용수정</button>';
+		test +='<p>파일크기'+obj.volume+'</p>';
+	 	test +='<p>업로드날짜 '+obj.uploadDate+'</p>';
+	 	test +='<p>수정 날짜  '+obj.lastModify+'</p>';
+	 	test +='<button id="subm" type="button" class="btn btn-default">수정하기</button>';
+	 	test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +=' </div>';
+	 	test +='</form>';
+	$('#test').html(test);		
+	
+	$('#id01').modal();	
+}
+
+
+//폴더속성일 경우
+function soksungFolder(obj){
+
+	$(document).ready(function() {
+		$("#myBtn").click(function(){
+	        $("#fName").attr("readonly",false);
+	    });	
+		$("#conUp").click(function(){
+	        $("#content").attr("readonly",false);
+	    });	
+		
+		$("#subm").click(function(){
+			var fName = $('#fName').val();	
+			var info = $('#content').val();
+			var ffid = obj.ffid;
+			var nowPa = nowPath;
+			$.ajax({
+				url:'sokUpdate',
+				type: 'POST',
+				dataType: 'json',
+				data: {ffid: ffid, filename: fName, info: info, path: nowPa},
+				success: function(obj) {
+					alert('성공하였습니다.');
+					init();
+				},
+				error: function(e) {
+					alert(JSON.stringify(e));
+					// alert('에-러');
+				}
+			});
+	    });	
+	});
+	
+	var test = '';
+		test +='<form id= "updateForm">';
+		test +='<div id="id01" class="modal fade">';
+	 	test +='<div class="modal-dialog">';
+	 	test +='<div class="modal-content">';
+	 	
+	 	test +='<h2 class="modal-title">';
+	 	
+	 	test +='<input id="fName" type="text" placeholder='+obj.fileName+' readonly=readonly>';
+	 	
+	 	test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+	 	
+	 	test +='<button type="button"class="btn btn-info btn-lg" id="myBtn">제목수정</button>';
+	 	
+	 	test +='<div class="modal-body">';
+	 	
+	 
+	 	test += '<textarea id="content" rows="10" cols="30" readonly=readonly>'+obj.info+'</textarea>';
+	 	test +='<button type="button"class="btn btn-info btn-lg" id="conUp">내용수정</button>';
+		test +='<p>파일크기'+obj.volume+'</p>';
+	 	test +='<p>수정 날짜  '+obj.lastModify+'</p>';
+	 	
+	 	test +='<button id="subm" type="button" class="btn btn-default">수정하기</button>';
+	 	test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+	 	
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +=' </div>';
+	 	test +='</form>';
+	$('#test').html(test);		
+	
+	$('#id01').modal();	
+}
+
+//휴지통에 있는 속성일 경우
+function soksungTrash(obj){
+
+	$(document).ready(function() {
+		$("#myBtn").click(function(){
+	        $("#fName").attr("readonly",false);
+	    });	
+		$("#conUp").click(function(){
+	        $("#content").attr("readonly",false);
+	    });	
+	});
+	
+	var test = '';
+		test +='<form id= "updateForm">';
+		test +='<div id="id01" class="modal fade">';
+	 	test +='<div class="modal-dialog">';
+	 	test +='<div class="modal-content">';
+	 	
+	 	test +='<h2 class="modal-title">';
+	 	
+	 	test +='<input id="fName" type="text" placeholder='+obj.fileName+' readonly=readonly>';
+	 	
+	 	test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+	 	
+	 	test +='<div class="modal-body">';
+	 	
+	 
+	 	test += '<textarea id="content" rows="10" cols="30" readonly=readonly>'+obj.info+'</textarea>';
+		test +='<p>파일크기'+obj.volume+'</p>';
+	 	test +='<p>수정 날짜  '+obj.lastModify+'</p>';
+	 	
+	 	test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+	 	
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +='</div>';
+	 	test +=' </div>';
+	 	test +='</form>';
+	$('#test').html(test);		
+	
+	$('#id01').modal();	
+}
+
+
+
+
+
+//공유 설정
+function shareSet(obj){
+	
+	var User;
+	//alert(JSON.stringify(obj));
+	var set = '';
+	
+	set +='<form id= "updateForm">';
+	set +='<div id="sharedS" class="modal fade">';
+	set +='<div class="modal-dialog">';
+	set +='<div class="modal-content">';
+	 	
+	set +='<h2 class="modal-title">';
+	 	
+	set +='<input id="fName" type="text" placeholder="아이디 검색">';
+	set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
+	set += '</form>';
+	set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+	
+		
+		
+		set +='<div class="modal-body">';
+		
+		set +='<div id="auth1">';
+		set +='<textarea id="content" rows="2" cols="30" readonly=readonly></textarea>';
+		set +='<form id= "updateForm2">';
+		set +='<select id="selectAuth" name="selectAuth">';
+		set +='<option value="Owner">Owner</option>';
+		set +='<option value="View">View</option>'
+		set +='<option value="Edit">Edit</option>'
+		set +='</select>'
+		set +='<button type="button"class="btn btn-info btn-lg" id="addAuth">추가</button>';
+		set +='</div>';
+		
+		set +='<div id="shareList">';
+		set +='<textarea id="content" rows="10" cols="30" readonly=readonly>';
+		
+		
+		
+		
+	$.each(obj, function(index, item){
+		$(document).ready(function() {
+			$("#search").click(function(){
+		        var searchName = $('#fName').val();
+		        $.ajax({
+					url:'searchUser',
+					type: 'POST',
+					dataType: 'json',
+					data: {email: searchName},
+					success: function(search) {
+						if(search != null){
+							User = search.email;
+							alert(User);
+							$('#content').val(User);
+						}					
+					},
+					error: function(e) {
+						//alert(JSON.stringify(e));
+						 alert('존재하지 않습니다.');
+					}
+				});
+				
+		    });	
+			
+			$("#addAuth").click(function(){
+				var selectAuth = document.getElementById("selectAuth");
+				
+				var ffid = item.ffid;
+				var email = $('#content').val();
+				var select = selectAuth.value;
+				alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
+				
+				$.ajax({
+					url:'setAuth',
+					type: 'POST',
+					//dataType: 'json',
+					data: {auth: select, ffid:ffid, email:email},
+					success: function(obj) {
+						alert('등록완료');
+						document.getElementById('sharedS').style.display = 'none';
+						$('.modal-backdrop').remove();
+						init();
+					},
+					error: function(e) {
+						alert(JSON.stringify(e));
+						// alert('에-러');
+					}
+				});
+		    });	
+		});
+		
+		set += item.email+'&nbsp;&nbsp;&nbsp;'+item.auth;
+		 	
+	});
+	set += '</textarea>';
+	set +='</div>';
+	set +='</form>';
+	set +='</div>';
+	
+	
+	set +='</div>';
+	set +='</div>';
+ 	set +=' </div>';
+ 	set +='</form>';
+	$('#sharedSet').html(set);		
+	
+	$('#sharedS').modal();	
+}
+
+//공유 설정2
+function shareSet2(ffid){
+	
+	var User;
+	//alert(JSON.stringify(obj));
+	var set = '';
+	
+	alert('ffid 자알받았습니다.' +ffid)
+		$(document).ready(function() {
+			$("#search").click(function(){
+		        var searchName = $('#fName').val();
+		        $.ajax({
+					url:'searchUser',
+					type: 'POST',
+					dataType: 'json',
+					data: {email: searchName},
+					success: function(search) {
+						if(search != null){
+							User = search.email;
+							alert(User);
+							$('#content').val(User);
+						}					
+					},
+					error: function(e) {
+						//alert(JSON.stringify(e));
+						 alert('존재하지 않습니다.');
+					}
+				});
+				
+		    });	
+			
+			$("#addAuth").click(function(){
+				var selectAuth = document.getElementById("selectAuth");
+				
+				var email = $('#content').val();
+				var select = selectAuth.value;
+				alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
+				
+				$.ajax({
+					url:'setAuth',
+					type: 'POST',
+					//dataType: 'json',
+					data: {auth: select, ffid:ffid, email:email},
+					success: function(obj) {
+						alert('등록완료');
+						document.getElementById('sharedS').style.display = 'none';
+						$('.modal-backdrop').remove();
+						init();
+					},
+					error: function(e) {
+						alert(JSON.stringify(e));
+						// alert('에-러');
+					}
+				});
+		    });	
+		});
+		
+		
+		
+		set +='<form id= "updateForm">';
+		set +='<div id="sharedS" class="modal fade">';
+		set +='<div class="modal-dialog">';
+		set +='<div class="modal-content">';
+		 	
+		set +='<h2 class="modal-title">';
+		 	
+		set +='<input id="fName" type="text" placeholder="아이디 검색">';
+		set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
+		set += '</form>';
+		set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+		
+			
+			
+			set +='<div class="modal-body">';
+			
+			set +='<div id="auth1">';
+			set +='<textarea id="content" rows="2" cols="30" readonly=readonly></textarea>';
+			set +='<form id= "updateForm2">';
+			set +='<select id="selectAuth" name="selectAuth">';
+			set +='<option value="Owner">Owner</option>';
+			set +='<option value="View">View</option>'
+			set +='<option value="Edit">Edit</option>'
+			set +='</select>'
+			set +='<button type="button"class="btn btn-info btn-lg" id="addAuth">추가</button>';
+			set +='</div>';
+			
+			set +='<div id="shareList">';
+			//set +='<textarea id="content" rows="10" cols="30" readonly=readonly>'+item.email+'&nbsp;&nbsp;&nbsp;'+item.auth+'</textarea>';
+			set +='</div>';
+			set +='</form>';
+			set +='</div>';
+			
+			
+			set +='</div>';
+			set +='</div>';
+		 	set +=' </div>';
+		 	set +='</form>';
+		 	
+		 	$('#sharedSet').html(set);		
+			
+			$('#sharedS').modal();	
+}
+
+
 function outputList(list) {
 	// alert(JSON.stringify(list));
 	var data = '';
@@ -203,90 +706,739 @@ function outputList(list) {
 
 						data += '<tr align="center">';
 						data += '	<td class="filebox-td">';
-						if (item.isFolder == false) {
-							var path = item.path;
-							var pathArray = path.split('\\');
-							var thumbPath = './storageResources/';
-							var imgPath = './storageResources/';
-							for (var j = 2; j < pathArray.length; j++) {
-								imgPath += pathArray[j];
-								thumbPath += pathArray[j];
-								if (j < (pathArray.length - 1)) {
-									thumbPath += '/';
-									imgPath += '/';
-								}
-								if (j == (pathArray.length - 2))
-									thumbPath += '.thumb/';
+						
+						if(item.isDeleted.toLowerCase() == 't'){
+							if(item.isFolder == true){
+							
+								$(function() {
+									  
+								 	// var image = document.getElementById("#file");
+								 	  
+								     $('#sfolders'+item.ffid+'').contextPopup({
+								       title: 'Image/Avi File',
+								       items: [
+								         {label:'복구',                 action:function() { 
+								        	 $.ajax({
+								    				url:'conRemove',
+								    				type: 'POST',
+								    				data: {ffid: item.ffid},
+								    				success: function(obj) {
+								    					alert('복구되었습니다.');
+								    					init();
+								    				},
+								    				error: function(e) {
+								    					alert(JSON.stringify(e));
+								    					// alert('에-러');
+								    				}
+								    			}); 
+								        	 
+								         } },
+								         
+								         {label:'속성',                         action:function() { 
+								        	 $.ajax({
+								    				url:'info',
+								    				type: 'POST',
+								    				dataType: 'json',
+								    				data: {ffid: item.ffid, path: item.path},
+								    				success: function(obj) {
+								    					
+								    					soksungTrash(obj);
+								    				},
+								    				error: function(e) {
+								    					alert(JSON.stringify(e));
+								    					// alert('에-러');
+								    				}
+								    			});
+								        	  } },
+								         {label:'삭제',                         action:function() {  
+								        	 $.ajax({
+							    				url:'conAllRemove',
+							    				type: 'POST',
+							    				data: {ffid: item.ffid},
+							    				success: function(obj) {
+							    					alert('삭제되었습니다.');
+							    					init();
+							    				},
+							    				error: function(e) {
+							    					alert(JSON.stringify(e));
+							    					// alert('에-러');
+							    				}
+							    			}); 
+								        	 } }
+								         
+								       ]
+								     });
+								  });
+								
+								data += '<img id="sfolders'+item.ffid+'" class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sbfolder.png">';
+							}else{
+								$(function() {
+									  
+								 	// var image = document.getElementById("#file");
+								 	  
+								     $('#file'+item.ffid+'').contextPopup({
+								       title: 'Image/Avi File',
+								       items: [
+								         {label:'복구',                 action:function() { 
+								        	 $.ajax({
+								    				url:'conRemove',
+								    				type: 'POST',
+								    				data: {ffid: item.ffid},
+								    				success: function(obj) {
+								    					alert('복구되었습니다.');
+								    					init();
+								    				},
+								    				error: function(e) {
+								    					alert(JSON.stringify(e));
+								    					// alert('에-러');
+								    				}
+								    			}); 
+								        	 
+								         } },
+								    	 
+								       
+								         
+								         {label:'속성',                         action:function() { 
+								        	 $.ajax({
+								    				url:'info',
+								    				type: 'POST',
+								    				dataType: 'json',
+								    				data: {ffid: item.ffid, path: item.path},
+								    				success: function(obj) {
+								    					
+								    					soksungTrash(obj);
+								    				},
+								    				error: function(e) {
+								    					alert(JSON.stringify(e));
+								    					// alert('에-러');
+								    				}
+								    			});
+								        	  } },
+								         {label:'삭제',                         action:function() {  
+								        	 $.ajax({
+							    				url:'conAllRemove',
+							    				type: 'POST',
+							    				data: {ffid: item.ffid},
+							    				success: function(obj) {
+							    					alert('휴지통으로 이동하였습니다.');
+							    					init();
+							    				},
+							    				error: function(e) {
+							    					alert(JSON.stringify(e));
+							    					// alert('에-러');
+							    				}
+							    			}); 
+								        	 } }
+								         
+								       ]
+								     });
+								  });
+								data += '<img id="file'+item.ffid+'" src="'+item.path+'" onclick="window.open(this.src)">';
 							}
-							thumbPath += '.png';
+								
+								
+							}				
+						
+						else{
+///////////////////////////////////////////////////////////////////////////////////////					
+							if(item.isFolder == false){
+								
+								// 중요의 상태가 T일 경우
+								if(item.bookState.toLowerCase()=='t'){
+									$(function() {
+										  
+									 	// var image = document.getElementById("#file");
+									 	  
+									     $('#file'+item.ffid+'').contextPopup({
+									       title: 'Image/Avi File',
+									       items: [
+									         {label:'게시',                   action:function() { alert('clicked 3') } },
+									         null, // divider
+									         
+									    	 {label:'중요        ★' ,                 action:function() {      
+									    		 $.ajax({
+									    				url:'bookmarkUpdate',
+									    				type: 'POST',
+									    				data: {ffid: item.ffid, bookstate: item.bookState},
+									    				success: function() {
+									    					alert('중요하지 않군요... ');
+									    					init();
+									    				},
+									    				error: function(e) {
+									    					alert(JSON.stringify(e));
+									    					// alert('에-러');
+									    				}
+									    			});	
+									    	 } },
+									       
+									         
+									         {label:'속성',                         action:function() { 
+									        	 $.ajax({
+									    				url:'info',
+									    				type: 'POST',
+									    				dataType: 'json',
+									    				data: {ffid: item.ffid, path: item.path},
+									    				success: function(obj) {
+									    					
+									    					soksung(obj);
+									    				},
+									    				error: function(e) {
+									    					alert(JSON.stringify(e));
+									    					// alert('에-러');
+									    				}
+									    			});
+									        	  } },
+									         {label:'삭제',                         action:function() {  
+									        	 $.ajax({
+								    				url:'conDelete',
+								    				type: 'POST',
+								    				data: {ffid: item.ffid},
+								    				success: function(obj) {
+								    					alert('휴지통으로 이동하였습니다.');
+								    					init();
+								    				},
+								    				error: function(e) {
+								    					alert(JSON.stringify(e));
+								    					// alert('에-러');
+								    				}
+								    			}); 
+									        	 } }
+									         
+									       ]
+									     });
+									  });
+									var path = item.path;
+									var pathArray = path.split('\\');
+									var thumbPath = './storageResources/';
+									var imgPath = './storageResources/';
+									for (var j = 2; j < pathArray.length; j++) {
+										imgPath += pathArray[j];
+										thumbPath += pathArray[j];
+										if (j < (pathArray.length - 1)) {
+											thumbPath += '/';
+											imgPath += '/';
+										}
+										if (j == (pathArray.length - 2))
+											thumbPath += '.thumb/';
+									}
+									thumbPath += '.png';
 
-							var fileType = getFileType(item.path);
-							if (fileType == 'image') {
-								data += '<label for="file_check' + index + '">';
-								data += '<img class="file fimage" path="'
-										+ imgPath + '" src="' + thumbPath
-										+ '">';
-								data += '</label>';
-							} else if (fileType == 'video') {
+									var fileType = getFileType(item.path);
+									if (fileType == 'image') {
+										data += '<label for="file_check' + index + '">';
+										data += '<img id="file'+item.ffid+'" class="file fimage" path="'
+												+ imgPath + '" src="' + thumbPath
+												+ '">';
+										data += '</label>';
+									} else if (fileType == 'video') {
 
-								var p = item.path;
-								var videoPathrray = p.split('\\');
-								var videoPath = './storageResources/';
-								for (var j = 2; j < videoPathrray.length; j++) {
-									videoPath += videoPathrray[j];
-									if (j < (videoPathrray.length - 1))
-										videoPath += '/';
+										var p = item.path;
+										var videoPathrray = p.split('\\');
+										var videoPath = './storageResources/';
+										for (var j = 2; j < videoPathrray.length; j++) {
+											videoPath += videoPathrray[j];
+											if (j < (videoPathrray.length - 1))
+												videoPath += '/';
+										}
+										data += '<video width=156 height=156 controls poster="'
+												+ thumbPath + '">';
+										data += '<source src="' + videoPath
+												+ '" type="video/mp4">';
+										data += '<source src="' + item.path
+												+ '" type="video/ogg">';
+										data += '<source src="' + item.path
+												+ '" type="video/webm">';
+										data += 'Your browser does not support the video tag.';
+										data += '</video>';
+									} else {
+										data += '<label for="file_check' + index + '">';
+										data += '<img id="file'+item.ffid+'" class="file" src="./resources/img/storage/file.png">';
+										data += '</label>';
+									}
+									
+									// bookState가 F일 경우
+								}else{ 
+									$(function() {
+										  
+									 	// var image = document.getElementById("#file");
+									 	  
+									     $('#file'+item.ffid+'').contextPopup({
+									       title: 'Image/Avi File',
+									       items: [
+									         {label:'게시',                   action:function() { alert('clicked 3') } },
+									         null, // divider
+									         
+									    	 {label:'중요' ,                 action:function() {      
+									    		 $.ajax({
+									    				url:'bookmarkUpdate',
+									    				type: 'POST',
+									    				data: {ffid: item.ffid, bookstate: item.bookState},
+									    				success: function() {
+									    					alert('중요로 변경되었습니다.');
+									    					init();
+									    				},
+									    				error: function(e) {
+									    					alert(JSON.stringify(e));
+									    					// alert('에-러');
+									    				}
+									    			});	
+									    	 } },
+									       
+									         
+									       // {label:'중요', action:function() { alert('clicked 5') }
+											// },
+									         {label:'속성',                         action:function() { 
+									        	 $.ajax({
+									    				url:'info',
+									    				type: 'POST',
+									    				dataType: 'json',
+									    				data: {ffid: item.ffid, path: item.path},
+									    				success: function(obj) {
+									    					
+									    					soksung(obj);
+									    				},
+									    				error: function(e) {
+									    					alert(JSON.stringify(e));
+									    					// alert('에-러');
+									    				}
+									    			});
+									         } },
+									         {label:'삭제',                         action:function() { 
+									        	 $.ajax({
+									    				url:'conDelete',
+									    				type: 'POST',
+									    				data: {ffid: item.ffid},
+									    				success: function(obj) {
+									    					alert('휴지통으로 이동하였습니다.');
+									    					init();
+									    				},
+									    				error: function(e) {
+									    					alert(JSON.stringify(e));
+									    					// alert('에-러');
+									    				}
+									    			}); 
+									         } }
+									         
+									       ]
+									     });
+									  });
+									var path = item.path;
+									var pathArray = path.split('\\');
+									var thumbPath = './storageResources/';
+									var imgPath = './storageResources/';
+									for (var j = 2; j < pathArray.length; j++) {
+										imgPath += pathArray[j];
+										thumbPath += pathArray[j];
+										if (j < (pathArray.length - 1)) {
+											thumbPath += '/';
+											imgPath += '/';
+										}
+										if (j == (pathArray.length - 2))
+											thumbPath += '.thumb/';
+									}
+									thumbPath += '.png';
+
+									var fileType = getFileType(item.path);
+									if (fileType == 'image') {
+										data += '<label for="file_check' + index + '">';
+										data += '<img id="file'+item.ffid+'" class="file fimage" path="'
+												+ imgPath + '" src="' + thumbPath
+												+ '">';
+										data += '</label>';
+									} else if (fileType == 'video') {
+
+										var p = item.path;
+										var videoPathrray = p.split('\\');
+										var videoPath = './storageResources/';
+										for (var j = 2; j < videoPathrray.length; j++) {
+											videoPath += videoPathrray[j];
+											if (j < (videoPathrray.length - 1))
+												videoPath += '/';
+										}
+										data += '<video width=156 height=156 controls poster="'
+												+ thumbPath + '">';
+										data += '<source src="' + videoPath
+												+ '" type="video/mp4">';
+										data += '<source src="' + item.path
+												+ '" type="video/ogg">';
+										data += '<source src="' + item.path
+												+ '" type="video/webm">';
+										data += 'Your browser does not support the video tag.';
+										data += '</video>';
+									} else {
+										data += '<label for="file_check' + index + '">';
+										data += '<img id="file'+item.ffid+'" class="file" src="./resources/img/storage/file.png">';
+										data += '</label>';
+									}
+									
 								}
-								data += '<video width=156 height=156 controls poster="'
-										+ thumbPath + '">';
-								data += '<source src="' + videoPath
-										+ '" type="video/mp4">';
-								data += '<source src="' + item.path
-										+ '" type="video/ogg">';
-								data += '<source src="' + item.path
-										+ '" type="video/webm">';
-								data += 'Your browser does not support the video tag.';
-								data += '</video>';
-							} else {
-								data += '<label for="file_check' + index + '">';
-								data += '<img class="file" src="./resources/img/storage/file.png">';
-								data += '</label>';
+								
+								
+								// data += '<img class="file"
+								// src="./resources/img/storage/file.png">';
+								//	data += '<img id="file'+item.ffid+'" src="'+item.path+'" onclick="window.open(this.src)">';
+								// data += '<img class="file" src="./resources/img/storage/file.png"
+								// onclick="window.open(this.src)">';
 							}
-						} else {
-							if (item.isShared.toLowerCase() == 't') {
-								if (item.bookState.toLowerCase() == 't') {
-									data += '<label for="file_check' + index
-											+ '">';
-									data += '<img class="folder sfolder" path="'
-											+ item.path
-											+ '" src="./resources/img/storage/sbfolder.png" >';
-									data += '</label>';
-								} else {
-									data += '<label for="file_check' + index
-											+ '">';
-									data += '<img class="folder sfolder" path="'
-											+ item.path
-											+ '" src="./resources/img/storage/sfolder.png" >';
-									data += '</label>';
+							
+							// 폴더일 경우
+							else{
+						
+								if(item.isShared.toLowerCase()=='t'){
+									
+									if(item.bookState.toLowerCase()=='t')
+									{
+										// 폴더이면서 공유T, 중요 T
+										$(function() {
+											
+											// var image = document.getElementById("#file");
+											
+											$('#sfolders'+item.ffid+'').contextPopup({
+												title: 'My Popup Menu',
+												items: [
+													{label:'공유설정',             action:function() { 
+														 $.ajax({
+											    				url:'folderShare',
+											    				type: 'POST',
+											    				dataType: 'json',
+											    				data: {ffid: item.ffid},
+											    				success: function(obj) {
+											    					shareSet(obj);
+											    				},
+											    				error: function(e) {
+											    					alert(JSON.stringify(e));
+											    					// alert('에-러');
+											    				}
+											    			}); 
+														
+														
+														
+														 } },
+													{label:'복사/이동',                 action:function() { location.href="http://www.naver.com" } },
+													{label:'중요        ★',                   action:function() { 
+														$.ajax({
+										    				url:'bookmarkUpdate',
+										    				type: 'POST',
+										    				data: {ffid: item.ffid, bookstate: item.bookState},
+										    				success: function() {
+										    					alert('중요하지 않군요... ');
+										    					init();
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});	 } },
+													null, // divider
+													{label:'속성',                 action:function() { 
+														$.ajax({
+										    				url:'info',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid, path: item.path},
+										    				success: function(obj) {
+										    					
+										    					soksungFolder(obj);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});
+													} },
+													{label:'삭제',                         action:function() { 
+														
+														 $.ajax({
+											    				url:'conDelete',
+											    				type: 'POST',
+											    				data: {ffid: item.ffid},
+											    				success: function(obj) {
+											    					alert('휴지통으로 이동하였습니다.');
+											    					init();
+											    				},
+											    				error: function(e) {
+											    					alert(JSON.stringify(e));
+											    					// alert('에-러');
+											    				}
+											    			}); 
+													} }
+													
+													]
+											});
+										});			
+										
+										data += '<img id="sfolders'+item.ffid+'" class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sbfolder.png">';
+										// data += '<img class="folder sfolder" path="'+ item.path
+										// +'" src="./resources/img/storage/sbfolder.png">';
+										}
+									
+									
+									
+									else{
+										// 폴더이면서 공유 T, 중요 F
+											$(function() {
+											
+											// var image = document.getElementById("#file");
+											
+											$('#sfolders'+item.ffid+'').contextPopup({
+												title: 'My Popup Menu',
+												items: [
+													{label:'공유설정',            action:function() { 
+														$.ajax({
+										    				url:'folderShare',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid},
+										    				success: function(obj) {
+										    					shareSet(obj);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			}); 
+														
+														
+													} },
+													{label:'복사/이동',                 action:function() { location.href="http://www.naver.com" } },
+													{label:'중요',                   action:function() { 
+														$.ajax({
+										    				url:'bookmarkUpdate',
+										    				type: 'POST',
+										    				data: {ffid: item.ffid, bookstate: item.bookState},
+										    				success: function() {
+										    					alert('중요로 설정되었습니다.');
+										    					init();
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});	 } },
+													null, // divider
+													{label:'속성',                 action:function() { 
+														$.ajax({
+										    				url:'info',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid, path: item.path},
+										    				success: function(obj) {
+										    					
+										    					soksungFolder(obj);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});
+													} },
+													{label:'삭제',                         action:function() { 
+														
+														 $.ajax({
+											    				url:'conDelete',
+											    				type: 'POST',
+											    				data: {ffid: item.ffid},
+											    				success: function(obj) {
+											    					alert('휴지통으로 이동하였습니다.');
+											    					init();
+											    				},
+											    				error: function(e) {
+											    					alert(JSON.stringify(e));
+											    					// alert('에-러');
+											    				}
+											    			}); 
+													} }
+													
+													]
+											});
+										});		
+										data += '<img id="sfolders'+item.ffid+'" class="folder sfolder" path="'+ item.path +'" src="./resources/img/storage/sfolder.png">';	
+										
+									}
 								}
-							} else {
-								if (item.bookState.toLowerCase() == 't') {
-									data += '<label for="file_check' + index
-											+ '">';
-									data += '<img class="folder mfolder" path="'
-											+ item.path
-											+ '" src="./resources/img/storage/mbfolder.png" >';
-									data += '</label>';
-								} else {
-									data += '<label for="file_check' + index
-											+ '">';
-									data += '<img class="folder mfolder" path="'
-											+ item.path
-											+ '" src="./resources/img/storage/mfolder.png" >';
-									data += '</label>';
+								// ↑여기까지가 폴더이면서 중요T이면서 북마크 T,F설정
+
+								
+								// 폴더이면서 중요 F
+								else {
+											// 폴더이면서 중요F, 북마크 T일경우
+									if(item.bookState.toLowerCase()=='t'){
+										$(function() {
+											
+											// var image = document.getElementById("#file");
+											
+											$('#mfolders'+item.ffid+'').contextPopup({
+												title: 'My Popup Menu',
+												items: [
+													{label:'공유설정',                action:function() {
+														$.ajax({
+										    				url:'folderShare',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid},
+										    				success: function(obj) {
+										    					shareSet(obj);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			}); 
+														
+														
+														
+													} },
+													{label:'복사/이동',                 action:function() { location.href="http://www.naver.com" } },
+													{label:'중요        ★',                   action:function() { 
+														$.ajax({
+										    				url:'bookmarkUpdate',
+										    				type: 'POST',
+										    				data: {ffid: item.ffid, bookstate: item.bookState},
+										    				success: function() {
+										    					alert('중요하지 않군요... ');
+										    					init();
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});	 } },
+													null, // divider
+													{label:'속성',                 action:function() { 
+														$.ajax({
+										    				url:'info',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid, path: item.path},
+										    				success: function(obj) {
+										    					
+										    					soksungFolder(obj);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});
+													} },
+													{label:'삭제',                         action:function() { 
+														
+														 $.ajax({
+											    				url:'conDelete',
+											    				type: 'POST',
+											    				data: {ffid: item.ffid},
+											    				success: function(obj) {
+											    					alert('휴지통으로 이동하였습니다.');
+											    					init();
+											    				},
+											    				error: function(e) {
+											    					alert(JSON.stringify(e));
+											    					// alert('에-러');
+											    				}
+											    			}); 
+													} }
+													
+													]
+											});
+										});		
+										
+										data += '<img id="mfolders'+item.ffid+'" class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mbfolder.png">';
+										// data += '<img class="folder mfolder" path="'+ item.path
+										// +'" src="./resources/img/storage/mbfolder.png">';
+									}
+									
+
+									// 폴더이면서 중요F, 북마크 F일경우
+									else{
+										$(function() {
+											
+											// var image = document.getElementById("#file");
+											
+											$('#mfolders'+item.ffid+'').contextPopup({
+												title: 'My Popup Menu',
+												items: [
+													{label:'공유설정',             action:function() { 
+														var ffid = item.ffid;
+														$.ajax({
+										    				url:'folderShare2',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid},
+										    				success: function(obj) {
+										    					shareSet2(obj.ffid);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			}); 
+														
+														
+													} },
+													{label:'중요',                   action:function() { 
+														$.ajax({
+										    				url:'bookmarkUpdate',
+										    				type: 'POST',
+										    				data: {ffid: item.ffid, bookstate: item.bookState},
+										    				success: function() {
+										    					alert('중요로 변경되었습니다.');
+										    					init();
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});	 } },
+													null, // divider
+													{label:'속성',                 action:function() { 
+														$.ajax({
+										    				url:'info',
+										    				type: 'POST',
+										    				dataType: 'json',
+										    				data: {ffid: item.ffid, path: item.path},
+										    				success: function(obj) {
+										    					
+										    					soksungFolder(obj);
+										    				},
+										    				error: function(e) {
+										    					alert(JSON.stringify(e));
+										    					// alert('에-러');
+										    				}
+										    			});
+													} },
+													{label:'삭제',                         action:function() { 
+														
+														 $.ajax({
+											    				url:'conDelete',
+											    				type: 'POST',
+											    				data: {ffid: item.ffid},
+											    				success: function(obj) {
+											    					alert('휴지통으로 이동하였습니다.');
+											    					init();
+											    				},
+											    				error: function(e) {
+											    					alert(JSON.stringify(e));
+											    					// alert('에-러');
+											    				}
+											    			}); 
+													} }
+													
+													]
+											});
+										});					
+										data += '<img id="mfolders'+item.ffid+'" class="folder mfolder" path="'+ item.path +'" src="./resources/img/storage/mfolder.png">';
+										// data += '<img class="folder mfolder" path="'+ item.path
+										// +'" src="./resources/img/storage/mfolder.png">';
+									}
 								}
+								
 							}
-						}
+						}		
+						
+						
+						
+						
+						
+	
 
 						data += '	</td>';
 						data += '</tr>';
@@ -672,7 +1824,6 @@ function go_to_Trash() {
 	});
 }
 function newDir() {
-	alert('hell');
 
 	var dirCreate = '';
 	// 아이디를 변경하지 말아주떼연.

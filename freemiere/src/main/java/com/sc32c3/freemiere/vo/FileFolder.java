@@ -11,7 +11,12 @@ public class FileFolder {
 	private boolean isFolder;
 	private String fileName;
 	private char bookState;
+	private long volume;
 	
+
+	private String lastModify;
+	
+	private String uploadDate;
 	public FileFolder(){
 		info = new String(" ");
 	}
@@ -96,6 +101,29 @@ public class FileFolder {
 		this.auth = auth;
 	}
 
+	public long getVolume() {
+		return volume;
+	}
+
+	public void setVolume(long volume) {
+		this.volume = volume;
+	}
+
+	public String getLastModify() {
+		return lastModify;
+	}
+
+	public void setLastModify(String lastModify) {
+		this.lastModify = lastModify;
+	}
+
+	public String getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(String uploadDate) {
+		this.uploadDate = uploadDate;
+	}
 	@Override
 	public String toString() {
 		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", ffid="
