@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
+import com.sc32c3.freemiere.util.FileService;
 import com.sc32c3.freemiere.vo.FileFolder;
 
 @Controller
@@ -165,7 +165,6 @@ public class FileFolderController {
 		logger.debug("ffid={}", ffid);
 		logger.debug("issshared{}", isshared);
 		logger.debug("book{}", bookState);
-		 */
 
 		int result = 0;
 		String email = (String) session.getAttribute("loginMem");
@@ -194,7 +193,7 @@ public class FileFolderController {
 
 		return result;
 	}
-	
+
 	// 파일폴더업로드
 	@ResponseBody
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
@@ -202,30 +201,30 @@ public class FileFolderController {
 
 		if (upload == null)
 			System.out.println("폭신폭신 식빵");
-		
+
 		String email = (String) session.getAttribute("loginMem");
-		
+
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
-			
+
 			List<MultipartFile> multiFiles = upload.getFiles(filesName.next());
 
 			for (int i = 0; i < multiFiles.size(); i++) {
 				System.out.println("길이" + multiFiles.size());
 				if (!multiFiles.get(i).isEmpty()) {
 					FileFolder file = new FileFolder();
-					
+
 					String savefile = FileService.saveFile(multiFiles.get(i), nowPath);
-					
+
 					file.setFileName(savefile);
 					file.setPath(nowPath + savefile);
 					file.setEmail(email);
-					
-					fileFolderDAO.upload(file);
-				}//if
-			}//for
-		}//while
 
+					fileFolderDAO.upload(file);
+				} // if
+			} // for
+		} // while
+	}
 
 	// 테스트 페이지 콘츄-롤라
 	@RequestMapping(value = "test", method = RequestMethod.GET)
@@ -261,27 +260,4 @@ public class FileFolderController {
 			}
 		}
 	}
-
-	@RequestMapping(value = "saveFile", method = RequestMethod.GET)
-	public String saveFile(String path, HttpServletResponse response) throws Exception {
-
-		fileFolderDAO.saveFile(path+"\\");
-		// 원래의 파일명을 보여준다.
-		response.setHeader("Content-Disposition",
-				"attachment;filename=" + URLEncoder.encode("UTF-8"));
-
-		// 서버에 저장된 파일을 읽어서
-		// 클라이언트로 전달할 줄력 스트림으로 복사
-		String fullPath = path + "/";
-		FileInputStream in = new FileInputStream(fullPath);
-		ServletOutputStream out = response.getOutputStream();
-
-		FileCopyUtils.copy(in, out);
-		in.close();
-		out.close();
-
-		return null;
-	}
-	
-	
 }

@@ -58,4 +58,21 @@ public class FileManager {
 		//		result.add(f);
 		//}
 	}
+	
+	//재귀 호출하여 하위 폴더의 사이즈를 구함
+	public static long getFileFolderSize(File dir)
+	{
+		long size = 0;
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isFile()) {
+					size += file.length();
+				} else
+					size += getFileFolderSize(file);
+			}
+		} else if (dir.isFile()) {
+			size += dir.length();
+		}
+		return size;
+	}
 }
