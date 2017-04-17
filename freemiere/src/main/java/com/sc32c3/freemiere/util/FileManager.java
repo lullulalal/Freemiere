@@ -1,14 +1,19 @@
 package com.sc32c3.freemiere.util;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import com.sc32c3.freemiere.vo.FolderVo;
 
 /**
  * 
  * @author minsu
  *
  */
+
+
 public class FileManager {
 	
 	public static String[] findByExtension(String path, String ext)
@@ -47,16 +52,6 @@ public class FileManager {
 		File file = new File (path);	
 		File[] files = file.listFiles();
 		return files;
-		//for( File f : files )
-		//{
-		//	if ( f.isDirectory() ) {
-		//		result.add(f);
-				//if(isRecursive == true)
-				//	findFileRecursive( f.getAbsolutePath() , result, isRecursive );
-		//	}
-		//	else 
-		//		result.add(f);
-		//}
 	}
 	
 	//재귀 호출하여 하위 폴더의 사이즈를 구함
@@ -75,4 +70,30 @@ public class FileManager {
 		}
 		return size;
 	}
+			
+	public static void getAllSubFile(String path, ArrayList<File> list)
+	   {
+		
+	      File file = new File (path); 
+	     
+	     System.out.println("파일매니저"+path);
+	       if ( !file.isDirectory() ) {
+		            list.add(file);
+		            return;
+		   }else{
+			   list.add(file);
+		   }
+	       File[] files = file.listFiles();
+	      for( int i = 0; i < files.length; ++i )
+	      {
+	         if ( files[i].isDirectory() ) {
+	            getAllSubFile( files[i].getAbsolutePath() , list);
+	         }
+	         else {
+	            list.add(files[i]);
+	            continue;
+	         }
+	      }
+	   }
 }
+

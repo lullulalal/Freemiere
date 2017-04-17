@@ -149,5 +149,22 @@
 			,default
  			,filefolders_seq.nextval
  			,default)
-	</insert> 
+ 			
+ 	</insert>
+	<!--휴지통에서 삭제  -->
+	<delete id="completeDelete" parameterType="String">
+		delete filefolders 
+		where 
+			path = #{path}
+	</delete>
+	
+	<!--복원  -->
+	<update id="restore" parameterType="String">
+		update filefolders
+		set
+			isdeleted = 'F'
+		where 
+			path = #{path}
+	</update>
+
 </mapper>

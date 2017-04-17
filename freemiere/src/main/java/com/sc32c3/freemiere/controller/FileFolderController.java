@@ -1,11 +1,12 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.*;
+import java.io.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.util.FileManager;
 import com.sc32c3.freemiere.util.FileService;
+import com.sc32c3.freemiere.util.ImageFileManager;
 import com.sc32c3.freemiere.vo.FileFolder;
 
 @Controller
@@ -32,6 +35,7 @@ public class FileFolderController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileFolderController.class);
 
+	final String uploadPath = "/freemiere/"; // 파일 업로드 경로
 	// xml에 설정된 리소스 참조
 	// bean의 id가 uploadPath인 태그를 참조
 	// @Resource(name="uploadPath")
@@ -96,6 +100,7 @@ public class FileFolderController {
 			ff.setIsFolder(f.isDirectory());
 			ff.setFileName(f.getName());
 		}
+
 		return myStorageList;
 	}
 
@@ -203,6 +208,8 @@ public class FileFolderController {
 			System.out.println("폭신폭신 식빵");
 
 		String email = (String) session.getAttribute("loginMem");
+		if (nowPath.equals("root"))
+			nowPath = "c:\\freemiere\\" + email + "\\";
 
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
@@ -221,6 +228,20 @@ public class FileFolderController {
 					file.setEmail(email);
 
 					fileFolderDAO.upload(file);
+
+					// sms 썸네일 추가. 파일 실제로 삭제 할때 함께 삭제 해야됨~!
+					// 썸네일 파일 규칙 (영상 + 이미지) : (원본파일이름.확장자.png)
+					String ext = ImageFileManager.checkImageFile(savefile);
+					if (ext != null) {
+						ImageFileManager.saveImageFile(ImageFileManager.resizeImageHighQuality(nowPath + savefile), ext,
+								nowPath + ".thumb\\" + savefile + ".png");
+					} else if (ImageFileManager.checkVideoFile(savefile) != null) {
+						ImageFileManager.videoThumbGender(nowPath + savefile, nowPath + ".thumb\\" + savefile + ".png");
+						ImageFileManager.saveImageFile(
+								ImageFileManager.resizeImageHighQuality(nowPath + ".thumb\\" + savefile + ".png"),
+								"png", nowPath + ".thumb\\" + savefile + ".png");
+					}
+
 				} // if
 			} // for
 		} // while
@@ -251,6 +272,11 @@ public class FileFolderController {
 					if (mkdirRst == true) {
 						String email = (String) session.getAttribute("loginMem");
 						fileFolderDAO.newDir(path + folderName + "\\", email);
+
+						// sms - 썸네일 폴더 만들기
+						File newThumbFolder = new File(path + folderName + "\\" + "." + "thumb\\");
+						if (!newThumbFolder.exists())
+							newThumbFolder.mkdirs();
 					}
 				} else {
 					System.out.println("이거 실화냐?");
@@ -260,4 +286,36 @@ public class FileFolderController {
 			}
 		}
 	}
+		fileFolderDAO.saveFile(path + "\\");
+		response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("UTF-8"));
+
+	// 휴지통에서 삭제
+	@ResponseBody
+	@RequestMapping(value = "completeDeleteFileFolder", method = RequestMethod.POST)
+	public void completeDeleteFileFolder(String[] path, HttpSession session) {
+		String email = (String) session.getAttribute("loginMem");
+
+		for (int i = 0; i < path.length; i++) {
+			ArrayList<File> fileList = new ArrayList<>();
+			FileManager.getAllSubFile(path[i], fileList);
+			fileFolderDAO.completeDelete(fileList, email);
+		}
+	}
+
+	// 복원
+	@ResponseBody
+	@RequestMapping(value = "restore", method = RequestMethod.POST)
+	public void resotre(String[] path) {
+		
+		for(int i=0; i< path.length;i++){
+			ArrayList<File> reFileList = new ArrayList<>();
+			FileManager.getAllSubFile(path[i], reFileList);
+			System.out.println("컨트롤러:"+reFileList.get(i));
+			fileFolderDAO.restore(reFileList);
+			
+		}
+		
+		
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.sc32c3.freemiere.dao;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,17 +22,27 @@ public interface FileFolderMapper {
 
 	public ArrayList<FileFolder> getMyStorageBookmarkList(String email);
 
+	//일반파일,폴더 삭제
 	public int deleteFileFolder(int ffid);
 
+	//즐겨찾기 추가한 파일,폴더 삭제
 	public int deleteBookmarks(HashMap<String, Object>bookmarks );
 	
+	//공유폴더 파일 삭제
 	public int deleteShare(HashMap<String, Object>shares);
 	
+	//업로드
 	public int upload(FileFolder fileFolder);
-	
-	// 새폴더(경로와 이메일 정보를 가져온다.)
+
+	//새폴더(경로와 이메일 정보를 가져온다.)
 	public int newDir(String path, String email);
 	
 	// 파일 다운로드
 	public int saveFile(String path);
+
+	//복원
+	public void restore(String reFilePath);
+
+	//휴지통에서 삭제
+	public void completeDelete(String path);
 }

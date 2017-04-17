@@ -166,29 +166,29 @@ function loadListUnchangNav(path) {
    if (menu == 'MyStorage')
       path = myRootDir;
 
-   var url = 'load' + menu;
-   // alert(url);
-   $.ajax({
-      url : url,
-      type : 'GET',
-      data : {
-         'path' : path
-      },
-      dataType : 'json',
-      success : outputList,
-      error : function(e) {
-         alert(JSON.stringify(e));
-      }
-   });
+	var url = 'load' + menu;
+	// alert(url);
+	$.ajax({
+		url : url,
+		type : 'GET',
+		data : {
+			'path' : path
+		},
+		dataType : 'json',
+		success : outputList,
+		error : function(e) {
+			alert(JSON.stringify(e));
+		}
+	});
 }
 
 function outputList(list) {
    // alert(JSON.stringify(list));
    var data = '';
 
-   data += '<ul class="fileTable">'
-   $.each(list,function(index, item) {
-                  data += '<li class="fileItem">'
+	data += '<ul class="fileTable">'
+	$.each(list,function(index, item) {
+						data += '<li class="fileItem">'
 
                   data += '<table class="fileBox">';
 
@@ -202,72 +202,74 @@ function outputList(list) {
                         + 'isshared="'
                         + item.isShared
                         + '" '
-                        + 'path="'
-                        + item.path
-                        + '"' + 'id="file_check' + index + '" >';
+								+ 'path="'
+								+ item.path
+								+ '"' + 'id="file_check' + index + '" >';
                   data += '</td></tr>';
 
                   data += '<tr align="center">';
-                  data += '   <td class="filebox-td">';
+						data += '	<td class="filebox-td">';
                   if (item.isFolder == false) {
-                     var path = item.path;
-                     var pathArray = path.split('\\');
-                     var thumbPath = './storageResources/';
-                     var imgPath = './storageResources/';
-                     for (var j = 2; j < pathArray.length; j++) {
-                        imgPath += pathArray[j];
-                        thumbPath += pathArray[j];
-                        if (j < (pathArray.length - 1)) {
-                           thumbPath += '/';
-                           imgPath += '/';
-                        }
-                        if (j == (pathArray.length - 2))
-                           thumbPath += '.thumb/';
-                     }
-                     thumbPath += '.png';
+							var path = item.path;
+							var pathArray = path.split('\\');
+							var thumbPath = './storageResources/';
+							var imgPath = './storageResources/';
+							for (var j = 2; j < pathArray.length; j++) {
+								imgPath += pathArray[j];
+								thumbPath += pathArray[j];
+								if (j < (pathArray.length - 1)) {
+									thumbPath += '/';
+									imgPath += '/';
+								}
+								if (j == (pathArray.length - 2))
+									thumbPath += '.thumb/';
+							}
+							thumbPath += '.png';
 
-                     var fileType = getFileType(item.path);
-                     if (fileType == 'image') {
-                        data += '<label for="file_check' + index + '">';
-                        data += '<img class="file fimage" path="'
-                              + imgPath + '" src="' + thumbPath
-                              + '">';
-                        data += '</label>';
-                     } else if (fileType == 'video') {
+							var fileType = getFileType(item.path);
+							if (fileType == 'image') {
+								data += '<label for="file_check' + index + '">';
+								data += '<img class="file fimage" path="'
+										+ imgPath + '" src="' + thumbPath
+										+ '">';
+								data += '</label>';
+							} else if (fileType == 'video') {
 
-                        var p = item.path;
-                        var videoPathrray = p.split('\\');
-                        var videoPath = './storageResources/';
-                        for (var j = 2; j < videoPathrray.length; j++) {
-                           videoPath += videoPathrray[j];
-                           if (j < (videoPathrray.length - 1))
-                              videoPath += '/';
-                        }
-                        data += '<video width=156 height=156 controls poster="'
-                              + thumbPath + '">';
-                        data += '<source src="' + videoPath
-                              + '" type="video/mp4">';
-                        data += '<source src="' + item.path
-                              + '" type="video/ogg">';
-                        data += '<source src="' + item.path
-                              + '" type="video/webm">';
-                        data += 'Your browser does not support the video tag.';
-                        data += '</video>';
-                     } else {
-                        data += '<label for="file_check' + index + '">';
-                        data += '<img class="file" src="./resources/img/storage/save.png">';
-                        data += '</label>';
-                     }
+								var p = item.path;
+								var videoPathrray = p.split('\\');
+								var videoPath = './storageResources/';
+								for (var j = 2; j < videoPathrray.length; j++) {
+									videoPath += videoPathrray[j];
+									if (j < (videoPathrray.length - 1))
+										videoPath += '/';
+								}
+								data += '<video width=156 height=156 controls poster="'
+										+ thumbPath + '">';
+								data += '<source src="' + videoPath
+										+ '" type="video/mp4">';
+								data += '<source src="' + item.path
+										+ '" type="video/ogg">';
+								data += '<source src="' + item.path
+										+ '" type="video/webm">';
+								data += 'Your browser does not support the video tag.';
+								data += '</video>';
+							} else {
+								data += '<label for="file_check' + index + '">';
+								data += '<img class="file" src="./resources/img/storage/file.png">';
+								data += '</label>';
+							}
                   } else {
                      if (item.isShared.toLowerCase() == 't') {
                         if (item.bookState.toLowerCase() == 't') {
                            data += '<label for="file_check' + index+ '">';
+											+ '">';
                            data += '<img class="folder sfolder" path="'
                                  + item.path
                                  + '" src="./resources/img/storage/sharedFolder.png" >';
                            data += '</label>';
                         } else {
                            data += '<label for="file_check' + index+ '">';
+											+ '">';
                            data += '<img class="folder sfolder" path="'
                                  + item.path
                                  + '" src="./resources/img/storage/sharedFolder.png >';
@@ -276,12 +278,14 @@ function outputList(list) {
                      } else {
                         if (item.bookState.toLowerCase() == 't') {
                            data += '<label for="file_check' + index+ '">';
+											+ '">';
                            data += '<img class="folder mfolder" path="'
                                  + item.path
                                  + '" src="./resources/img/storage/mbfolder.png" >';
                            data += '</label>';
                         } else {
                            data += '<label for="file_check' + index+ '">';
+											+ '">';
                            data += '<img class="folder mfolder" path="'
                                  + item.path
                                  + '" src="./resources/img/storage/newFolder.png" >';
@@ -315,23 +319,23 @@ function outputList(list) {
             $('.file').css('background-color', '');
             $('.folder').css('background-color', '');
          });
-      } else {
-         // 선택
-         $('.file_check').each(function(index, item) {
-            $(this).prop("checked", true);
-            $('.file').css('background-color', '#d4f7ef');
-            $('.folder').css('background-color', '#d4f7ef');
-         });
-      }
+		} else {
+			// 선택
+			$('.file_check').each(function(index, item) {
+				$(this).prop("checked", true);
+				$('.file').css('background-color', '#ccebff');
+				$('.folder').css('background-color', '#ccebff');
+			});
+		}
    });
 
-   // 이미지 클릭시 색깔 바꾸기
-   $('.file').click(function() {
-      $(this).toggleClass('highlight');
-   });
+	// 이미지 클릭시 색깔 바꾸기
+	$('.file').click(function() {
+		$(this).toggleClass('highlight');
+	});
 
-   $('.folder').click(function() {
-      $(this).toggleClass('highlight');
+	$('.folder').click(function() {
+		$(this).toggleClass('highlight');
    });
 
    if (navRoot != 'Trash') {
@@ -344,14 +348,14 @@ function outputList(list) {
       });
    }
 
-   $('.fimage').on('dblclick', function() {
-      var path = $(this).attr('path');
-      $.colorbox({
-         maxWidth : "75%",
-         maxHeight : "75%",
-         href : path
-      });
-   });
+	$('.fimage').on('dblclick', function() {
+		var path = $(this).attr('path');
+		$.colorbox({
+			maxWidth : "75%",
+			maxHeight : "75%",
+			href : path
+		});
+	});
 
 }
 
@@ -362,7 +366,7 @@ var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 function setNavRoot(nr) {
    navRoot = nr;
    if (navRoot == 'MyStorage') {
-      // alert('haha');
+		// alert('haha');
       nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
             + navRoot + '">' + '내 저장소</a>';
    } else if (navRoot == 'Shared')
@@ -377,135 +381,135 @@ function setNavRoot(nr) {
    setNav();
 }
 
-function setNavTop(nr){
-   // alert(nr);
-   var data = '';
-   navRoot = nr;
-   if (navRoot == 'MyStorage') {
-      data += '<ul class="nav navbar-nav">';
-      data += '   <li class="active">';
-      data += '      <a id="btn-all" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-check-square-o" aria-hidden="true">';
-      data += '         </i> 전체선택';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-del" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-trash" aria-hidden="true">';
-      data += '         </i> 삭제';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-add" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-plus-square-o" aria-hidden="true">';
-      data += '         </i> 새폴더';
-      data += '      </a>'
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <label for="fileUpload" class=topMenu>';
-      data += '            <a id="file" > <i class="fa fa-cloud-upload" aria-hidden="true">';
-      data += '               업로드</i></a>';
-      data += '      </label>';
-      data += '      <input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
-      data += '         </form>';
-      data += '   </li>'
-      data += '</ul>';
+function setNavTop(nr) {
+	// alert(nr);
+	var data = '';
+	navRoot = nr;
 
-      $('#setNavTop').html(data);
-   } else if (navRoot == 'Shared') {
-      data += '<ul class="nav navbar-nav">';
-      data += '   <li class="active">';
-      data += '      <a id="btn-all" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-check-square-o" aria-hidden="true">';
-      data += '         </i> 전체선택';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-del" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-trash" aria-hidden="true">';
-      data += '         </i> 삭제';
-      data += '      </a>';
-      data += '   </li>';
-                  
-      $('#setNavTop').html(data);
-   } else if(navRoot == 'inFolder'){
-      data += '<ul class="nav navbar-nav">';
-      data += '   <li class="active">';
-      data += '      <a id="btn-all" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-check-square-o" aria-hidden="true">';
-      data += '         </i> 전체선택';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-del" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-trash" aria-hidden="true">';
-      data += '         </i> 삭제';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <label for="fileUpload" class=topMenu>';
-      data += '            <a id="file" > <i class="fa fa-cloud-upload" aria-hidden="true">';
-      data += '               업로드</i></a>';
-      data += '      </label>';
-      data += '      <input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
-      data += '         </form>';
-      data += '   </li>'
-      data += '</ul>';
-                  
-      $('#setNavTop').html(data);
-      
-   }else if (navRoot == 'Bookmark') {
-      data += '<ul class="nav navbar-nav">';
-      data += '   <li class="active">';
-      data += '      <a id="btn-all" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-check-square-o" aria-hidden="true">';
-      data += '         </i> 전체선택';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-del" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-trash" aria-hidden="true">';
-      data += '         </i> 삭제';
-      data += '      </a>';
-      data += '   </li>';
-      data += '</ul>';
-      
-         $('#setNavTop').html(data);
-   } else if (navRoot == 'Trash') {
-      data += '<ul class="nav navbar-nav">';
-      data += '   <li class="active">';
-      data += '      <a id="btn-all" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-check-square-o" aria-hidden="true">';
-      data += '         </i> 전체선택';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btncompleteDel" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-trash" aria-hidden="true">';
-      data += '         </i> 삭제';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-resotre" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-reply" aria-hidden="true">';
-      data += '         </i> 복원';
-      data += '      </a>';
-      data += '   </li>';
-      data += '</ul>';
-      
-         $('#setNavTop').html(data);
-   } else if (navRoot == 'recent') {
-      data += '<ul class="nav navbar-nav">';
-      data += '   <li class="active">';
-      data += '      <a id="btn-all" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-check-square-o" aria-hidden="true">';
-      data += '         </i> 전체선택';
-      data += '      </a>';
-      data += '   </li>';
-      data += '   <li>';
-      data += '      <a id="btn-del" class=' + 'topMenu' + '>';
-      data += '         <i class="fa fa-trash" aria-hidden="true">';
-      data += '         </i> 삭제';
+	if (navRoot == 'MyStorage') {
+		data += '<ul class="nav navbar-nav">';
+		data += '	<li class="active">';
+		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-check-square-o" aria-hidden="true">';
+		data += '			</i> 전체선택';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-trash" aria-hidden="true">';
+		data += '			</i> 삭제';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btn-add" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-plus-square-o" aria-hidden="true">';
+		data += '			</i> 새폴더';
+		data += '		</a>'
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<label for="fileUpload" class=topMenu>';
+		data += '				<a id="file" > <i class="fa fa-cloud-upload" aria-hidden="true">';
+		data += '					업로드</i></a>';
+		data += '		</label>';
+		data += '		<input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
+		data += '			</form>';
+		data += '	</li>'
+		data += '</ul>';
+
+		$('#setNavTop').html(data);
+	} else if (navRoot == 'Shared') {
+		data += '<ul class="nav navbar-nav">';
+		data += '	<li class="active">';
+		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-check-square-o" aria-hidden="true">';
+		data += '			</i> 전체선택';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-trash" aria-hidden="true">';
+		data += '			</i> 삭제';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<label for="fileUpload" class=topMenu>';
+		data += '				<a id="file" > <i class="fa fa-cloud-upload" aria-hidden="true">';
+		data += '					업로드</i></a>';
+		data += '		</label>';
+		data += '		<input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
+		data += '			</form>';
+		data += '	</li>'
+		data += '</ul>';
+			
+		$('#setNavTop').html(data);
+	} else if (navRoot == 'Bookmark') {
+		data += '<ul class="nav navbar-nav">';
+		data += '	<li class="active">';
+		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-check-square-o" aria-hidden="true">';
+		data += '			</i> 전체선택';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-trash" aria-hidden="true">';
+		data += '			</i> 삭제';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<label for="fileUpload" class=topMenu>';
+		data += '				<a id="file" > <i class="fa fa-cloud-upload" aria-hidden="true">';
+		data += '					업로드</i></a>';
+		data += '		</label>';
+		data += '		<input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
+		data += '			</form>';
+		data += '	</li>'
+		data += '</ul>';
+		
+			$('#setNavTop').html(data);
+	} else if (navRoot == 'Trash') {
+		data += '<ul class="nav navbar-nav">';
+		data += '	<li class="active">';
+		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-check-square-o" aria-hidden="true">';
+		data += '			</i> 전체선택';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btncompleteDel" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-trash" aria-hidden="true">';
+		data += '			</i> 삭제';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btn-resotre" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-reply" aria-hidden="true">';
+		data += '			</i> 복원';
+		data += '		</a>';
+		data += '	</li>';
+		data += '</ul>';
+		
+			$('#setNavTop').html(data);
+	} else if (navRoot == 'recent') {
+		data += '<ul class="nav navbar-nav">';
+		data += '	<li class="active">';
+		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-check-square-o" aria-hidden="true">';
+		data += '			</i> 전체선택';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
+		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-trash" aria-hidden="true">';
+		data += '			</i> 삭제';
+		data += '		</a>';
+		data += '	</li>';
+		data += '</ul>';
+		
+		$('#setNavTop').html(data);
+	}
+	
+}
       data += '      </a>';
       data += '   </li>';
       data += '</ul>';
@@ -551,68 +555,70 @@ function setNav() {
 function regEvent() {
    $(".naviBarRoot").click(function() {
       var path = $(this).attr('nav');
-      if (path = 'MyStorage')
-         nowPath = myRootDir;
-      else
-         nowPath = '';
+		if (path = 'MyStorage')
+			nowPath = myRootDir;
+		else
+			nowPath = '';
       menu = path;
       setNavRoot(menu)
       loadList();
    });
 
    $(".naviBar").click(function() {
-      var naviArray = $('.naviBar');
-      var num = 0;
-      for (var i = 0; i < naviArray.length; i++) {
-         if (naviArray[i].outerHTML == $(this)[0].outerHTML) {
-            num = i;
-            break;
-         }
-      }
+		var naviArray = $('.naviBar');
+		var num = 0;
+		for (var i = 0; i < naviArray.length; i++) {
+			if (naviArray[i].outerHTML == $(this)[0].outerHTML) {
+				num = i;
+				break;
+			}
+		}
       var path = $(this).attr('path');
 
-      if (nowPath.length >= path.length) {
-         nav = '';
-         setNavRoot(navRoot);
-         for (var i = 0; i < num; i++) {
-            nav += '<a class="navbar-brand">/</a>';
-            nav += naviArray[i].outerHTML;
-         }
-      }
-      nowPath = path;
-      menu = 'List';
-      loadList(path);
+		if (nowPath.length >= path.length) {
+			nav = '';
+			setNavRoot(navRoot);
+			for (var i = 0; i < num; i++) {
+				nav += '<a class="navbar-brand">/</a>';
+				nav += naviArray[i].outerHTML;
+			}
+		}
+		nowPath = path;
+		menu = 'List';
+		loadList(path);
    });
 }
 
 function fileUpload(){
-   $('#fileUpload').click(function(){
-      $('#fileUpload').change(function() {
-         alert('up??');
-         var formData = new FormData();
-         // formData.append('upload', $('input[type=file]')[0].files[0]);
-         
-         // 다중파일업로드
-         $($("#fileUpload")[0].files).each(function(index, file) {
-            formData.append("multi_file[]", file);
-         });
-         formData.append('nowPath', nowPath);
-         
-         $.ajax({
-            url : 'fileUpload',
-            type : 'POST',
-            data : formData,
-            contentType : false,
-            processData : false,
-            success : function() {
-               alert("업로드 성공!!");
-               loadListUnchangNav(nowPath);
-            },
-            error : function(e) {
-               console.log(e);
-            }
-         });
-      });
+	alert("파일1");
+	$('#fileUpload').click(function(){
+		alert("파일2");
+		$('#fileUpload').change(function() {
+			alert('up');
+			var formData = new FormData();
+			// formData.append('upload', $('input[type=file]')[0].files[0]);
+			
+			// 다중파일업로드
+			$($("#fileUpload")[0].files).each(function(index, file) {
+				formData.append("multi_file[]", file);
+			});
+			formData.append('nowPath', nowPath);
+			
+			$.ajax({
+				url : 'fileUpload',
+				type : 'POST',
+				data : formData,
+				contentType : false,
+				processData : false,
+				success : function() {
+					alert("업로드 성공!!");
+					loadListUnchangNav(nowPath);
+				},
+				error : function(e) {
+					console.log(e);
+				}
+			});
+		});
    });
 }
 
@@ -620,12 +626,12 @@ function fileUpload(){
 function FileMultiUpload(files, dragDrop) {
 
    var formData = new FormData();
-   /* formData.append('upload', $('input[type=file]')[0].files[0]); */
+	/* formData.append('upload', $('input[type=file]')[0].files[0]); */
 
    for (var i = 0; i < files.length; i++) {
       formData.append('upload[]', files[i]);
    }
-   alert(nowPath);
+	alert(nowPath);
    formData.append('nowPath', nowPath);
 
    $.ajax({
@@ -636,7 +642,7 @@ function FileMultiUpload(files, dragDrop) {
       processData : false,
       success : function() {
          alert("업로드 성공!!");
-         loadListUnchangNav(nowPath);
+			loadListUnchangNav(nowPath);
       },
       error : function(e) {
          console.log(e);
@@ -647,44 +653,44 @@ function FileMultiUpload(files, dragDrop) {
 
 //휴지통으로 이동
 function go_to_Trash() {
-   var ffid = [];
-   var isshared = [];
-   var bookState = [];
+	var ffid = [];
+	var isshared = [];
+	var bookState = [];
 
-   $('.file_check').each(function(index, item) {
-      if ($(item).is(":checked")) {
-         ffid.push($(item).attr('ffid'));
-         isshared.push($(item).attr('isshared'));
-         bookState.push($(item).attr('bookState'))
-      }
-   });
-   alert(ffid);
+	$('.file_check').each(function(index, item) {
+		if ($(item).is(":checked")) {
+			ffid.push($(item).attr('ffid'));
+			isshared.push($(item).attr('isshared'));
+			bookState.push($(item).attr('bookState'))
+		}
+	});
+	alert(ffid);
 
-   jQuery.ajaxSettings.traditional = true;
+	jQuery.ajaxSettings.traditional = true;
 
-   $.ajax({
-      url : 'deleteFileFolder',
-      type : 'POST',
-      data : {
-         ffid : ffid,
-         isshared : isshared,
-         bookState : bookState,
-      },
-      success : function() {
-         alert('휴지통으로 이동 되었습니다.');
-         loadListUnchangNav(nowPath);
-      },
-      error : function(e) {
-         alert(JSON, stringify(e));
-      }
+	$.ajax({
+		url : 'deleteFileFolder',
+		type : 'POST',
+		data : {
+			ffid : ffid,
+			isshared : isshared,
+			bookState : bookState,
+		},
+		success : function() {
+			alert('휴지통으로 이동 되었습니다.');
+			loadListUnchangNav(nowPath);
+		},
+		error : function(e) {
+			alert(JSON, stringify(e));
+		}
 
-   });
+	});
 }
 function newDir() {
-   alert('hell');
+	alert('hell');
 
    var dirCreate = '';
-   // 아이디를 변경하지 말아주떼연.
+	// 아이디를 변경하지 말아주떼연.
    /*
     * dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1"
     * role="dialog" aria-labelledby="modal-register-label"
@@ -725,7 +731,7 @@ function newDir() {
    $('#confirm').click(function() {
 
       var folderName = document.getElementById('insertFolderName').value;
-      alert(nowPath)
+		alert(nowPath)
       $.ajax({
          url : 'newDir',
          type : 'POST',
@@ -736,99 +742,99 @@ function newDir() {
          success : function() {
             alert('생성완료');
             document.getElementById('newFolder').style.display = 'none';
-            loadListUnchangNav(nowPath);
-         },
-         error : function(e) {
-            alert(JSON, stringify(e));
-         }
-      });
-   });
+				loadListUnchangNav(nowPath);
+			},
+			error : function(e) {
+				alert(JSON, stringify(e));
+			}
+		});
+	});
 }
 
 function getFileType(path) {
-   var imgExtarr = new Array('jpg', 'jpeg', 'png');
-   var vdoExtarr = new Array('mp4', 'wemb', 'ogg');
+	var imgExtarr = new Array('jpg', 'jpeg', 'png');
+	var vdoExtarr = new Array('mp4', 'wemb', 'ogg');
 
-   var rtn = 'file';
+	var rtn = 'file';
 
-   var pathArray = path.split('\\');
-   var fileArray = pathArray[pathArray.length - 1].split('.');
-   var ext = fileArray[fileArray.length - 1];
+	var pathArray = path.split('\\');
+	var fileArray = pathArray[pathArray.length - 1].split('.');
+	var ext = fileArray[fileArray.length - 1];
 
-   for ( var i in imgExtarr) {
-      if (imgExtarr[i] == ext.toLowerCase())
-         return 'image';
-   }
+	for ( var i in imgExtarr) {
+		if (imgExtarr[i] == ext.toLowerCase())
+			return 'image';
+	}
 
-   for ( var i in vdoExtarr) {
-      if (vdoExtarr[i] == ext.toLowerCase())
-         return 'video';
-   }
+	for ( var i in vdoExtarr) {
+		if (vdoExtarr[i] == ext.toLowerCase())
+			return 'video';
+	}
 
-   return rtn;
+	return rtn;
 
 }
 
 // 복원
 function restore() {
-   alert('복원');
-   var path = [];
-   $('.file_check').each(function(index, item) {
-      if ($(item).is(":checked")) {
-         path.push($(item).attr('path'));
-      }
-   });
-   
-   alert(path);
-   jQuery.ajaxSettings.traditional = true;
+	alert('복원');
+	var path = [];
+	$('.file_check').each(function(index, item) {
+		if ($(item).is(":checked")) {
+			path.push($(item).attr('path'));
+		}
+	});
+	
+	alert(path);
+	jQuery.ajaxSettings.traditional = true;
 
-   $.ajax({
-      url : 'restore',
-      type : 'POST',
-      data : {
-         path : path
-      },
-      success : function() {
-         alert('복원되었습니다.');
-         loadList(nowPath);
+	$.ajax({
+		url : 'restore',
+		type : 'POST',
+		data : {
+			path : path
+		},
+		success : function() {
+			alert('복원되었습니다.');
+			loadList(nowPath);
 
-      },
-      error : function(e) {
-         alert(JSON, stringify(e));
-      }
+		},
+		error : function(e) {
+			alert(JSON, stringify(e));
+		}
 
-   });
+	});
 
 }
 // 휴지통에서 삭제
 function completeDelete() {
-   alert('hi~~~');
-   var path = [];
-   $('.file_check').each(function(index, item) {
-      if ($(item).is(":checked")) {
-         path.push($(item).attr('path'));
-      }
+	alert('hi~~~');
+	var path = [];
+	$('.file_check').each(function(index, item) {
+		if ($(item).is(":checked")) {
+			path.push($(item).attr('path'));
+		}
    });
-   
-   alert(path);
-   jQuery.ajaxSettings.traditional = true;
+	
+	alert(path);
+	jQuery.ajaxSettings.traditional = true;
 
-   $.ajax({
-      url : 'completeDeleteFileFolder',
-      type : 'POST',
-      data :{
-         path : path
-      },
-      
-      success : function() {
-         alert('삭제되었습니다.');
-         loadList(nowPath);
+	$.ajax({
+		url : 'completeDeleteFileFolder',
+		type : 'POST',
+		data :{
+			path : path
+		},
+		
+		success : function() {
+			alert('삭제되었습니다.');
+			loadList(nowPath);
 
-      },
-      error : function(e) {
-         alert(JSON, stringify(e));
-      }
+		},
+		error : function(e) {
+			alert(JSON, stringify(e));
+		}
 
-   });
+	});
 
 }

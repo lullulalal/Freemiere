@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Modus</title>
+<title>F R E E M I E R E</title>
 <meta name="description" content="">
 <meta name="author" content="">
 

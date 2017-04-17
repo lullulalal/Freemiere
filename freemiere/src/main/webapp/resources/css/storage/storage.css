@@ -13,6 +13,10 @@ CHARSET "UTF-8 ";
 	float: left;
 	margin: 15px;
 }
+.filebox-td{
+	width: 156px;
+	height: 161px;
+}
 
 .fileBox {
 	display: inline;
@@ -37,6 +41,10 @@ CHARSET "UTF-8 ";
 .sideMenu {
 	cursor: pointer;
 	/* border: 1px solid #26b999; */
+	padding: 15px;
+}
+.topMenu{
+	cursor: pointer;
 	padding: 15px;
 }
 
@@ -75,7 +83,6 @@ CHARSET "UTF-8 ";
 	font-weight: bold;
 	color: #26b999;
 }
-
 .accountVolume{
 	text-align: center;
 	padding-top : 10px;
@@ -85,3 +92,4 @@ CHARSET "UTF-8 ";
 	font-weight: bold;
 	color: #26b999;
 }
+
