@@ -79,22 +79,29 @@ public class FileManager {
 				continue;
 		}
 	}
-	public static void findFileRecursive(String path, ArrayList<File> result)//사용자컴터에서 폴더를 확인해 파일을 담아온다
-	{
-		File file = new File (path);	//경로를 받아온다
-		File[] files = file.listFiles();//받아온 경로의 파일 리스트를 배열에 담는다
-		for( File f : files )	//배열에 담긴 파일을 하나씩 가져온다 
-		{
-			if ( f.isDirectory() ) {//해당 패스에서 디렉토리(폴더)가 존재하는지 확인해서 있으면 
-				//result.add(f);
-				
-				findFileRecursive( f.getAbsolutePath() , result );//절대경로로 정해서 다시 패스에 담는다, 파일은 result에 담는다
-			}
-			else 
-				result.add(f);
-		}
-	}
-	
-	
+	public static void getAllSubFile(String path, ArrayList<File> list)
+	   {
+		
+	      File file = new File (path); 
+	     
+	     System.out.println("파일매니저"+path);
+	       if ( !file.isDirectory() ) {
+		            list.add(file);
+		            return;
+		   }else{
+			   list.add(file);
+		   }
+	       File[] files = file.listFiles();
+	      for( int i = 0; i < files.length; ++i )
+	      {
+	         if ( files[i].isDirectory() ) {
+	            getAllSubFile( files[i].getAbsolutePath() , list);
+	         }
+	         else {
+	            list.add(files[i]);
+	            continue;
+	         }
+	      }
+	   }
 }
 

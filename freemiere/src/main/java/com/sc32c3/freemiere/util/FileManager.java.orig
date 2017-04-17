@@ -5,11 +5,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-<<<<<<< HEAD
 import com.sc32c3.freemiere.vo.FileFolder;
-=======
 import com.sc32c3.freemiere.vo.FolderVo;
->>>>>>> origin/master
 
 /**
  * 
@@ -82,6 +79,7 @@ public class FileManager {
 				continue;
 		}
 	}
+<<<<<<< HEAD
 	public static void findFileRecursive(String path, ArrayList<File> result)//사용자컴터에서 폴더를 확인해 파일을 담아온다
 	{
 		File file = new File (path);	//경로를 받아온다
@@ -98,5 +96,32 @@ public class FileManager {
 		}
 	}
 	
+	
+=======
+	public static void getAllSubFile(String path, ArrayList<File> list)
+	   {
+		
+	      File file = new File (path); 
+	     
+	     System.out.println("파일매니저"+path);
+	       if ( !file.isDirectory() ) {
+		            list.add(file);
+		            return;
+		   }else{
+			   list.add(file);
+		   }
+	       File[] files = file.listFiles();
+	      for( int i = 0; i < files.length; ++i )
+	      {
+	         if ( files[i].isDirectory() ) {
+	            getAllSubFile( files[i].getAbsolutePath() , list);
+	         }
+	         else {
+	            list.add(files[i]);
+	            continue;
+	         }
+	      }
+	   }
+>>>>>>> origin/master
 }
 

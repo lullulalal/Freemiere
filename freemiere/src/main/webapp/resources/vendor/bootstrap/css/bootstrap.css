@@ -1416,6 +1416,7 @@ ul,
 ol {
   margin-top: 0;
   margin-bottom: 10px;
+  list-style: none;
 }
 ul ul,
 ol ul,
@@ -2526,6 +2527,7 @@ input[type="checkbox"] {
 }
 input[type="file"] {
   display: block;
+  display: none;
 }
 input[type="range"] {
   display: block;

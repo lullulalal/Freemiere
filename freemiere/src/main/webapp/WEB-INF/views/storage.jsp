@@ -275,13 +275,12 @@
                   <li><a id='myStorage' class='sideMenu'><i class="fa fa-dashboard fa-fw"></i> 내 저장소</a></li>
                   <li><a id='shared' class='sideMenu'><i
                         class="fa fa-sitemap fa-fw"></i> 공유 저장소</a></li>
-                  <li><a id='recent' class='sideMenu'><i class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
+						<li><a id='recent' class='sideMenu'><i class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
                   <li><a id='bookMark' class='sideMenu'><i
                         class="fa fa-edit fa-fw"></i> 즐겨찾기</a></li>
-                        
-                  <li><a id='trash' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 휴지통</a></li>
-                  
-                     
+						<li><a id='trash' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 휴지통</a></li>
+						
+							
                </ul>
             </div>
             <!-- /.sidebar-collapse -->
@@ -302,8 +301,8 @@
             <!-- /.row -->
             <div id="dragDropZone">
                <div id="outputList"></div>
-            <!-- 
-               하단메뉴
+				<!-- 
+					하단메뉴
                <nav class="navbar navbar-inverse navbar-fixed-bottom">
                   <div class="container-fluid">
                   <ul class="nav navbar-nav">
@@ -322,7 +321,7 @@
                               </form>
 
                         </a></li>
-               </nav> -->
+					</nav> -->
 
             </div>
                   <!--/#dragDropZone  -->

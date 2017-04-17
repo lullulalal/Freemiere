@@ -45,9 +45,9 @@ public interface FileFolderMapper {
 	// 파일 다운로드
 	public int saveFile(String path);
 
-	//휴지통에서 완전 삭제
-	public void completeDeleteFileFolder(int ffid);
-
 	//복원
-	public int restore(int ffid);
+	public void restore(String reFilePath);
+
+	//휴지통에서 삭제
+	public void completeDelete(String path);
 }
