@@ -75,6 +75,7 @@
 		      and (bm.email=#{email} or bm.email is null) 
 		      and LOWER(myffs.ffs_isshared)='f'
 		      and LOWER(myffs.ffs_isdeleted)='f'
+		      order by strUpdate desc
 		
 		
 	</select>

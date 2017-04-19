@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -148,7 +149,6 @@ public class FileFolderController {
 		
 		 
 		HashMap<Integer, FileFolder> all = new HashMap<>();
-		//ArrayList<FileFolder> all = new ArrayList<>();// 파일 하나하나가 담길 리스트
 
 		ArrayList<File> myStorageList = new ArrayList<>();// 사용자 컴퓨터의 파일을 담을 리스트
 		
@@ -160,7 +160,6 @@ public class FileFolderController {
 		for (FileFolder ff : sharedList) {
 			FileManager.findFileRecursive(ff.getPath(), myStorageList);// findfilerecursive함수호출
 		}
-		//DateFormat datepasing = DateFormat.getDateInstance(DateFormat.MEDIUM);
 		
 		DateFormat format3 = DateFormat.getDateInstance(DateFormat.MEDIUM);
 		// vo에 수정날짜 추가. updatedate 추가함
@@ -186,52 +185,48 @@ public class FileFolderController {
 			//여기까지 파일 가져오는 부분
 		}
 		System.out.println("해쉬맴에 담긴 파일"+ all);
-		//가져온 파일을 해쉬맴으로 날짜별로 구분해보자 
-		//ArrayList<String> dateinfo = new ArrayList<>();
-		HashSet<String> dateinfo = new HashSet<>();//날짜정보를 저장할 해시샛, 중복이 허용되지 않아 저장된 중복값은 하나로 된다
-		HashMap<String, Object> dateFile = new HashMap<>();
 		
+		//가져온 파일을 해쉬맴으로 날짜별로 구분해보자 
+		HashSet<String> dateinfo = new HashSet<>();//날짜정보를 저장할 해시샛, 중복이 허용되지 않아 저장된 중복값은 하나로 된다
+		HashMap<String, Object> dateFile = new HashMap<String, Object>();
 		ArrayList<FileFolder> rtn = new ArrayList<FileFolder>(all.values());//모든 파일 정보를 array리스트에 넣는다
+		Collections.sort(rtn);
+		
 		//날짜 정보 저장
 		for (FileFolder fileFolder : rtn) {//모든 파일 정보의 날짜 정보를 하나씩 꺼내 hashset에 넣는다. 
 			dateinfo.add(fileFolder.getStrUpdate());//날짜정보를 담고 있다 
 		}
+	
 		System.out.println("날짜정보" + dateinfo);
-		
+		System.out.println("정렬 테스트"+ rtn);
 		
 		for (String date : dateinfo) {//날짜 정보가 담긴 dateinfo에서 날짜를 하나씩 꺼내본다
-		//for (int i=0; i<dateinfo.size(); i++){
 			ArrayList<FileFolder> dateFile2 = new ArrayList<>();	
-			//String date = dateinfo.get(i);
-		for (FileFolder fileFolder : rtn) {//모든 파일 정보를 하나씩 꺼내면서
-			if(date.equals(fileFolder.getStrUpdate())){// 날짜 정보와 비교하여 같으면 
-					dateFile2.add(fileFolder);//array리스트에 넣는다.
-			 	}//if
+		
+			for (FileFolder fileFolder : rtn) {//모든 파일 정보를 하나씩 꺼내면서
+				if(date.equals(fileFolder.getStrUpdate())){// 날짜 정보와 비교하여 같으면 
+						dateFile2.add(fileFolder);//array리스트에 넣는다.
+				 }//if
 			}//inner for
-		//dateFile.put("length", dateinfo.size());
-		//dateFile.put("date" + i, dateFile2);
-		System.out.println("해쉬맵의 키값으로 있는 date" + date);
-		System.out.println("해쉬맵의 날짜정보를 array에 넣음" + dateFile2);//테스트 출력해보자
-
-		dateFile.put(date, dateFile2);//해쉬맵에 날짜를 키값으로 하고 그날짜에 해당되는  파일 정보(datefile2)를 담는다.
-		//해당 날짜에 대한 파일을 가지고 있다 
+		
+			System.out.println("해쉬맵의 키값으로 있는 date정보 : " + date);
+			System.out.println("해쉬맵의 날짜정보를 array에 넣음" + dateFile2);//테스트 출력해보자
+			dateFile.put(date, dateFile2);//해쉬맵에 날짜를 키값으로 하고 그날짜에 해당되는  파일 정보(datefile2)를 담는다.
+			//해당 날짜에 대한 파일을 가지고 있다 
 		}
 		
-		System.out.println("해쉬맵에 최종 저장 파일??"+ dateFile);
-		//테스트 출력 해봄
-		/*for (String  date : dateinfo) {//날짜를 가져온다
-			ArrayList<FileFolder> test = (ArrayList<FileFolder>) dateFile.get(date);//가져온 날짜를 어레이 리스트에 넣는다.
-			System.out.println("날짜 : " +date );//날짜를 출력해본다
-			for (FileFolder fileFolder : test) {//가져온 날짜에 해당하는 파일을 모두 가져온다 
-				System.out.println(fileFolder);//그 날짜에 해당되는 파일을 출력해본다
-			}
-			
-		}*/
-	
+		//해쉬맵을 내림차순으로 정렬해보았다
+		TreeMap<String, Object> tm = new TreeMap<String, Object>(dateFile);
+		Iterator<String> fileKey = tm.descendingKeySet().iterator();//내림차순정렬
+		while(fileKey.hasNext()){
+		String fileKey1 = fileKey.next();
+		System.out.println(fileKey1 + ":" + tm.get(fileKey1));
+		}
 		
-		Collections.sort(rtn);//오른차순 솔트
-		//Iterator<String> filesort = dateFile.keySet().iterator();//해수맵 정렬이라는데....
-		//Collections.reverse(rtn);내 림차순 솔트
+		//System.out.println("해쉬맵에 최종 저장 파일??"+ dateFile);
+
+		//Collections.sort(rtn);//오른차순 솔트
+		//Collections.reverse(rtn);//내 림차순 솔트
 		
 		return dateFile;
 		
@@ -246,6 +241,7 @@ public class FileFolderController {
 		 */
 
 	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "loadList", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
@@ -276,11 +272,6 @@ public class FileFolderController {
 			ff.setFileName(f.getName());
 			rtn.add(ff);
 
-			/*
-			 * SimpleDateFormat sf = new
-			 * SimpleDateFormat("yyyy-MM-dd / HH:mm:ss");//파일 수정 날짜 확인
-			 * System.out.println(sf.format(f.lastModified()));
-			 */
 		}
 
 		return rtn;

@@ -1,7 +1,6 @@
-CHARSET "UTF-8 "; 
-.fileTable {
+CHARSET "UTF-8 "; .fileTable {
 	position: absolute;
-	list-style: none; !important;
+	list-style: none; ! important;
 	margin: 0;
 	padding: 0;
 	overflow: auto;
@@ -9,11 +8,11 @@ CHARSET "UTF-8 ";
 
 .fileItem {
 	position: relative;
-	float: left; !important;
+	float: left; ! important;
 	margin: 15px;
 }
 
-.filebox-td{
+.filebox-td {
 	width: 156px;
 	height: 161px;
 }
@@ -43,7 +42,8 @@ CHARSET "UTF-8 ";
 	border: 1px solid #e6e6e6;
 	padding: 15px;
 }
-.topMenu{
+
+.topMenu {
 	cursor: pointer;
 	padding: 15px;
 }
@@ -62,8 +62,12 @@ CHARSET "UTF-8 ";
 
 #dragDropZone {
 	position: absolute;
-	top:100px;
+	top: 100px;
 	min-height: 700px;
 	min-width: 882px;
+	overflow: scroll;
 }
 
+#outputList {
+	overflow: scroll;
+}

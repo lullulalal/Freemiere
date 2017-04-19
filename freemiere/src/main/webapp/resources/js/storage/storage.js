@@ -25,9 +25,9 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		nowPath = myRootDir;
-		//삭제버튼
+		// 삭제버튼
 		$('#btn-del').on('click', go_to_Trash);
-		//업로드버튼
+		// 업로드버튼
 		$('#file').on('click',fileUpload);
 		
 		loadList();
@@ -36,17 +36,19 @@ $(document).ready(function() {
 		menu = 'Shared';
 		setNavRoot(menu);
 		setNavTop(menu);
-		//삭제버튼
+		// 삭제버튼
 		$('#btn-del').on('click', go_to_Trash);
-		//업로드버튼
+		// 업로드버튼
 		$('#file').on('click',fileUpload);
 		loadList();
 	});
 	$('#recent').click(function() {
 		menu = 'Recent';
 		setNavRoot(menu);
-		/*// 하단 삭제버튼
-		$('#btn-del').on('click', go_to_Trash);*/
+		// 삭제버튼
+		$('#btn-del').on('click', go_to_Trash);
+		
+		loadRecentList();
 	});
 	$('#bookMark').click(function() {
 		menu = 'Bookmark';
@@ -54,7 +56,7 @@ $(document).ready(function() {
 		setNavTop(menu);
 		// 하단 삭제버튼
 		$('#btn-del').on('click', go_to_Trash);
-		//업로드버튼
+		// 업로드버튼
 		$('#file').on('click',fileUpload);
 		loadList();
 	});
@@ -82,7 +84,7 @@ $(document).ready(function() {
 	});
 	// 하단 삭제버튼
 	$('#btn-del').on('click', go_to_Trash);
-	//업로드
+	// 업로드
 	$('#fileUpload').change(function() {
 		alert('up');
 		var formData = new FormData();
@@ -134,11 +136,13 @@ $(document).ready(function() {
 
 	// $('#btn-download').on('click', fileDownLoad);
 
-	/*// 복원 버튼
-	$('#btn-resotre').on('click', restore);*/
+	/*
+	 * // 복원 버튼 $('#btn-resotre').on('click', restore);
+	 */
 
-	/*// 휴지통에서 완전 삭제
-	$('#btncompleteDel').on('click', completeDelete);*/
+	/*
+	 * // 휴지통에서 완전 삭제 $('#btncompleteDel').on('click', completeDelete);
+	 */
 
 });
 // 최근작업파일
@@ -163,70 +167,199 @@ function loadRecentList(path) {
 	outputNavi(path);
 }
 
+
+
+/*
+ * HashMap 객체 생성 var JqMap = function(){ this.map = new Object(); }
+ * 
+ * JqMap.prototype = { key, value 값으로 구성된 데이터를 추가 put: function (key, value)
+ * {this.map[key] = value; }, 지정한 key값의 value값 반환 get: function (key) { return
+ * this.map[key]; }, 구성된 key 값 존재여부 반환 containsKey: function (key) {return key
+ * in this.map; }, 구성된 value 값 존재여부 반환 containsValue: function (value) { for
+ * (var prop in this.map) { if (this.map[prop] == value) { return true; } }
+ * return false; }, 구성된 데이터 초기화 clear: function () { for (var prop in this.map) {
+ * delete this.map[prop]; } }, key에 해당하는 데이터 삭제 remove: function (key) {delete
+ * this.map[key]; }, 배열로 key 반환 keys: function () { var arKey = new Array(); for
+ * (var prop in this.map) { arKey.push(prop); } return arKey; }, 배열로 value 반환
+ * values: function () { var arVal = new Array(); for (var prop in this.map) {
+ * arVal.push(this.map[prop]); } return arVal; }, Map에 구성된 개수 반환 size: function () {
+ * var count = 0; for (var prop in this.map) { count++; } return count; } }
+ */
+
+
+
 function outputRecentList(dateFile) {
-	 alert(JSON.stringify(dateFile));
+	 alert(JSON.stringify(dateFile));// 뜸
 	var data = '';
-	var length = dateFile.length;
-	var length1 = dateFile.strUpdate;
-	 
-	$.each(dateFile, function(key, value) {
-		alert(key + ': ' + JSON.stringify(value)); 
-		alert(value.path);
-		consol.log(JSON.stringify(value).ffid);
-	/*
-	 * for(var i=0; i<length; i++){ var key = "date"+i; //
-	 * console.log(dateFile.key); }
-	 */
+	// 정렬 날짜별
+	$.each(dateFile, function(date, value) {
 
-			/*
-			 * data += JSON.stringify(value).path; //data += item.path; data += '<table
-			 * class="fileBox">'; data += '<tr><td>'; data += '<input
-			 * type="checkbox" class="file_check" ffid="' +
-			 * JSON.stringify(value).ffid + '" ' + 'bookState="' +
-			 * JSON.stringify(value).bookState + '"' + 'isshared="' +
-			 * JSON.stringify(value).isShared + '" ' + 'id="file_check' + key +
-			 * '">'; data += '</td></tr>';
-			 * 
-			 * data += '<tr align="center">' data += ' <td>'; if
-			 * (JSON.stringify(value).isFolder == false) {// 폴더 안에 들어있는 파일 data += '<img
-			 * class="file" src="./resources/img/storage/file.png">'; } else {
-			 * if (JSON.stringify(value).isShared.toLowerCase() == 't') { if
-			 * (JSON.stringify(value).bookState.toLowerCase() == 't')// 북마크 //
-			 * 찍은 // 폴더 data += '<img class="folder sfolder" path="' +
-			 * JSON.stringify(value).path + '"
-			 * src="./resources/img/storage/sbfolder.png">'; else // 파빨 공유 폴더
-			 * data += '<img class="folder sfolder" path="' +
-			 * JSON.stringify(value).path + '"
-			 * src="./resources/img/storage/folderballoon.png">'; } else { if
-			 * (JSON.stringify(value).bookState.toLowerCase() == 't')// 북마크찍은 //
-			 * 폴더
-			 * 
-			 * data += '<img class="folder mfolder" path="' +
-			 * JSON.stringify(value).path + '"
-			 * src="./resources/img/storage/mbfolder.png">'; else // 기본폴더 data += '<img
-			 * class="folder mfolder" path="' + JSON.stringify(value).path + '"
-			 * src="./resources/img/storage/folderballoon_y.png">'; } } data += '
-			 * </td>'; data += '</tr>'; data += '<tr align="center">'; data += '
-			 * <td>'; data += JSON.stringify(value).fileName; data += ' </td>';
-			 * data += '</tr>'; data += '</table>'; if(dateFile){ data += '<br>'; }
-			 * //})
-			 */
+		data += date;
+		data += '<br>';
+		
+		$.each(value, function(key, recentFileInfo){
+		//	alert("정보출력"+recentFileInfo.strUpdate);
+			
+				data += '<li class="fileItem">';
+				data += '<table class="fileBox">';
+				data += '<tr><td>';
+				data += '<input type="checkbox" class="file_check" ffid="'
+					+ recentFileInfo.ffid
+					+ '" '
+					+ 'bookState="'
+					+ recentFileInfo.bookState
+					+ '"'
+					+ 'isshared="'
+					+ recentFileInfo.isShared
+					+ '" '
+									+ 'path="'
+									+ recentFileInfo.path
+									+ '"' + 'id="file_check' + recentFileInfo.ffid + '" >';//index값이 무엇인가??
+				data += '</td></tr>';
+				data += '<tr align="center">'
+							data += '	<td class="filebox-td">';
+				if (recentFileInfo.isFolder == false) {// 폴더 안에 들어있는 파일
+								var path = recentFileInfo.path;
+								var pathArray = path.split('\\');
+								var thumbPath = './storageResources/';
+								var imgPath = './storageResources/';
+								for (var j = 2; j < pathArray.length; j++) {
+									imgPath += pathArray[j];
+									thumbPath += pathArray[j];
+									if (j < (pathArray.length - 1)) {
+										thumbPath += '/';
+										imgPath += '/';
+									}
+									if (j == (pathArray.length - 2))
+										thumbPath += '.thumb/';
+								}
+								thumbPath += '.png';
 
+								var fileType = getFileType(recentFileInfo.path);
+								if (fileType == 'image') {
+									data += '<label for="file_check' + recentFileInfo.ffid + '">';
+									data += '<img class="file fimage" path="'
+											+ imgPath + '" src="' + thumbPath
+											+ '">';
+									data += '</label>';
+								} else if (fileType == 'video') {
+
+									var p = recentFileInfo.path;
+									var videoPathrray = p.split('\\');
+									var videoPath = './storageResources/';
+									for (var j = 2; j < videoPathrray.length; j++) {
+										videoPath += videoPathrray[j];
+										if (j < (videoPathrray.length - 1))
+											videoPath += '/';
+									}
+									data += '<video width=156 height=156 controls poster="'
+											+ thumbPath + '">';
+									data += '<source src="' + videoPath
+											+ '" type="video/mp4">';
+									data += '<source src="' + recentFileInfo.path
+											+ '" type="video/ogg">';
+									data += '<source src="' + recentFileInfo.path
+											+ '" type="video/webm">';
+									data += 'Your browser does not support the video tag.';
+									data += '</video>';
+								} else {
+									data += '<label for="file_check' + recentFileInfo.ffid + '">';
+					data += '<img class="file" src="./resources/img/storage/file.png">';
+									data += '</label>';
+								}
+				} else {
+					if (recentFileInfo.isShared.toLowerCase() == 't') {
+									if (recentFileInfo.bookState.toLowerCase() == 't') {
+										data += '<label for="file_check' + recentFileInfo.ffid
+												+ '">';
+						data += '<img class="folder sfolder" path="'
+						+ recentFileInfo.path
+						+ '" src="./resources/img/storage/sbfolder.png">';
+										data += '</label>';
+									} else {
+										data += '<label for="file_check' + recentFileInfo.ffid
+												+ '">';
+						data += '<img class="folder sfolder" path="'
+						+ recentFileInfo.path
+												+ '" src="./resources/img/storage/sfolder.png" >';
+										data += '</label>';
+									}
+					} else {
+									if (recentFileInfo.bookState.toLowerCase() == 't') {
+										data += '<label for="file_check' + recentFileInfo.ffid
+												+ '">';
+							data += '<img class="folder mfolder" path="'
+									+ recentFileInfo.path
+									+ '" src="./resources/img/storage/mbfolder.png">';
+										data += '</label>';
+									} else {
+										data += '<label for="file_check' + recentFileInfo.ffid
+												+ '">';
+							data += '<img class="folder mfolder" path="'
+													+ recentFileInfo.path
+												+ '" src="./resources/img/storage/mfolder.png" >';
+										data += '</label>';
+									}
+						}
+					}
+					data += '	</td>';
+					data += '</tr>';
+					data += '<tr align="center">';
+							data += '	<td class="fileName">';
+					data += recentFileInfo.fileName;
+					data += '	</td>';
+					data += '</tr>';
+					data += '</table>';
+					data += '</li>';
+				
+		});
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
+		data += '<br>';
 	});
+	data += '</ul>';
 	
-
 	$('#outputList').html(data);
+
 
 	// 하단 전체선택 메뉴버튼
 	$('#btn-all').click(function() {
-		// alert('hi');
-		$('.file_check').each(function(index, item) {
-			$(this).attr("checked", "checked");
-		});
+		alert('hi1');
+		if ($('.file_check').is(':checked')) {
+			// 선택해제
+			$('.file_check').each(function(index, item) {
+				$(this).prop("checked", false);
+				$('.file').css('background-color', '');
+				$('.folder').css('background-color', '');
+			});
+		} else {
+			// 선택
+			$('.file_check').each(function(index, item) {
+				$(this).prop("checked", true);
+				$('.file').css('background-color', '#ccebff');
+				$('.folder').css('background-color', '#ccebff');
+			});
+		}
 	});
 
-	$('.folder').dblclick(function() {
-		$('.file_check').attr("checked", "checked");
+	// 이미지 클릭시 색깔 바꾸기
+	$('.file').click(function() {
+		$(this).toggleClass('highlight');
+	});
+
+	$('.folder').click(function() {
+		$(this).toggleClass('highlight');
 	});
 
 	if (navRoot != 'Trash') {
@@ -237,7 +370,17 @@ function outputRecentList(dateFile) {
 			loadList(path);
 		});
 	}
+
+	$('.fimage').on('dblclick', function() {
+		var path = $(this).attr('path');
+		$.colorbox({
+			maxWidth : "75%",
+			maxHeight : "75%",
+			href : path
+		});
+	});
 }
+
 
 
 
@@ -286,7 +429,6 @@ function loadListUnchangNav(path) {
 
 function outputList(list) {
 	var data = '';
-	$.each(list, function(index, item) {
 	$.each(list,function(index, item) {
 						data += '<li class="fileItem">'
 
@@ -455,7 +597,6 @@ function outputList(list) {
 			href : path
 		});
 	});
-
 }
 
 	
@@ -752,7 +893,7 @@ function FileMultiUpload(files, dragDrop) {
 
 }
 
-//휴지통으로 이동
+// 휴지통으로 이동
 function go_to_Trash() {
 	var ffid = [];
 	var isshared = [];
