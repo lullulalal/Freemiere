@@ -1,6 +1,5 @@
 package com.sc32c3.freemiere.util;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,13 +69,37 @@ public class FileManager {
 		}
 		return size;
 	}
+	
+	public static void findFolderVoRecursive(String path, int pid, ArrayList<FolderVo> folderList)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		int fNum = 1;
+		for( int i = 0; i < files.length; ++i )
+		{
+			if ( files[i].isDirectory() ) {
+				if( ".thumb".equals(files[i].getName()) )
+					continue;
+				int id = Integer.parseInt( Integer.toString(pid) + Integer.toString(fNum) );
+
+				FolderVo nfv = new FolderVo( files[i].getAbsolutePath(), 
+									id, pid, files[i].getName(), 
+									true, false );
+				
+				folderList.add(nfv);
+				findFolderVoRecursive( files[i].getAbsolutePath() , id, folderList );
+				fNum++;
+			}
+			else 
+				continue;
+		}
+	}
 			
 	public static void getAllSubFile(String path, ArrayList<File> list)
 	   {
 		
 	      File file = new File (path); 
 	     
-	     System.out.println("파일매니저"+path);
 	       if ( !file.isDirectory() ) {
 		            list.add(file);
 		            return;

@@ -38,14 +38,16 @@ public class MainController {
 			File rootDir = new File("c:\\freemiere\\" + member.getEmail());
 			long size = FileManager.getFileFolderSize(rootDir);
 			Double unitConvert = (double) (size / 1024 / 1024);
+			
 			String unit = "MB";
 			if (unitConvert < 1) {
 				unitConvert = (double) size / 1024;
 				unit = "KB";
 			}
+			//Math.round(unitConvert);
 			System.out.println(rootDir.getName() + " : " + unitConvert + unit);
 			model.addAttribute("rootDir", rootDir.getName());
-			model.addAttribute("accountVolume", unitConvert + unit + " / 20GB");
+			model.addAttribute("accountVolume", Math.round(unitConvert) + unit + " / 20GB");
 			return "storage";
 		} else
 			return "redirect:/";	

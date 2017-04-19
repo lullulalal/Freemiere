@@ -151,6 +151,7 @@
  			,default)
  			
  	</insert>
+	
 	<!--휴지통에서 삭제  -->
 	<delete id="completeDelete" parameterType="String">
 		delete filefolders 
@@ -166,5 +167,92 @@
 		where 
 			path = #{path}
 	</update>
+	
+	<update id="bookmarkUpdate" parameterType="map" >
+   update bookmarks set  
+     <if test='bookstate=="t"'>bookstate='f'</if>
+      <if test='bookstate=="f"'>bookstate='t'</if>
+
+    where ffid= #{ffid}
+   </update>
+   
+   <select id="boardread" parameterType="int" resultType="FileFolder">
+   
+   select * from filefolders
+   where ffid=#{ffid}
+   </select>
+   
+   <!-- 컨텍스트메뉴에서 삭제하기 -->
+   <update id="conDelete" parameterType="int">
+   update filefolders set isdeleted='t' where ffid = #{ffid}
+   </update>
+   
+   <update id="conRemove" parameterType="int">
+   update filefolders set isdeleted='f' where ffid = #{ffid}
+   </update>
+   
+   <delete id="conAllRemove" parameterType="int">
+   delete from filefolders where ffid=#{ffid}
+   </delete>
+   
+   <delete id="conBookDelete" parameterType="int">
+   delete from bookmarks where ffid=#{ffid}
+   </delete>
+   
+   <insert id="bookmarkInsert" parameterType="map">
+   insert into bookmarks values(
+   #{ffid},#{email},'t'
+   )
+   </insert>
+   
+   <select id="bookmarkSearch" parameterType="int" resultType="FileFolder">
+   select * from bookmarks where ffid = #{ffid}
+   </select>
+   
+   
+   <update id="folderShare" parameterType="map" >
+   update filefolders set  
+      <if test='isShared=="f"'>isshared='T'</if>
+
+    where ffid= #{ffid}
+   </update>
+   
+   <update id="sokUpdate" parameterType="map">
+   update filefolders set info= #{info}, path=#{path} where ffid=#{ffid}
+   </update>
+   
+   <insert id="shareInsert" parameterType="map">
+   insert into shares values(
+   #{ffid},#{auth},#{email}
+   )
+   
+   </insert>
+   <select id="shareList" parameterType="int" resultType="FileFolder">
+   select * from shares where ffid=#{ffid}
+   </select>
+   
+   <select id="searchShare" parameterType="map" resultType="FileFolder">
+   select * from shares where ffid=#{ffid} and email=#{email}
+   </select>
+   
+   <!-- 경로에서 auth처리 -->
+   <update id="updateAuth" parameterType="map">
+   update shares set auth=#{auth} where ffid=#{ffid} and email=#{email}
+   </update>
+   
+   <update id="updateFileShare" parameterType="int">
+   update filefolders set ISSHARED = 'T' where ffid = #{ffid}
+   </update>
+   
+   <insert id="firstOwner" parameterType="map">
+   insert into shares values(
+   #{ffid},'OWNER',#{myEmail}
+   )
+   
+   </insert>
+   
+   <update id="updateOwner" parameterType="map">
+   update shares set auth='VIEW' where ffid=#{ffid} and email=#{email}
+   </update>
 
 </mapper>

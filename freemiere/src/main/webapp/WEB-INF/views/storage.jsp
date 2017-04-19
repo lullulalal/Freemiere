@@ -11,17 +11,25 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!--파일 폴더 클릭시 배경색 변경  -->
-<style type="text/css">
+<!-- <style type="text/css">
 	.highlight{
  		background: '#ccebff';
 		}
-</style>
+</style> -->
 
 <title>FREEMIERE STORAGE</title>
-<link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative|Megrim" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Cinzel+Decorative|Megrim"
+	rel="stylesheet">
+
+<!-- Storage CSS -->
+<!-- <link href="resources/css/storage/storage.css" rel="stylesheet"> -->
+<link href="resources/css/storage/NewStorage.css"  rel="stylesheet" type="text/css">
 
 <!-- 나눔바른고딕 -->
-<link href='https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css' rel='stylesheet' type='text/css'>
+<link
+	href='https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css'
+	rel='stylesheet' type='text/css'>
 
 <!-- 새폴더 modal CSS -->
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -41,10 +49,11 @@
 <link href="resources/vendor/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 
-<!-- Storage CSS -->
-<link href="resources/css/storage/storage.css" rel="stylesheet">
 
 <link href="resources/vendor/colorBox/colorbox.css" rel="stylesheet">
+
+<!-- Storage context -->
+<link href="resources/css/storage/context.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -55,28 +64,29 @@
 </head>
 
 <body>
-<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
-<div id="newFolder" class="w3-modal"></div>
-<!-- ========================================================== -->
+
+	<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
+	<div id="newFolder" class="w3-modal"></div>
+	<!-- ========================================================== -->
+	<div id="sharedSet"></div>
 	<div id="wrapper">
 
 		<!-- Navigation -->
-		 <nav class="navbar navbar-default navbar-static-top" role="navigation"
-         style="margin-bottom: 0">
-         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-               data-target=".navbar-collapse">
-               <span class="sr-only">Toggle navigation</span> <span
-                  class="icon-bar"></span> <span class="icon-bar"></span> <span
-                  class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand">FREEMIERE - STORAGE :</a>
-            <span id="navigator"> </span>
-                     <span id="navigator"> </span>
-					
-               
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">FREEMIERE</a> <span
+					id="navigator"> </span> <span id="navigator"> </span>
 
-         </div>
+
+
+			</div>
 			<!-- navbar- sidebar -->
 			<div class="navbar-default sidebar" role="navigation">
 				<div class="sidebar-nav navbar-collapse">
@@ -91,24 +101,25 @@
 								</span>
 							</div> <!-- /input-group -->
 						</li>
-						<br><br>
+						<br>
+						<br>
 						<img src="./resources/img/storage/womanIcon.png" class="profile-icon">
 						<div class="accountName">${rootDir }</div>
 						<div class="accountVolume">사용중인 용량 : ${accountVolume}</div>
 						<br>
-<li><a id='myStorage' class='sideMenu'><i
+						<li><a id='myStorage' class='sideMenu'><i
 								class="fa fa-dashboard fa-fw"></i> 내 저장소</a></li>
 
 						<li><a id='shared' class='sideMenu'><i
 								class="fa fa-sitemap fa-fw"></i> 공유 저장소</a></li>
-						<li><a id='recent' class='sideMenu'><i class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
 						<li><a id='recent' class='sideMenu'><i
 								class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
 						<li><a id='bookMark' class='sideMenu'><i
 								class="fa fa-edit fa-fw"></i> 즐겨찾기</a></li>
-						<li><a id='trash' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 휴지통</a></li>
-						
-							
+						<li><a id='trash' class='sideMenu'><i
+								class="fa fa-trash fa-fw"></i> 휴지통</a></li>
+
+
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -121,15 +132,14 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="container-fluid" id = "setNavTop">
-						</div>
+						<div class="container-fluid" id="setNavTop"></div>
 						</nav>
 					</div>
 				</div>
 				<!-- /.row -->
 				<div id="dragDropZone">
 					<div id="outputList"></div>
-				<!-- 
+					<!-- 
 					하단메뉴
 	
 										</form>
@@ -141,7 +151,7 @@
 			</div>
 
 			<!-- /#wrapper -->
-	
+			</div>
 			<!-- MODAL -->
 			<div class="modal fade" id="modal-register" tabindex="-1"
 				role="dialog" aria-labelledby="modal-register-label"
@@ -168,10 +178,12 @@
 					</div>
 				</div>
 			</div>
-	
+
 			<script>
 				var loginMem = '${loginMem}';
 			</script>
+			<div id="test2"></div>
+			<div id="test"></div>
 			<!-- jQuery -->
 			<script src="resources/vendor/jquery/jquery.min.js"></script>
 
@@ -181,14 +193,15 @@
 			<!-- Metis Menu Plugin JavaScript -->
 			<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-	<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
+			<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
 
 			<!-- Custom Theme JavaScript -->
 			<script src="resources/dist/js/sb-admin-2.js"></script>
 
 			<!-- Storage JavaScript -->
 			<script src="resources/js/storage/storage.js"></script>
-
+			<!-- Storage 우클릭 이벤트 -->
+			<script src="resources/js/storage/rightMouse.js"></script>
 			<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
 			<script src="resources/newDirModal/js/scripts.js"></script>
 </body>

@@ -1,0 +1,125 @@
+@CHARSET "UTF-8";
+
+.fileTable {
+	position: relative;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+
+.fileItem {
+	position: relative;
+	float: left;
+	margin: 15px;
+}
+
+.fileBox {
+	display: inline;
+	table-layout: fixed;
+}
+
+.filebox-td {
+	overflow: auto;
+	display: table-cell;
+	width: 170px;
+	height: 170px;
+	border: 1px solid gray;
+	z-index: 100;
+}
+
+.fileName {
+	max-width: 0px;
+	table-layout: fixed;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 15px;
+}
+
+.naviBar {
+	cursor: pointer;
+	border: 1px solid #e6e6e6;
+	padding: 15px;
+}
+
+.sideMenu {
+	cursor: pointer;
+	/* border: 1px solid #26b999; */
+	padding: 15px;
+}
+
+.topMenu {
+	cursor: pointer;
+	padding: 15px;
+}
+
+.folder {
+	cursor: pointer;
+	margin: 5px;
+}
+
+.file {
+	cursor: pointer;
+}
+
+.highlight {
+	background-color: '#ccffeb';
+}
+
+#dragDropZone {
+	position: absolute;
+	min-height: 700px;
+	min-width: 882px;
+}
+
+.profile-icon {
+	border: 10px solid #26b999;
+	border-radius: 200px;
+	text-align: center;
+	box-shadow: 1px 5px 20px 0px #000000;
+	margin-left: 48px;
+}
+
+.accountName {
+	padding-top: 45px;
+	font-size: 25px;
+	text-align: center;
+	font-family: 'Nanum Barun Gothic', sans-serif;
+	font-weight: bold;
+	color: #26b999;
+}
+
+.accountVolume {
+	text-align: center;
+	padding-top: 10px;
+	font-size: 16px;
+	font-family: 'Nanum Barun Gothic', sans-serif;
+	padding-bottom: 10px;
+	font-weight: bold;
+	color: #26b999;
+}
+
+#videoClick {
+	padding: 10px;
+	width: 156px;
+	height: 156px;
+}
+
+.videoLibel {
+	width: 160px;
+	height: 160px;
+	margin: auto;
+}
+
+a#btn-all, a#btn-del, a#btn-add, a#btncompleteDel, a#btn-resotre, a#file
+	{
+	background-color: #2d2d2e;
+	margin-left: 30px;
+	margin-top: 10px;
+}
+
+a#btn-all:hover, a#btn-del:hover, a#btn-add:hover, a#btncompleteDel:hover,
+	a#btn-resotre:hover, a#file:hover, a#file:hover {
+	color: #26b999;
+}

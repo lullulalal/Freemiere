@@ -7,15 +7,47 @@ public class FileFolder {
 	private char isShared;
 	private String auth;
 	private int ffid;
-	private char isDeleted; 
+	private char isDeleted;
 	private boolean isFolder;
 	private String fileName;
 	private char bookState;
-	
-	public FileFolder(){
+	private long volume;
+
+	public long getVolume() {
+		return volume;
+	}
+
+	public void setVolume(long volume) {
+		this.volume = volume;
+	}
+
+	public String getLastModify() {
+		return lastModify;
+	}
+
+	public void setLastModify(String lastModify) {
+		this.lastModify = lastModify;
+	}
+
+	public String getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(String uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	public void setFolder(boolean isFolder) {
+		this.isFolder = isFolder;
+	}
+
+	private String lastModify;
+	private String uploadDate;
+
+	public FileFolder() {
 		info = new String(" ");
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -98,11 +130,10 @@ public class FileFolder {
 
 	@Override
 	public String toString() {
-		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", ffid="
-				+ ffid + ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName=" + fileName
-				+ ", bookState=" + bookState + "]";
+		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", auth="
+				+ auth + ", ffid=" + ffid + ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName="
+				+ fileName + ", bookState=" + bookState + ", volume=" + volume + ", lastModify=" + lastModify
+				+ ", uploadDate=" + uploadDate + "]";
 	}
-
-
 
 }
