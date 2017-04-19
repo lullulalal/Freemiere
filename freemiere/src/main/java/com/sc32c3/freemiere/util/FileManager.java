@@ -1,6 +1,5 @@
 package com.sc32c3.freemiere.util;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +54,23 @@ public class FileManager {
 		return files;
 	}
 	
+	//재귀 호출하여 하위 폴더의 사이즈를 구함
+	public static long getFileFolderSize(File dir)
+	{
+		long size = 0;
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isFile()) {
+					size += file.length();
+				} else
+					size += getFileFolderSize(file);
+			}
+		} else if (dir.isFile()) {
+			size += dir.length();
+		}
+		return size;
+	}
+	
 	public static void findFolderVoRecursive(String path, int pid, ArrayList<FolderVo> folderList)
 	{
 		File file = new File (path);	
@@ -79,12 +95,12 @@ public class FileManager {
 				continue;
 		}
 	}
+			
 	public static void getAllSubFile(String path, ArrayList<File> list)
 	   {
 		
 	      File file = new File (path); 
 	     
-	     System.out.println("파일매니저"+path);
 	       if ( !file.isDirectory() ) {
 		            list.add(file);
 		            return;

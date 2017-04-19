@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!--파일 폴더 클릭시 배경색 변경  -->
-<style type="text/css">
+<!-- <style type="text/css">
 .focus{
    display:block;
    position: absolute;
@@ -23,9 +23,21 @@
     opacity: .15;
     background-color: #157efb;
 }
-</style>
+</style> -->
 
 <title>FREEMIERE STORAGE</title>
+<link
+	href="https://fonts.googleapis.com/css?family=Cinzel+Decorative|Megrim"
+	rel="stylesheet">
+
+<!-- Storage CSS -->
+<!-- <link href="resources/css/storage/storage.css" rel="stylesheet"> -->
+<link href="resources/css/storage/NewStorage.css"  rel="stylesheet" type="text/css">
+
+<!-- 나눔바른고딕 -->
+<link
+	href='https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css'
+	rel='stylesheet' type='text/css'>
 
 <!-- 새폴더 modal CSS -->
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -49,6 +61,9 @@
 <link href="resources/css/storage/storage.css" rel="stylesheet" type="text/css">
 
 <link href="resources/vendor/colorBox/colorbox.css" rel="stylesheet">
+
+<!-- Storage context -->
+<link href="resources/css/storage/context.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -59,9 +74,11 @@
 </head>
 
 <body>
-<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
-<div id="newFolder" class="w3-modal"></div>
-<!-- ========================================================== -->
+
+	<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
+	<div id="newFolder" class="w3-modal"></div>
+	<!-- ========================================================== -->
+	<div id="sharedSet"></div>
    <div id="wrapper">
 
       <!-- Navigation -->
@@ -258,7 +275,6 @@
             <!-- /.dropdown -->
          </ul>
          <!-- /.navbar-top-links -->
-
          <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                <ul class="nav" id="side-menu">
@@ -273,14 +289,24 @@
                      </div> <!-- /input-group -->
                   </li>
                   <li><a id='myStorage' class='sideMenu'><i class="fa fa-dashboard fa-fw"></i> 내 저장소</a></li>
+						<br>
+						<img src="./resources/img/storage/womanIcon.png" class="profile-icon">
+						<div class="accountName">${rootDir }</div>
+						<div class="accountVolume">사용중인 용량 : ${accountVolume}</div>
+						<br>
+						<li><a id='myStorage' class='sideMenu'><i
+								class="fa fa-dashboard fa-fw"></i> 내 저장소</a></li>
+
                   <li><a id='shared' class='sideMenu'><i
                         class="fa fa-sitemap fa-fw"></i> 공유 저장소</a></li>
-						<li><a id='recent' class='sideMenu'><i class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
+						<li><a id='recent' class='sideMenu'><i
+								class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
                   <li><a id='bookMark' class='sideMenu'><i
                         class="fa fa-edit fa-fw"></i> 즐겨찾기</a></li>
-						<li><a id='trash' class='sideMenu'><i class="fa fa-trash fa-fw"></i> 휴지통</a></li>
-						
-							
+						<li><a id='trash' class='sideMenu'><i
+								class="fa fa-trash fa-fw"></i> 휴지통</a></li>
+
+
                </ul>
             </div>
             <!-- /.sidebar-collapse -->
@@ -301,7 +327,7 @@
             <!-- /.row -->
             <div id="dragDropZone">
                <div id="outputList"></div>
-				<!-- 
+					<!-- 
 					하단메뉴
                <nav class="navbar navbar-inverse navbar-fixed-bottom">
                   <div class="container-fluid">
@@ -319,9 +345,8 @@
                               class="btn btn-primary" value="다운로드">
                         </a></li>
                               </form>
-
+	
                         </a></li>
-					</nav> -->
 
             </div>
                   <!--/#dragDropZone  -->
@@ -361,6 +386,8 @@
          <script>
             var loginMem = '${loginMem}';
          </script>
+			<div id="test2"></div>
+			<div id="test"></div>
          <!-- jQuery -->
          <script src="resources/vendor/jquery/jquery.min.js"></script>
 
@@ -377,7 +404,8 @@
 
          <!-- Storage JavaScript -->
          <script src="resources/js/storage/storage.js"></script>
-
+			<!-- Storage 우클릭 이벤트 -->
+			<script src="resources/js/storage/rightMouse.js"></script>
          <script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
          <script src="resources/newDirModal/js/scripts.js"></script>
 </body>

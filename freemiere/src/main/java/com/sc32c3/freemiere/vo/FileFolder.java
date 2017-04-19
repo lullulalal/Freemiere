@@ -12,17 +12,49 @@ public class FileFolder implements Comparable<FileFolder> {
 	private String auth;
 	
 	private int ffid;
-	private char isDeleted; 
+	private char isDeleted;
 	
 	private boolean isFolder;
 	private String fileName;
 	
 	private char bookState;
-	
-	public FileFolder(){
+	private long volume;
+
+	public long getVolume() {
+		return volume;
+	}
+
+	public void setVolume(long volume) {
+		this.volume = volume;
+	}
+
+	public String getLastModify() {
+		return lastModify;
+	}
+
+	public void setLastModify(String lastModify) {
+		this.lastModify = lastModify;
+	}
+
+	public String getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(String uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	public void setFolder(boolean isFolder) {
+		this.isFolder = isFolder;
+	}
+
+	private String lastModify;
+	private String uploadDate;
+
+	public FileFolder() {
 		info = new String(" ");
 	}
-	
+
 	
 	public String getEmail() {
 		return email;
@@ -136,7 +168,6 @@ public class FileFolder implements Comparable<FileFolder> {
 	public int compareTo(FileFolder o1, FileFolder o2){
 		if(o1.lastModified() < o2.last)
 	}*/
-
 	@Override
 	public String toString() {
 		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", strUpdate=" + strUpdate
@@ -144,6 +175,5 @@ public class FileFolder implements Comparable<FileFolder> {
 				+ ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName=" + fileName + ", bookState="
 				+ bookState + "]";
 	}
-
 
 }
