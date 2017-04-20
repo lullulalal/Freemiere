@@ -126,6 +126,9 @@ $(document).ready(function() {
 	nowPath = myRootDir;
 	loadList(myRootDir);
 
+	$('#edit').html('<div class="btn-edit btn-moveiEdit"><span>편집하기</span></div>');
+	
+	
 	// 스크롤메뉴
 	var currentPosition = parseInt($(".navbar-nav").css("top"));
 	$(window).scroll(function() {
@@ -134,6 +137,8 @@ $(document).ready(function() {
 			"top" : position + currentPosition + "px"
 		}, 500);
 	});
+	
+	/*$('accountName').texfit({maxFontPixels:25});*/
 
 	$('#myStorage').click(function() {
 		menu = 'MyStorage';
@@ -721,38 +726,43 @@ function shareSet2(ffid){
 
 
 function goToUpload(obj){
- 
- var test = '';
- 
- $.each(obj, function(index, item) {
-    var path = obj.path;
-    var sPath = path.substring(13,path.length);
-    test +='<form id= "updateForm">';
-    test +='<div id="id01" class="modal fade">';
-     test +='<div class="modal-dialog">';
-     test +='<div class="modal-content">';
-     
-     test +='<h2 class="modal-title">';
-     
-     test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
-     
-     test +='<div class="modal-body">';
-     http://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8888/team/webTestFolder/image1.jpg'
-     test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_black"><img id="face" src="./resources/img/storage/facebook.png"></a>';
-    test +='<a href="http://twitter.com/intent/tweet?url=http://10.10.11.81:8888/freemiere/storageResources/'+sPath+'" target="_black"><img src="./resources/img/storage/twitter.png"></a>';
-     
-     test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-     test +='</div>';
-     test +='</div>';
-     test +='</div>';
-     test +=' </div>';
-     test +='</form>';
- });
- 
-  $('#test').html(test);      
+	 
+	 var test = '';
+	 
+	 $.each(obj, function(index, item) {
+	    var path = obj.path;
+	    var sPath = path.substring(13,path.length);
+	    var path2 = sPath.split('\\').join("/");
+	    var url = 'http://203.233.196.137:8888/freemiere/storageResources/'+path2;
+	    var text = 'text...?';
+	    test +='<form id= "updateForm">';
+	    test +='<div id="id01" class="modal fade">';
+	     test +='<div class="modal-dialog">';
+	     test +='<div class="modal-content">';
+	     
+	     test +='<h2 class="modal-title">';
+	     
+	     test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+	     
+	     test +='<div class="modal-body">';
+	     test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_blank"><img id="face" src="./resources/img/storage/facebook.png"></a>';
+	    // test +='<a href="http://twitter.com/intent/tweet?url='+url+' "&text="'+text+'" target="_blank"><img src="./resources/img/storage/twitter.png"></a>';
+	     test +='<a href="http://share.naver.com/web/shareView.nhn?url='+url+'&title='+text+'" target="_blank"><img src="./resources/img/storage/naver.jpg"></a>';
+	        
+	     // test +='<a href="http://twitter.com/intent/tweet?url=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'&text=하하하하하" target="_black"><img src="./resources/img/storage/twitter.png"></a>';
+	     
+	     test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+	     test +='</div>';
+	     test +='</div>';
+	     test +='</div>';
+	     test +=' </div>';
+	     test +='</form>';
+	 });
+	 
+	  $('#test').html(test);      
 
-  $('#id01').modal();   
-}
+	  $('#id01').modal();   
+	}
 
 
 function outputList(list) {
@@ -760,10 +770,7 @@ function outputList(list) {
 	var data = '';
 
 	data += '<ul class="fileTable">'
-	$
-			.each(
-					list,
-					function(index, item) {
+	$.each(list,function(index, item) {
 						data += '<li class="fileItem">'
 						data += '<table class="fileBox">';
 						data += '<tr><td>';
@@ -1013,7 +1020,7 @@ function outputList(list) {
 									data += '<div class="checkDiv">';
 									data += '<label class="videoLibel" for="file_check'
 											+ index + '">';
-									data += '<video id="videoThumb" width=156 height=156 controls poster="'
+									data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 											+ thumbPath
 											+ '" onclick="videoCheck()">';
 									data += '<source src="' + videoPath
@@ -1184,7 +1191,7 @@ function outputList(list) {
 										data += '<div class="checkDiv">';
 										data += '<label class="videoLibel" for="file_check'
 												+ index + '">';
-										data += '<video id="videoThumb" width=156 height=156 controls poster="'
+										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 												+ thumbPath
 												+ '" onclick="videoCheck()">';
 										data += '<source src="' + videoPath
@@ -1359,7 +1366,7 @@ function outputList(list) {
 										data += '<div class="checkDiv">';
 										data += '<label class="videoLibel" for="file_check'
 												+ index + '">';
-										data += '<video width=156 height=156 controls poster="'
+										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 												+ thumbPath + '">';
 										data += '<source src="' + videoPath
 												+ '" type="video/mp4">';
@@ -1952,8 +1959,8 @@ function outputList(list) {
 						data += '</table>';
 						data += '</li>';
 					});
-
 	data += '</ul>';
+
 
 	$('#outputList').html(data);
 

@@ -35,6 +35,7 @@ import com.sc32c3.freemiere.vo.Member;
 public class FileFolderController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileFolderController.class);
+	static long size = 0;
 
 	final String uploadPath = "/freemiere/"; // 파일 업로드 경로
 	// xml에 설정된 리소스 참조
@@ -509,7 +510,7 @@ public class FileFolderController {
 	            //파일명
 	            getFile.setFileName(f.getName());
 	            //파일크기
-	            getFile.setVolume(f.length());
+	            /*getFile.setVolume(f.length());*/
 	            //업로드날짜
 	            getFile.setUploadDate(uploadDate);
 	         
@@ -523,105 +524,142 @@ public class FileFolderController {
 	   }
 	   
 	   
-	   //속성
-	   @ResponseBody
-	   @RequestMapping(value="info", method=RequestMethod.POST)
-	      public FileFolder info(int ffid, HttpSession session){
+	 //속성
+	      @ResponseBody
+	      @RequestMapping(value="info", method=RequestMethod.POST)
+	         public FileFolder info(int ffid, HttpSession session){
+	            
 	         
-	      
-	      logger.info("너의 ffid는...? " + ffid);
-	      
-	      String email= (String)session.getAttribute("loginMem");
-	      
-	      FileFolder getFile = fileFolderDAO.boardread(ffid);
-	      
-	      System.out.println(getFile);
-	      File f = new File(getFile.getPath());
-	      
-	      Path pathd = Paths.get(getFile.getPath());
-	      
-	      if (f.isDirectory()) {
-	         try {
-	            BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+	         logger.info("너의 ffid는...? " + ffid);
+	         
+	         String email= (String)session.getAttribute("loginMem");
+	         
+	         FileFolder getFile = fileFolderDAO.boardread(ffid);
+	         
+	         System.out.println(getFile);
+	         File f = new File(getFile.getPath());
+	         
+	         Path pathd = Paths.get(getFile.getPath());
+	         
+	         if (f.isDirectory()) {
+	            try {
+	               
+	               
+	               BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
 
-	            //최근 액세스 날짜
-	            long lat = attr.creationTime().toMillis();
-	            Calendar cal = Calendar.getInstance();
-	            cal.setTimeInMillis(lat);
-	            
-	            int mYear = cal.get(Calendar.YEAR);
-	            int mMonth = cal.get(Calendar.MONTH);
-	            int mDay = cal.get(Calendar.DAY_OF_MONTH);
+	               //최근 액세스 날짜
+	               long lat = attr.creationTime().toMillis();
+	               Calendar cal = Calendar.getInstance();
+	               cal.setTimeInMillis(lat);
+	               
+	               int mYear = cal.get(Calendar.YEAR);
+	               int mMonth = cal.get(Calendar.MONTH);
+	               int mDay = cal.get(Calendar.DAY_OF_MONTH);
 
-	            /*int mHour = cal.get(Calendar.HOUR);
-	            int mMin = cal.get(Calendar.MINUTE);
-	            int mSec = cal.get(Calendar.SECOND);
-	            int mMilisec = cal.get(Calendar.MILLISECOND);*/
+	               /*int mHour = cal.get(Calendar.HOUR);
+	               int mMin = cal.get(Calendar.MINUTE);
+	               int mSec = cal.get(Calendar.SECOND);
+	               int mMilisec = cal.get(Calendar.MILLISECOND);*/
+	               
+	               String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+	               
+	               File[] list = f.listFiles();
+	              
+	               for(File aList : list){
+	                  size += aList.length();
+	                  System.out.println("다더했찡?..."+size);
+	               }
+	               //메가 바이트
+	               if(size / 1024 / 1024 > 0){
+	                  size = size / 1024 / 1024;
+	                  String volume = String.valueOf(size) + "MB"; 
+	                        
+	                  getFile.setVolume(volume);
+	               }
+	               
+	               else {
+	                  size = size / 1024;
+	                  String volume = String.valueOf(size) + "KB"; 
+	                 
+	                  getFile.setVolume(volume);
+	               }
+	              
+	               //마지막수정
+	               getFile.setLastModify(lastAccess);
+	               //파일명
+	               getFile.setFileName(f.getName());
+	               
 	            
-	            String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
 	            
-	            //
-	            getFile.setLastModify(lastAccess);
-	            //파일명
-	            getFile.setFileName(f.getName());
-	            
-	         
-	         
-	         } catch (IOException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+	            } catch (IOException e) {
+	               // TODO Auto-generated catch block
+	               e.printStackTrace();
+	            }
 	         }
-	      }
-	      
-	      //파일일 경우
-	      else {
-	         try {
-	            BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
-
-	            //생성날짜 = 업로드날짜
-	            long lat2 = attr.creationTime().toMillis();
-	            Calendar cal2 = Calendar.getInstance();
-	            cal2.setTimeInMillis(lat2);
-	            int mYear2 = cal2.get(Calendar.YEAR);
-	            int mMonth2 = cal2.get(Calendar.MONTH);
-	            int mDay2 = cal2.get(Calendar.DAY_OF_MONTH);
-	            
-	            
-	            //최근 액세스 날짜
-	            long lat = attr.lastAccessTime().toMillis();
-	            Calendar cal = Calendar.getInstance();
-	            cal.setTimeInMillis(lat);
-	            
-	            int mYear = cal.get(Calendar.YEAR);
-	            int mMonth = cal.get(Calendar.MONTH);
-	            int mDay = cal.get(Calendar.DAY_OF_MONTH);
-
-	            /*int mHour = cal.get(Calendar.HOUR);
-	            int mMin = cal.get(Calendar.MINUTE);
-	            int mSec = cal.get(Calendar.SECOND);
-	            int mMilisec = cal.get(Calendar.MILLISECOND);*/
-	            
-	            String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
-	            String uploadDate = mYear2 + "년"+(mMonth2+1)+"월"+mDay2+ "일";
-	            
-	            
-	            //액세스날짜
-	            getFile.setLastModify(lastAccess);
-	            //파일명
-	            getFile.setFileName(f.getName());
-	            //파일크기
-	            getFile.setVolume(f.length());
-	            //업로드날짜
-	            getFile.setUploadDate(uploadDate);
 	         
-	         
-	         } catch (IOException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
+	         //파일일 경우
+	         else {
+	            try {
+	               BasicFileAttributes attr = Files.readAttributes(pathd, BasicFileAttributes.class);
+
+	               //생성날짜 = 업로드날짜
+	               long lat2 = attr.creationTime().toMillis();
+	               Calendar cal2 = Calendar.getInstance();
+	               cal2.setTimeInMillis(lat2);
+	               int mYear2 = cal2.get(Calendar.YEAR);
+	               int mMonth2 = cal2.get(Calendar.MONTH);
+	               int mDay2 = cal2.get(Calendar.DAY_OF_MONTH);
+	               
+	               
+	               //최근 액세스 날짜
+	               long lat = attr.lastAccessTime().toMillis();
+	               Calendar cal = Calendar.getInstance();
+	               cal.setTimeInMillis(lat);
+	               
+	               int mYear = cal.get(Calendar.YEAR);
+	               int mMonth = cal.get(Calendar.MONTH);
+	               int mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+	               /*int mHour = cal.get(Calendar.HOUR);
+	               int mMin = cal.get(Calendar.MINUTE);
+	               int mSec = cal.get(Calendar.SECOND);
+	               int mMilisec = cal.get(Calendar.MILLISECOND);*/
+	               
+	               String lastAccess = mYear + "년"+(mMonth+1)+"월"+mDay+ "일";
+	               String uploadDate = mYear2 + "년"+(mMonth2+1)+"월"+mDay2+ "일";
+	               
+	               size = f.length();
+	               
+	             //메가 바이트
+	               if(size / 1024 / 1024 > 0){
+	                  size = size / 1024 / 1024;
+	                  String volume = String.valueOf(size) + "MB"; 
+	                        
+	                  getFile.setVolume(volume);
+	               }
+	               
+	               else {
+	                  size = size / 1024;
+	                  String volume = String.valueOf(size) + "KB"; 
+	                 
+	                  getFile.setVolume(volume);
+	               }
+	               
+	               //액세스날짜
+	               getFile.setLastModify(lastAccess);
+	               //파일명
+	               getFile.setFileName(f.getName());
+	               //업로드날짜
+	               getFile.setUploadDate(uploadDate);
+	            
+	            
+	            } catch (IOException e) {
+	               // TODO Auto-generated catch block
+	               e.printStackTrace();
+	            }
 	         }
+	         return getFile;
 	      }
-	      return getFile;
-	   }
 	   
 	   // 컨텍스트메뉴 삭제기능
 	   @ResponseBody

@@ -11,13 +11,13 @@ public class FileFolder {
 	private boolean isFolder;
 	private String fileName;
 	private char bookState;
-	private long volume;
+	private String volume;
 
-	public long getVolume() {
+	public String getVolume() {
 		return volume;
 	}
 
-	public void setVolume(long volume) {
+	public void setVolume(String volume) {
 		this.volume = volume;
 	}
 

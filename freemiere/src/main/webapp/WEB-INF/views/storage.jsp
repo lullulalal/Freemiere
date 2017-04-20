@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -18,13 +20,15 @@
 </style> -->
 
 <title>FREEMIERE STORAGE</title>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 <link
 	href="https://fonts.googleapis.com/css?family=Cinzel+Decorative|Megrim"
 	rel="stylesheet">
 
 <!-- Storage CSS -->
 <!-- <link href="resources/css/storage/storage.css" rel="stylesheet"> -->
-<link href="resources/css/storage/NewStorage.css"  rel="stylesheet" type="text/css">
+<link href="resources/css/storage/NewStorage.css" rel="stylesheet"
+	type="text/css">
 
 <!-- 나눔바른고딕 -->
 <link
@@ -81,8 +85,8 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand">FREEMIERE</a> <span
-					id="navigator"> </span> <span id="navigator"> </span>
+				<a class="navbar-brand">FREEMIERE</a> <span id="navigator"> </span>
+				<span id="navigator"> </span>
 
 
 
@@ -103,7 +107,8 @@
 						</li>
 						<br>
 						<br>
-						<img src="./resources/img/storage/womanIcon.png" class="profile-icon">
+						<img src="./resources/img/storage/womanIcon.png"
+							class="profile-icon">
 						<div class="accountName">${rootDir }</div>
 						<div class="accountVolume">사용중인 용량 : ${accountVolume}</div>
 						<br>
@@ -118,7 +123,10 @@
 								class="fa fa-edit fa-fw"></i> 즐겨찾기</a></li>
 						<li><a id='trash' class='sideMenu'><i
 								class="fa fa-trash fa-fw"></i> 휴지통</a></li>
-
+						<li>
+						<div class="box-1" id="edit">
+						</div>
+						</li>
 
 					</ul>
 				</div>
@@ -151,59 +159,59 @@
 			</div>
 
 			<!-- /#wrapper -->
-			</div>
-			<!-- MODAL -->
-			<div class="modal fade" id="modal-register" tabindex="-1"
-				role="dialog" aria-labelledby="modal-register-label"
-				aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">
-								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-							</button>
-							<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>
-						</div>
-						<div class="modal-body">
-							<form role="form" action="" method="post"
-								class="registration-form">
-								<div class="form-group">
-									<label class="sr-only" for="form-first-name">새폴더</label> <input
-										type="text" name="form-first-name" placeholder="폴더명을 입력하세요"
-										class="form-first-name form-control" id="form-first-name">
-								</div>
-								<button type="submit" class="btn">확인</button>
-							</form>
-						</div>
+		</div>
+		<!-- MODAL -->
+		<div class="modal fade" id="modal-register" tabindex="-1"
+			role="dialog" aria-labelledby="modal-register-label"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h3 class="modal-title" id="modal-register-label">새 폴더 만들기</h3>
+					</div>
+					<div class="modal-body">
+						<form role="form" action="" method="post"
+							class="registration-form">
+							<div class="form-group">
+								<label class="sr-only" for="form-first-name">새폴더</label> <input
+									type="text" name="form-first-name" placeholder="폴더명을 입력하세요"
+									class="form-first-name form-control" id="form-first-name">
+							</div>
+							<button type="submit" class="btn">확인</button>
+						</form>
 					</div>
 				</div>
 			</div>
+		</div>
 
-			<script>
-				var loginMem = '${loginMem}';
-			</script>
-			<div id="test2"></div>
-			<div id="test"></div>
-			<!-- jQuery -->
-			<script src="resources/vendor/jquery/jquery.min.js"></script>
+		<script>
+			var loginMem = '${loginMem}';
+		</script>
+		<div id="test2"></div>
+		<div id="test"></div>
+		<!-- jQuery -->
+		<script src="resources/vendor/jquery/jquery.min.js"></script>
 
-			<!-- Bootstrap Core JavaScript -->
-			<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!-- Bootstrap Core JavaScript -->
+		<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-			<!-- Metis Menu Plugin JavaScript -->
-			<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
+		<!-- Metis Menu Plugin JavaScript -->
+		<script src="resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-			<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
+		<script src="resources/vendor/colorBox/jquery.colorbox-min.js"></script>
 
-			<!-- Custom Theme JavaScript -->
-			<script src="resources/dist/js/sb-admin-2.js"></script>
+		<!-- Custom Theme JavaScript -->
+		<script src="resources/dist/js/sb-admin-2.js"></script>
 
-			<!-- Storage JavaScript -->
-			<script src="resources/js/storage/storage.js"></script>
-			<!-- Storage 우클릭 이벤트 -->
-			<script src="resources/js/storage/rightMouse.js"></script>
-			<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
-			<script src="resources/newDirModal/js/scripts.js"></script>
+		<!-- Storage JavaScript -->
+		<script src="resources/js/storage/storage.js"></script>
+		<!-- Storage 우클릭 이벤트 -->
+		<script src="resources/js/storage/rightMouse.js"></script>
+		<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>
+		<script src="resources/newDirModal/js/scripts.js"></script>
 </body>
 
 </html>
