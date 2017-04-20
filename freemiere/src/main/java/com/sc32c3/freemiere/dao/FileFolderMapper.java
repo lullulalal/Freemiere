@@ -40,6 +40,8 @@ public interface FileFolderMapper {
 
 	// 새폴더(경로와 이메일 정보를 가져온다.)
 	public int newDir(String path, String email);
+	
+	public int getffid(String path);
 
 	// 파일 다운로드
 	public int saveFile(String path);

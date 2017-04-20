@@ -396,6 +396,7 @@ public class FileFolderController {
 						ImageFileManager.saveImageFile(
 								ImageFileManager.resizeImageHighQuality(nowPath + ".thumb\\" + savefile + ".png"),
 								"png", nowPath + ".thumb\\" + savefile + ".png");
+						ImageFileManager.extractVideo(nowPath + savefile, fileFolderDAO.getffid(nowPath + savefile));
 					}
 
 				} // if

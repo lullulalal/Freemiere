@@ -2,8 +2,6 @@ package com.sc32c3.freemiere.util;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 

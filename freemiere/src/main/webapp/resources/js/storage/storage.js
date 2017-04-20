@@ -154,6 +154,7 @@ $(document).ready(function() {
 
 		loadList();
 	});
+	
 	$('#shared').click(function() {
 		menu = 'Shared';
 		setNavRoot(menu);

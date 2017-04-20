@@ -102,10 +102,11 @@ public class ImageFileManager {
 	public static void videoThumbGender(String originPath, String thumbPath){
 		Runtime run = Runtime.getRuntime();
 		
-		String command = "C:\\ffmpeg\\bin\\ffmpeg -i \""
+		String command = "C:\\ffmpeg\\bin\\ffmpeg.exe -i \""
 				+originPath+"\" -ss 5 -vcodec png \""
 				+thumbPath+"\"";
 		
+		//System.out.println(command);
 		try{
 			run.exec("cmd.exe chcp 65001");
 			Process process = run.exec(command);
@@ -116,5 +117,38 @@ public class ImageFileManager {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public static void extractVideo(String originPath, int ffid){
+		Thread thread = new Thread(() -> {
+			Runtime run = Runtime.getRuntime();
+			
+			File dir = new File("c:\\freemiere\\videoExtract\\" + ffid +"\\");
+			dir.mkdirs();
+			
+			String command = "ffmpeg -i "
+					+ originPath
+					+ " -r 30 -qscale:v 1 "
+					+ "c:\\freemiere\\videoExtract\\" + ffid +"\\%4d.jpg";
+			
+			String command2 = "ffmpeg -y -i "
+					+ originPath
+					+ " -vn -acodec libmp3lame -ar 44.1k -ac 2 -ab 128k "
+					+ "c:\\freemiere\\videoExtract\\" + ffid +"\\audio.mp3";
+			
+			//System.out.println("command : " + command);
+			try{
+				run.exec("cmd.exe chcp 65001");
+				Process process = run.exec(command);
+				process.getErrorStream().close(); 
+				process.getInputStream().close(); 
+				process.getOutputStream().close(); 
+				process.waitFor(); 
+				run.exec(command2);
+			}catch(Exception e){
+				e.printStackTrace();
+			}			
+		});
+		thread.start();
 	}
 }
