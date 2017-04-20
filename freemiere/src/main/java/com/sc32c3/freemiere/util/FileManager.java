@@ -1,6 +1,5 @@
 package com.sc32c3.freemiere.util;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,6 +75,24 @@ public class FileManager {
 			}
 			else 
 				continue;
+		}
+	}
+	
+	public static void getAllSubFile(String path, ArrayList<File> list)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+
+		for( int i = 0; i < files.length; ++i )
+		{
+			if ( files[i].isDirectory() ) {
+				list.add(files[i]);
+				getAllSubFile( files[i].getAbsolutePath() , list);
+			}
+			else {
+				list.add(files[i]);
+				continue;
+			}
 		}
 	}
 }

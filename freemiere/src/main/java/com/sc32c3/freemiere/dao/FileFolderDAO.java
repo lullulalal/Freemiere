@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Repository;
 
 import com.sc32c3.freemiere.vo.FileFolder;
@@ -85,6 +84,11 @@ public class FileFolderDAO {
 	public int newDir(String path, String email){
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		return mapper.newDir(path, email);
+	}
+	
+	public int getffid(String path){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.getffid(path);	
 	}
 }
 

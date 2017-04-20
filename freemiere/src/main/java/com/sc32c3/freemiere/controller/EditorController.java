@@ -1,7 +1,5 @@
 package com.sc32c3.freemiere.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +16,4 @@ public class EditorController {
     	
 		return "editor";
     }
-	
-	
 }

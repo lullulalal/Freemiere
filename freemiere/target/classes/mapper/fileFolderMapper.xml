@@ -152,4 +152,9 @@
 		)
 	</insert> 
 	
+	<!-- path에 대한 ffid 가져오기 -->
+	<select id="getffid" parameterType="string" resultType="int"> 
+		select ffid from filefolders where path=#{path}
+	</select> 
+	
 </mapper>

@@ -25,6 +25,7 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		loadList();
 	});
+	
 	$('#shared').click(function() {
 		menu = 'Shared';
 		setNavRoot(menu);
