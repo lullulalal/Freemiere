@@ -21,7 +21,10 @@ public interface FileFolderMapper {
 
 	public ArrayList<FileFolder> getMyStorageBookmarkList(String email);
 
-	// 일반파일,폴더 삭제
+	//public ArrayList<FileFolder> getMyRecentList( String email);
+	
+	public ArrayList<FileFolder> getSearchList(String title);
+
 	public int deleteFileFolder(int ffid);
 
 	// 즐겨찾기 추가한 파일,폴더 삭제
@@ -29,6 +32,8 @@ public interface FileFolderMapper {
 
 	// 공유폴더 파일 삭제
 	public int deleteShare(HashMap<String, Object> shares);
+
+	public int getMyRecentList(HashMap<String, Object> recentlist);
 
 	// 업로드
 	public int upload(FileFolder fileFolder);

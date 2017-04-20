@@ -151,8 +151,6 @@ $(document).ready(function() {
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
 		$('#btn-add').on('click', newDir);
-		// 하단 새폴더 버튼
-		$('#btn-add').on('click', newDir);
 
 		loadList();
 	});
@@ -171,9 +169,11 @@ $(document).ready(function() {
 	$('#recent').click(function() {
 		menu = 'Recent';
 		setNavRoot(menu);
-		/*
-		 * // 하단 삭제버튼 $('#btn-del').on('click', go_to_Trash);
-		 */
+		// 하단 삭제버튼
+		$('#btn-del').on('click', go_to_Trash);
+		// 업로드버튼
+		$('#file').on('click', fileUpload);
+		loadList();
 	});
 	$('#bookMark').click(function() {
 		menu = 'Bookmark';
@@ -269,7 +269,12 @@ $(document).ready(function() {
 function loadList(path) {
 	if (menu == 'MyStorage')
 		path = myRootDir;
-
+	if ( menu == 'Recent') {
+		loadRecentList();
+		return;
+	}
+		
+	
 	var url = 'load' + menu;
 	// alert(url);
 	$.ajax({
@@ -289,11 +294,15 @@ function loadList(path) {
 }
 
 function init(){
-	loadList(nowPath);
+	loadListUnchangNav(nowPath);
 }
 function loadListUnchangNav(path) {
 	if (menu == 'MyStorage')
 		path = myRootDir;
+	if ( menu == 'Recent') {
+		loadRecentList();
+		return;
+	}
 
 	var url = 'load' + menu;
 	// alert(url);
@@ -785,10 +794,10 @@ function outputList(list) {
 								+ '" '
 								+ 'path="'
 								+ item.path
-								+ '"' + 'id="file_check' + index + '" >';
+								+ '"' + 'id="file_check' + item.ffid + '" >';
 						data += '</td></tr>';
 						data += '<tr align="center">';
-						data += '	<label for="file_check' + index+ '">';
+						data += '	<label for="file_check' + item.ffid+ '">';
 						data += '   		<td class="filebox-td">';
 						if (item.isDeleted.toLowerCase() == 't') {
 							if (item.isFolder == true) {
@@ -880,7 +889,7 @@ function outputList(list) {
 													});
 								});
 
-								data += '<label for="file_check' + index+ '">';
+								data += '<label for="file_check' + item.ffid+ '">';
 								data += '<img id="sfolders' 
 									  + item.ffid 
 									  + '"class="folder sfolder" path="' 
@@ -1000,7 +1009,7 @@ function outputList(list) {
 
 								var fileType = getFileType(item.path);
 								if (fileType == 'image') {
-									data += '<label for="file_check' + index
+									data += '<label for="file_check' + item.ffid
 											+ '">';
 									data += '<img id="file' + item.ffid
 											+ '" class="file fimage" path="'
@@ -1019,7 +1028,7 @@ function outputList(list) {
 									}
 									data += '<div class="checkDiv">';
 									data += '<label class="videoLibel" for="file_check'
-											+ index + '">';
+											+ item.ffid + '">';
 									data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 											+ thumbPath
 											+ '" onclick="videoCheck()">';
@@ -1034,7 +1043,7 @@ function outputList(list) {
 									data += '</label>';
 									data += '</div>';
 								} else {
-									data += '<label for="file_check' + index+ '">';
+									data += '<label for="file_check' + item.ffid+ '">';
 									data += '<img id="file'
 											+ item.ffid
 											+ '" class="file" src="./resources/img/storage/file.png">';
@@ -1171,7 +1180,7 @@ function outputList(list) {
 									var fileType = getFileType(item.path);
 									if (fileType == 'image') {
 										data += '<label for="file_check'
-												+ index + '">';
+												+ item.ffid + '">';
 										data += '<img id="file'
 												+ item.ffid
 												+ '" class="file fimage" path="'
@@ -1190,7 +1199,7 @@ function outputList(list) {
 										}
 										data += '<div class="checkDiv">';
 										data += '<label class="videoLibel" for="file_check'
-												+ index + '">';
+												+ item.ffid + '">';
 										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 												+ thumbPath
 												+ '" onclick="videoCheck()">';
@@ -1206,7 +1215,7 @@ function outputList(list) {
 										data += '</div>';
 									} else {
 										data += '<label for="file_check'
-												+ index + '">';
+												+ item.ffid + '">';
 										data += '<img id="file'
 												+ item.ffid
 												+ '" class="file" src="./resources/img/storage/file.png">';
@@ -1346,7 +1355,7 @@ function outputList(list) {
 									var fileType = getFileType(item.path);
 									if (fileType == 'image') {
 										data += '<label for="file_check'
-												+ index + '">';
+												+ item.ffid + '">';
 										data += '<img id="file'
 												+ item.ffid
 												+ '" class="file fimage" path="'
@@ -1365,7 +1374,7 @@ function outputList(list) {
 										}
 										data += '<div class="checkDiv">';
 										data += '<label class="videoLibel" for="file_check'
-												+ index + '">';
+												+ item.ffid + '">';
 										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 												+ thumbPath + '">';
 										data += '<source src="' + videoPath
@@ -1380,7 +1389,7 @@ function outputList(list) {
 										data += '</div>';
 									} else {
 										data += '<label for="file_check'
-												+ index + '">';
+												+ item.ffid + '">';
 										data += '<img id="file'
 												+ item.ffid
 												+ '" class="file" src="./resources/img/storage/file.png">';
@@ -1527,7 +1536,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + index+ '">';
+										data += '<label for="file_check' + item.ffid+ '">';
 										data += '<img id="sfolders'
 												+ item.ffid
 												+ '" class="folder sfolder" path="'
@@ -1663,7 +1672,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + index+ '">';
+										data += '<label for="file_check' + item.ffid+ '">';
 										data += '<img id="sfolders'
 												+ item.ffid
 												+ '" class="folder sfolder" path="'
@@ -1800,7 +1809,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + index+ '">';
+										data += '<label for="file_check' + item.ffid+ '">';
 										data += '<img id="mfolders'
 												+ item.ffid
 												+ '" class="folder mfolder" path="'
@@ -1931,7 +1940,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + index+ '">';
+										data += '<label for="file_check' + item.ffid+ '">';
 										data += '<img id="mfolders'
 												+ item.ffid
 												+ '" class="folder mfolder" path="'
@@ -1961,9 +1970,16 @@ function outputList(list) {
 					});
 	data += '</ul>';
 
-
-	$('#outputList').html(data);
-
+	if(recentHTML == ''){
+		alert("dd");
+		$('#outputList').html(data);
+	}
+	else{
+		
+		recentHTML += data;
+		return;
+	}
+//	alert('gaga');
 	// 하단 전체선택 메뉴버튼
 	$('#btn-all').click(function() {
 		alert('hi1');
@@ -2027,6 +2043,7 @@ function outputList(list) {
 	}
 
 	$('.fimage').on('dblclick', function() {
+		
 		var path = $(this).attr('path');
 		$.colorbox({
 			maxWidth : "75%",
@@ -2056,6 +2073,9 @@ function setNavRoot(nr) {
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '휴지통</a>';
+	else if (navRoot == 'Recent')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '최근작업파일</a>';
 	setNav();
 }
 
@@ -2286,8 +2306,6 @@ function regEvent() {
 // 파일 업로드
 function fileUpload(){
 	   alert("파일1");
-	   $('#fileUpload').click(function(){
-	      alert("파일2");
 	      $('#fileUpload').change(function() {
 	         alert('up');
 	         var formData = new FormData();
@@ -2314,7 +2332,6 @@ function fileUpload(){
 	            }
 	         });
 	      });
-	   });
 	}
 
 // 드래그앤드롭 파일 업로드
@@ -2532,3 +2549,103 @@ function completeDelete() {
 	});
 
 }
+
+
+//최근작업파일
+function loadRecentList() {
+	if (menu == 'Recent')
+		path = myRootDir;
+
+	var url = 'load' + menu;
+	$.ajax({
+		url : url,
+		type : 'GET',
+/*		data : {
+			'path' : path
+		},*/
+		dataType : 'json',
+		success : outputRecentList,
+		error : function(e) {
+			alert(JSON.stringify(e));
+		}
+	});
+
+	outputNavi(path);
+}
+
+var recentHTML = '';
+function outputRecentList(dateFile) {
+	//alert(JSON.stringify(dateFile));	
+	alert("gkgk");
+	var sorted = sortObject(dateFile);
+	
+	$.each(sorted, function(date, value) {
+		
+		recentHTML += '<div>' + date + '</div>';
+		
+		outputList(value);
+	});
+	$('#outputList').html(recentHTML);
+	recentHTML = '';
+	// 하단 전체선택 메뉴버튼
+
+	/*// 이미지 클릭시 색깔 바꾸기
+	$('.filebox-td').click(function() {
+		$(this).each(function(){
+			if ($('').is(':checked')) {
+				$(this).removeClass('highlight');
+			}else{
+				$('').prop("checked", true);
+				$(this).addClass('highlight');
+			}
+		});
+	});*/
+
+	/*
+	 * $('.folder').click(function() { $(this).toggleClass('highlight'); });
+	 */
+
+	if (navRoot != 'Trash') {
+		$('.folder').dblclick(function() {
+			var path = $(this).attr('path');
+			nowPath = path;
+			menu = 'List';
+			loadList(path);
+			setNavTop('inFolder');
+			// 삭제버튼
+			$('#btn-del').on('click', go_to_Trash);
+
+		});
+	}
+
+	$('.fimage').on('dblclick', function() {
+		
+		var path = $(this).attr('path');
+		$.colorbox({
+			maxWidth : "75%",
+			maxHeight : "75%",
+			href : path
+		});
+	});
+}
+function sortObject(o){
+    var sorted = {},
+    key, a = [];
+    // 키이름을 추출하여 배열에 집어넣음
+    for (key in o) {
+        if (o.hasOwnProperty(key)) a.push(key);
+    }
+    // 키이름 배열을 정렬
+    a.sort();
+    // 정렬된 키이름 배열을 이용하여 object 재구성
+
+    for (key=a.length-1; key>=0; key--) {
+
+        sorted[a[key]] = o[a[key]];
+    }
+    return sorted;
+}
+
+
+
+

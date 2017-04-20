@@ -1,23 +1,30 @@
 package com.sc32c3.freemiere.vo;
 
-public class FileFolder {
+public class FileFolder implements Comparable<FileFolder> {
 	private String email;
 	private String path;
 	private String info;
+	
+	private String strUpdate;
+	private long lnUpdate;
+	
 	private char isShared;
 	private String auth;
+	
 	private int ffid;
 	private char isDeleted;
+	
 	private boolean isFolder;
 	private String fileName;
+	
 	private char bookState;
-	private String volume;
+	private long volume;
 
-	public String getVolume() {
+	public long getVolume() {
 		return volume;
 	}
 
-	public void setVolume(String volume) {
+	public void setVolume(long volume) {
 		this.volume = volume;
 	}
 
@@ -48,6 +55,7 @@ public class FileFolder {
 		info = new String(" ");
 	}
 
+	
 	public String getEmail() {
 		return email;
 	}
@@ -128,12 +136,44 @@ public class FileFolder {
 		this.auth = auth;
 	}
 
+
+	public String getStrUpdate() {
+		return strUpdate;
+	}
+
+	public void setStrUpdate(String strUpdate) {
+		this.strUpdate = strUpdate;
+	}
+
+	public long getLnUpdate() {
+		return lnUpdate;
+	}
+
+	public void setLnUpdate(long lnUpdate) {
+		this.lnUpdate = lnUpdate;
+	}
+
+	@Override
+	public int compareTo(FileFolder o) {
+		if(this.lnUpdate  == o.getLnUpdate())
+			return 0;
+		else if( this.lnUpdate > o.getLnUpdate())
+			return -1;
+		else if( this.lnUpdate < o.getLnUpdate())
+			return 1;
+		//return this.getUpdatedate().compareTo(o.getUpdatedate());
+		return 0;
+	}
+/*	@Override
+	public int compareTo(FileFolder o1, FileFolder o2){
+		if(o1.lastModified() < o2.last)
+	}*/
 	@Override
 	public String toString() {
-		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", isShared=" + isShared + ", auth="
-				+ auth + ", ffid=" + ffid + ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName="
-				+ fileName + ", bookState=" + bookState + ", volume=" + volume + ", lastModify=" + lastModify
-				+ ", uploadDate=" + uploadDate + "]";
+		return "FileFolder [email=" + email + ", path=" + path + ", info=" + info + ", strUpdate=" + strUpdate
+				+ ", lnUpdate=" + lnUpdate + ", isShared=" + isShared + ", auth=" + auth + ", ffid=" + ffid
+				+ ", isDeleted=" + isDeleted + ", isFolder=" + isFolder + ", fileName=" + fileName + ", bookState="
+				+ bookState + "]";
 	}
 
 }

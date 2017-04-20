@@ -51,8 +51,20 @@ public class FileFolderDAO {
 
 	public FileFolder getFilerFolerInfo(String path, String email) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-
+		
 		return mapper.getFilerFolerInfo(path, email);
+	}
+	public int getMyRecentList(String path, String email){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> recentlist = new HashMap<>();
+		recentlist.put("path", path);
+		recentlist.put("email", email);
+		return mapper.getMyRecentList(recentlist);
+	}
+	public ArrayList<FileFolder> getSearchList(String title){
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+
+		return mapper.getSearchList(title);
 	}
 
 	// 휴지통으로 파일 폴더 이동
@@ -102,7 +114,7 @@ public class FileFolderDAO {
 	}
 
 	// 휴지통에서 삭제
-		public void completeDelete(ArrayList<File>fileList,String email) {
+		public void completeDelete(ArrayList<File>fileList) {
 			FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 			String reThumbPath="";
 			for(int i=fileList.size()-1; i>=0; i--){
