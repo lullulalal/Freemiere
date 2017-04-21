@@ -147,6 +147,8 @@ $(document).ready(function() {
 		nowPath = myRootDir;
 		// 삭제버튼
 		$('#btn-del').on('click', go_to_Trash);
+		//복사 이동
+		$('#btn-copycut').on('click', copyCut);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
@@ -160,6 +162,8 @@ $(document).ready(function() {
 		setNavTop(menu);
 		// 삭제버튼
 		$('#btn-del').on('click', go_to_Trash);
+		//복사 이동
+		$('#btn-copycut').on('click', copyCut);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
@@ -201,6 +205,8 @@ $(document).ready(function() {
 	});
 
 	setNavTop(menu);
+	//복사 이동
+	$('#btn-copycut').on('click', copyCut);
 
 	// 하단 삭제버튼
 	$('#btn-del').on('click', go_to_Trash);
@@ -273,7 +279,6 @@ function loadList(path) {
 		loadRecentList();
 		return;
 	}
-		
 	
 	var url = 'load' + menu;
 	// alert(url);
@@ -2033,10 +2038,11 @@ function outputList(list) {
 			setNavTop('inFolder');
 			// 삭제버튼
 			$('#btn-del').on('click', go_to_Trash);
+			
+			//복사 이동
+			$('#btn-copycut').on('click', copyCut);
 			// 업로드버튼
 			$('#file').on('click', fileUpload);
-			// 하단 새폴더 버튼
-			$('#btn-add').on('click', newDir);
 			// 하단 새폴더 버튼
 			$('#btn-add').on('click', newDir);
 		});
@@ -2092,6 +2098,13 @@ function setNavTop(nr) {
 		data += '			</i> 전체선택';
 		data += '		</a>';
 		data += '	</li>';
+		
+		data += '	<li>';
+		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-files-o" aria-hidden="true">';
+		data += '			</i> 복사/이동';
+		data += '		</a>';
+		data += '	</li>';
 		data += '	<li>';
 		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-trash" aria-hidden="true">';
@@ -2126,6 +2139,12 @@ function setNavTop(nr) {
 		data += '		</a>';
 		data += '	</li>';
 		data += '	<li>';
+		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-files-o" aria-hidden="true">';
+		data += '			</i> 복사/이동';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
 		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-trash" aria-hidden="true">';
 		data += '			</i> 삭제';
@@ -2142,6 +2161,12 @@ function setNavTop(nr) {
 		data += '         </i> 전체선택';
 		data += '      </a>';
 		data += '   </li>';
+		data += '	<li>';
+		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-files-o" aria-hidden="true">';
+		data += '			</i> 복사/이동';
+		data += '		</a>';
+		data += '	</li>';
 		data += '   <li>';
 		data += '      <a id="btn-del" class=' + 'topMenu' + '>';
 		data += '         <i class="fa fa-trash" aria-hidden="true">';
@@ -2216,6 +2241,7 @@ function setNavTop(nr) {
 		data += '			</i> 전체선택';
 		data += '		</a>';
 		data += '	</li>';
+
 		data += '	<li>';
 		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-trash" aria-hidden="true">';
@@ -2398,6 +2424,7 @@ function go_to_Trash() {
 
 	});
 }
+
 function newDir() {
 	alert('hell');
 
@@ -2646,6 +2673,54 @@ function sortObject(o){
     return sorted;
 }
 
+function copyCut(){
+	
+		var ffid = [];
+		var destPath = '';
+		
+		$('.file_check').each(function(index, item) {
+			if ($(item).is(":checked")) {
+				ffid.push($(item).attr('ffid'));
+			}
+		});
+		
+		if(ffid.length == 0) return;
+	
+		var copyCutHTML = '';
+		copyCutHTML += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
+		copyCutHTML += '<div class="w3-center"><br>';
+		copyCutHTML += 	'<span onclick="document.getElementById(\'copyCut\').style.display=\'none\'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;';
+		copyCutHTML += 	'</span></div>';
+		copyCutHTML += '<div class="section">';
+		copyCutHTML += '<label><b>새 폴더 이름</b></label>';
+		copyCutHTML += '<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="생성할 폴더명을 입력하세요." name="insertFolderName" id="insertFolderName">';
+		copyCutHTML += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">확인</button>';
+		copyCutHTML += '</div>';
+		copyCutHTML += '<button onclick="document.getElementById(\'copyCut\').style.display=\'none\'" type="button" class="w3-button w3-red">취소</button>';
+		copyCutHTML += '</div></div>';
+	
+		$('#copyCut').html(copyCutHTML);
+	
+		document.getElementById('copyCut').style.display = 'block';
+	/*
 
+		jQuery.ajaxSettings.traditional = true;
+
+		$.ajax({
+			url : 'deleteFileFolder',
+			type : 'POST',
+			data : {
+				ffid : ffid,
+				isshared : isshared,
+				bookState : bookState,
+			},
+			success : function() {
+				loadListUnchangNav(nowPath);
+			},
+			error : function(e) {
+				alert(JSON, stringify(e));
+			}
+		});*/
+}
 
 

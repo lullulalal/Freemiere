@@ -71,8 +71,11 @@
 
 	<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
 	<div id="newFolder" class="w3-modal"></div>
+	<!-- 복사 이동 ===========-->
+	<div id="copyCut" class="w3-modal"></div>
 	<!-- ========================================================== -->
 	<div id="sharedSet"></div>
+	
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -147,17 +150,10 @@
 				<!-- /.row -->
 				<div id="dragDropZone">
 					<div id="outputList"></div>
-					<!-- 
-					하단메뉴
-	
-										</form>
-
-				</div>
-						<!--/#dragDropZone  -->
 				</div>
 				<!-- /#page-wrapper -->
 			</div>
-
+</div>
 			<!-- /#wrapper -->
 		</div>
 		<!-- MODAL -->
