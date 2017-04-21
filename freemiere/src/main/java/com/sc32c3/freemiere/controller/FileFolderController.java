@@ -953,8 +953,12 @@ public class FileFolderController {
 
 	      @ResponseBody
 	      @RequestMapping(value="fileMove", method=RequestMethod.POST)
-	      public boolean fileMove(HttpSession session, String[] ffids, String destPath){
+	      public boolean fileMove(HttpSession session, String[] paths, String[] fnames, String[] ffids, String destPath, String[] isshared, String[] bookState){
 
+	    	 fileCopy(session, paths, fnames, ffids, destPath);
+	    	 deleteFileFolder(ffids, isshared, bookState, session);
+
+	    	 completeDeleteFileFolder(paths);
 	    	 //ileCopy();
 	         return true;
 	      }

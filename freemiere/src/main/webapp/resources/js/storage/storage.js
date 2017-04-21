@@ -2,6 +2,14 @@ var myRootDir = '';
 var menu = 'MyStorage';
 var nowPath = '';
 
+ function eventInit(){
+	$('#btn-del').off('click');
+	$('#btn-copycut').off('click');
+	$('#file').off('click');
+	$('#btn-add').off('click');
+}
+
+
 // 마우스 우클릭버튼
 jQuery.fn.contextPopup = function(menuData) {
 	// Define default settings
@@ -146,6 +154,7 @@ $(document).ready(function() {
 		setNavTop(menu);
 		nowPath = myRootDir;
 		// 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
 		//복사 이동
 		$('#btn-copycut').on('click', copyCut);
@@ -161,6 +170,7 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		// 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
 		//복사 이동
 		$('#btn-copycut').on('click', copyCut);
@@ -174,6 +184,7 @@ $(document).ready(function() {
 		menu = 'Recent';
 		setNavRoot(menu);
 		// 하단 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
@@ -184,6 +195,7 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		// 하단 삭제버튼
+		eventInit()
 		$('#btn-del').on('click', go_to_Trash);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
@@ -196,6 +208,7 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		// 하단 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
 		// 복원 버튼
 		$('#btn-resotre').on('click', restore);
@@ -205,6 +218,7 @@ $(document).ready(function() {
 	});
 
 	setNavTop(menu);
+	eventInit();
 	//복사 이동
 	$('#btn-copycut').on('click', copyCut);
 
@@ -1986,6 +2000,7 @@ function outputList(list) {
 	}
 //	alert('gaga');
 	// 하단 전체선택 메뉴버튼
+	$('#btn-all').off('click');
 	$('#btn-all').click(function() {
 		alert('hi1');
 		if ($('.file_check').is(':checked')) {
@@ -2037,6 +2052,7 @@ function outputList(list) {
 			loadList(path);
 			setNavTop('inFolder');
 			// 삭제버튼
+			eventInit();
 			$('#btn-del').on('click', go_to_Trash);
 			
 			$('#btn-copycut').off('click',copyCut);
@@ -2068,7 +2084,6 @@ var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 function setNavRoot(nr) {
 	navRoot = nr;
 	if (navRoot == 'MyStorage') {
-		// alert('haha');
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '내 저장소</a>';
 	} else if (navRoot == 'Shared')
@@ -2080,11 +2095,81 @@ function setNavRoot(nr) {
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '휴지통</a>';
-	else if (navRoot == 'Recent')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '최근작업파일</a>';
 	setNav();
 }
+
+function outputNavi(fullPath) {
+	// alert(nav);
+	function getPatialPath(dirArray, index) {
+		var rtn = '';
+		for (j = 0; j <= index; j++) {
+			rtn += dirArray[j];
+			rtn += '\\';
+		}
+		return rtn;
+	}
+
+	if (fullPath != null) {
+		var tmp = fullPath.split('\\');
+		var rootDir = tmp[0] + '\\' + tmp[1] + '\\' + tmp[2] + '\\';
+
+		if (rootDir.length != fullPath.length) {
+			path = fullPath.substring(rootDir.length, fullPath.length);
+			var dirArray = path.split('\\');
+
+			var iEnd = dirArray.length - 2;
+			nav += '<a class="navbar-brand">/</a>';
+			nav += '<a class="navbar-brand naviBar"';
+			nav += ' path="' + (rootDir + getPatialPath(dirArray, iEnd)) + '">';
+			nav += dirArray[iEnd] + '</a>';
+		}
+	}
+	setNav();
+	regEvent();
+}
+
+function setNav() {
+	$('#navigator').html(nav);
+}
+
+function regEvent() {
+	$(".naviBarRoot").click(function() {
+		var path = $(this).attr('nav');
+		if(path='MyStorage')
+			nowPath = myRootDir;
+		else
+			nowPath = '';
+		menu = path;
+		setNavRoot(menu)
+		loadList();
+	});
+
+	$(".naviBar").click(function() {
+		var naviArray = $('.naviBar');
+		var num = 0;
+		for (var i = 0; i < naviArray.length; i++) {
+			if(naviArray[i].outerHTML == $(this)[0].outerHTML){
+				num = i;
+				break;
+			}
+		}
+		var path = $(this).attr('path');
+		
+		if(nowPath.length >= path.length){
+			nav = '';
+			alert(navRoot);
+			setNavRoot(navRoot);
+			for (var i = 0; i < num; i++) {
+				nav += '<a class="navbar-brand">/</a>';
+				nav += naviArray[i].outerHTML;
+			}
+		}
+		nowPath = path;
+		menu = 'List';
+		loadList(path);
+	});
+}
+
 
 function setNavTop(nr) {
 	// alert(nr);
@@ -2254,80 +2339,6 @@ function setNavTop(nr) {
 		$('#setNavTop').html(data);
 	}
 
-}
-
-/*
- * $('#setNavTop').html(data); }
- */
-function outputNavi(fullPath) {
-	// alert(nav);
-	function getPatialPath(dirArray, index) {
-		var rtn = '';
-		for (j = 0; j <= index; j++) {
-			rtn += dirArray[j];
-			rtn += '\\';
-		}
-		return rtn;
-	}
-
-	if (fullPath != null) {
-		var tmp = fullPath.split('\\');
-		var rootDir = tmp[0] + '\\' + tmp[1] + '\\' + tmp[2] + '\\';
-
-		if (rootDir.length != fullPath.length) {
-			path = fullPath.substring(rootDir.length, fullPath.length);
-			var dirArray = path.split('\\');
-
-			var iEnd = dirArray.length - 2;
-			nav += '<a class="navbar-brand">/</a>';
-			nav += '<a class="navbar-brand naviBar"';
-			nav += ' path="' + (rootDir + getPatialPath(dirArray, iEnd)) + '">';
-			nav += dirArray[iEnd] + '</a>';
-		}
-	}
-	setNav();
-	regEvent();
-}
-
-function setNav() {
-	$('#navigator').html(nav);
-}
-
-function regEvent() {
-	$(".naviBarRoot").click(function() {
-		var path = $(this).attr('nav');
-		if (path = 'MyStorage')
-			nowPath = myRootDir;
-		else
-			nowPath = '';
-		menu = path;
-		setNavRoot(menu)
-		loadList();
-	});
-
-	$(".naviBar").click(function() {
-		var naviArray = $('.naviBar');
-		var num = 0;
-		for (var i = 0; i < naviArray.length; i++) {
-			if (naviArray[i].outerHTML == $(this)[0].outerHTML) {
-				num = i;
-				break;
-			}
-		}
-		var path = $(this).attr('path');
-
-		if (nowPath.length >= path.length) {
-			nav = '';
-			setNavRoot(navRoot);
-			for (var i = 0; i < num; i++) {
-				nav += '<a class="navbar-brand">/</a>';
-				nav += naviArray[i].outerHTML;
-			}
-		}
-		nowPath = path;
-		menu = 'List';
-		loadList(path);
-	});
 }
 
 // 파일 업로드
@@ -2640,6 +2651,7 @@ function outputRecentList(dateFile) {
 			loadList(path);
 			setNavTop('inFolder');
 			// 삭제버튼
+			eventInit();
 			$('#btn-del').on('click', go_to_Trash);
 
 		});
@@ -2684,10 +2696,15 @@ function copyCut(){
 	 copyMoveDestPath = '';
 	 copyMovepaths = [];
 	 copyMovefnames = [];
+	 
+		var isshared = [];
+		var bookState = [];
 		
 		$('.file_check').each(function(index, item) {
 			if ($(item).is(":checked")) {
 				copyMoveFfid.push($(item).attr('ffid'));
+				isshared.push($(item).attr('isshared'));
+				bookState.push($(item).attr('bookState'));
 			}
 		});
 		
@@ -2744,14 +2761,18 @@ function copyCut(){
 			if(copyMoveDestPath == '') alert("경로를 선택 해주세요.");
 			
 			jQuery.ajaxSettings.traditional = true;
+
 			$.ajax({
+				
 				url : 'fileMove',
 				type : 'POST',
 				data : {
 					paths : copyMovepaths,
 					fnames : copyMovefnames,
 					ffids : copyMoveFfid,
-					destPath : copyMoveDestPath
+					destPath : copyMoveDestPath,
+					isshared : isshared,
+					bookState : bookState
 				},
 				success : function() {
 					document.getElementById('copyCut').style.display='none';
