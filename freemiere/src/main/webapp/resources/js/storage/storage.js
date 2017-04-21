@@ -2039,6 +2039,7 @@ function outputList(list) {
 			// 삭제버튼
 			$('#btn-del').on('click', go_to_Trash);
 			
+			$('#btn-copycut').off('click',copyCut);
 			//복사 이동
 			$('#btn-copycut').on('click', copyCut);
 			// 업로드버튼
@@ -2603,7 +2604,6 @@ function loadRecentList() {
 var recentHTML = '';
 function outputRecentList(dateFile) {
 	//alert(JSON.stringify(dateFile));	
-	alert("gkgk");
 	var sorted = sortObject(dateFile);
 	
 	$.each(sorted, function(date, value) {
@@ -2673,54 +2673,151 @@ function sortObject(o){
     return sorted;
 }
 
+
+var copyMoveFfid = [];
+var copyMoveDestPath = '';
+var copyMovepaths = [];
+var copyMovefnames = [];
+
 function copyCut(){
-	
-		var ffid = [];
-		var destPath = '';
+	 copyMoveFfid = [];
+	 copyMoveDestPath = '';
+	 copyMovepaths = [];
+	 copyMovefnames = [];
 		
 		$('.file_check').each(function(index, item) {
 			if ($(item).is(":checked")) {
-				ffid.push($(item).attr('ffid'));
+				copyMoveFfid.push($(item).attr('ffid'));
 			}
 		});
 		
-		if(ffid.length == 0) return;
-	
-		var copyCutHTML = '';
-		copyCutHTML += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
-		copyCutHTML += '<div class="w3-center"><br>';
-		copyCutHTML += 	'<span onclick="document.getElementById(\'copyCut\').style.display=\'none\'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;';
-		copyCutHTML += 	'</span></div>';
-		copyCutHTML += '<div class="section">';
-		copyCutHTML += '<label><b>새 폴더 이름</b></label>';
-		copyCutHTML += '<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="생성할 폴더명을 입력하세요." name="insertFolderName" id="insertFolderName">';
-		copyCutHTML += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">확인</button>';
-		copyCutHTML += '</div>';
-		copyCutHTML += '<button onclick="document.getElementById(\'copyCut\').style.display=\'none\'" type="button" class="w3-button w3-red">취소</button>';
-		copyCutHTML += '</div></div>';
-	
-		$('#copyCut').html(copyCutHTML);
+		if(copyMoveFfid.length == 0) return;
+		
+		
+		$('.file_check').each(function(index, item) {
+			if ($(item).is(":checked")) {
+				var path = $(item).attr('path');
+				copyMovepaths.push(path);
+				
+				var tmp = path.split('\\');
+				//alert(tmp[tmp.length-2]);
+				if(tmp[tmp.length-1] == '' || tmp[tmp.length-1] == null)
+					copyMovefnames.push(tmp[tmp.length-2]);
+				else
+					copyMovefnames.push(tmp[tmp.length-1]);
+				
+			}
+		});
+		
+		ouputCopyMoveFiles(copyMovefnames);
+		loadMyStorageFolder();
 	
 		document.getElementById('copyCut').style.display = 'block';
-	/*
+	
+		$('#copyBtn').off('click');
+		$('#copyBtn').on('click',function(){
+			if(copyMoveDestPath == '') alert("경로를 선택 해주세요.");
+			
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : 'fileCopy',
+				type : 'POST',
+				data : {
+					paths : copyMovepaths,
+					fnames : copyMovefnames,
+					ffids : copyMoveFfid,
+					destPath : copyMoveDestPath
+				},
+				success : function() {
+					document.getElementById('copyCut').style.display='none';
+					loadListUnchangNav(nowPath);
+				},
+				error : function(e) {
+					//alert(JSON, stringify(e));
+				}
+			});
+		});
+		
+		
+		$('#moveBtn').off('click');
+		$('#moveBtn').on('click',function(){
+			if(copyMoveDestPath == '') alert("경로를 선택 해주세요.");
+			
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : 'fileMove',
+				type : 'POST',
+				data : {
+					paths : copyMovepaths,
+					fnames : copyMovefnames,
+					ffids : copyMoveFfid,
+					destPath : copyMoveDestPath
+				},
+				success : function() {
+					document.getElementById('copyCut').style.display='none';
+					loadListUnchangNav(nowPath);
+				},
+				error : function(e) {
+					//alert(JSON, stringify(e));
+				}
+			});
+		});
+}
 
-		jQuery.ajaxSettings.traditional = true;
+function ouputCopyMoveFiles(paths){
+	var fileListText = '';
+	
+	for(var i = 0; i < paths.length; i++){
+		fileListText += paths[i];
+		fileListText += '  ';
+	}
+	
+	$("#selectedFile").val(fileListText);
+}
 
-		$.ajax({
-			url : 'deleteFileFolder',
-			type : 'POST',
-			data : {
-				ffid : ffid,
-				isshared : isshared,
-				bookState : bookState,
-			},
-			success : function() {
-				loadListUnchangNav(nowPath);
-			},
-			error : function(e) {
-				alert(JSON, stringify(e));
-			}
-		});*/
+function loadMyStorageFolder() {
+	var url = 'loadMyStorageForEditor';
+	$.ajax({
+		url : url,
+		type : 'GET',
+		dataType : 'json',
+		success : function(nodes) {
+			//alert(JSON.stringify(nodes));
+		    var setting = {
+		            view: {
+		                //addHoverDom: addHoverDom,
+		               // removeHoverDom: removeHoverDom,
+		                selectedMulti: false
+		            },
+		            data: {
+		                simpleData: {
+		                    enable: true
+		                }
+		            },
+		            edit: {
+		                enable: false
+		            },
+					callback: {
+						//beforeClick: beforeClick,
+						onClick: onClickCC
+					}
+		     };
+		    
+	        $.fn.zTree.init($("#copyCutTree"), setting, nodes);
+	        
+		},
+		error : function(e) {
+			alert(JSON.stringify(e));
+		}
+	});
+}
+
+function onClickCC(event, treeId, treeNode, clickFlag) {
+	requestFileListCC(treeNode.path)
+}	
+
+function requestFileListCC(path){
+	copyMoveDestPath = path;
 }
 
 

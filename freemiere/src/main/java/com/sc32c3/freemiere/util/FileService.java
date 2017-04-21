@@ -68,8 +68,6 @@ public class FileService {
 			if (!serverFile.isFile())
 				break;
 			originalFilename = fileName+ "("+count+")"+ext;
-			
-			
 		}
 
 		// 파일 저장

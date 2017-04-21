@@ -1,10 +1,12 @@
 package com.sc32c3.freemiere.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.sc32c3.freemiere.vo.FileFolder;
 import com.sc32c3.freemiere.vo.FolderVo;
 
 /**
@@ -128,6 +130,7 @@ public class FileManager {
 		for( File f : files )	//배열에 담긴 파일을 하나씩 가져온다 
 		{
 			if ( f.isDirectory() ) {//해당 패스에서 디렉토리(폴더)가 존재하는지 확인해서 있으면 
+				if(f.getName().equals(".thumb")) continue;
 				//result.add(f);
 				findFileRecursive( f.getAbsolutePath() , result );//절대경로로 정해서 다시 패스에 담는다, 파일은 result에 담는다
 			}
@@ -135,5 +138,57 @@ public class FileManager {
 				result.add(f);
 		}
 	}
+	
+	public static void findFileRecursive(String path,
+			ArrayList<String> resultPaths, 
+			ArrayList<String> resultFnames)//사용자컴터에서 폴더를 확인해 파일을 담아온다
+	{
+		File file = new File (path);	//경로를 받아온다
+		File[] files = file.listFiles();//받아온 경로의 파일 리스트를 배열에 담는다
+		for( File f : files )	//배열에 담긴 파일을 하나씩 가져온다 
+		{
+			if ( f.isDirectory() ) {//해당 패스에서 디렉토리(폴더)가 존재하는지 확인해서 있으면
+				if(f.getName().equals(".thumb")) continue;
+				resultPaths.add(f.getAbsolutePath());
+				resultFnames.add(f.getName());
+				findFileRecursive( f.getAbsolutePath() , resultPaths,  resultFnames);//절대경로로 정해서 다시 패스에 담는다, 파일은 result에 담는다
+			}
+			else {
+				resultFnames.add(f.getName());
+				resultPaths.add(f.getAbsolutePath());
+			}
+		}
+	}
+	
+	public static void fileMove(String orgFilePath, String newFilePath) {
+	    File orgFile = new File(orgFilePath);
+	    File newFile = new File(newFilePath);
+	            
+	    if(orgFile.exists()) {
+	        orgFile.renameTo(newFile);
+	    }
+	}
+	
+	
+
+	
+	public static void fileCopy(String orgFilePath, String newFilePath) {
+	    File orgFile = new File(orgFilePath);
+	    try{
+	        FileInputStream inputStream = new FileInputStream(orgFile);
+	        FileOutputStream outputStream = new FileOutputStream(newFilePath); 
+	        FileChannel fcin =  inputStream.getChannel();
+	        FileChannel fcout = outputStream.getChannel(); 
+	        
+	        long size = fcin.size();
+	        fcin.transferTo(0, size, fcout); 
+	        
+	        fcout.close();
+	        fcin.close(); 
+	        outputStream.close();
+	        inputStream.close();
+	    }catch(Exception e){}
+	}
+
 }
 
