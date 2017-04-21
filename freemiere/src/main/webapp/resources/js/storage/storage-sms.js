@@ -10,8 +10,8 @@ function loadMyStorageForEditor() {
 			alert(JSON.stringify(nodes));
 		    var setting = {
 		            view: {
-		                //addHoverDom: addHoverDom,
-		               // removeHoverDom: removeHoverDom,
+		                addHoverDom: addHoverDom,
+		                removeHoverDom: removeHoverDom,
 		                selectedMulti: false
 		            },
 		            data: {

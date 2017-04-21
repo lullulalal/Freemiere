@@ -61,6 +61,35 @@
 		      
 	</select> -->
 	
+	<select id="getMyRecentList" parameterType="map" resultType="FileFolder">
+		select myffs.ffs_email email, myffs.ffs_path path,
+		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
+		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		       bm.bookstate bookstate
+		from	(select ffs.email ffs_email, ffs.path ffs_path, 
+				ffs.info ffs_info, ffs.isshared ffs_isshared, 
+				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+			from filefolders ffs
+			where LOWER(ffs.path)=LOWER(#{path}) ) myffs, bookmarks bm
+		where ffs.ffid=s.ffid
+		      and (bm.email=#{email} or bm.email is null) 
+		      and LOWER(myffs.ffs_isshared)='f'
+		      and LOWER(myffs.ffs_isdeleted)='f'
+		      order by strUpdate desc
+		
+		
+	</select>
+	
+	
+	<!-- 검색 -->
+	<select id="getSearchList" parameterType="string" resultType="FileFolder">
+		select * from filefolders
+		where path like '%#{title}%' 
+			order by path desc
+	</select>
+	
+	
+	
 	<select id="getSharedBookmarkList" parameterType="string" resultType="FileFolder">
 		select shared.ffs_email email, shared.ffs_path path,
 		       shared.ffs_info info, shared.ffs_isshared isshared, 
@@ -210,6 +239,11 @@
    </select>
    
    
+	<!-- path에 대한 ffid 가져오기 -->
+	<select id="getffid" parameterType="string" resultType="int"> 
+		select ffid from filefolders where path=#{path}
+	</select> 
+	
    <update id="folderShare" parameterType="map" >
    update filefolders set  
       <if test='isShared=="f"'>isshared='T'</if>
