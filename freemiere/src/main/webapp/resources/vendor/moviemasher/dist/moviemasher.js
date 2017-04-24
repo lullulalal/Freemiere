@@ -2990,6 +2990,7 @@ TimeRange.fromSomething = function(something){
     return range;
   } } );
   pt.add = function(time) {
+	  
     if (this.fps !== time.fps) {
       time = time.copyTime();
       this.synchronize(time);

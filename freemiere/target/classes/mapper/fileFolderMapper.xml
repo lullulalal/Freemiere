@@ -44,23 +44,6 @@
 		      and (bm.email=#{email} or bm.email is null)
 	</select>
 	
-	<!--<select id="getMyStorageList" parameterType="string" resultType="FileFolder">
-		select myffs.ffs_email email, myffs.ffs_path path,
-		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
-		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
-		       bm.bookstate bookstate
-		from	(select ffs.email ffs_email, ffs.path ffs_path, 
-				ffs.info ffs_info, ffs.isshared ffs_isshared, 
-				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
-			from filefolders ffs
-			where ffs.email=#{email}
-				and LOWER(ffs.isShared)='f' 
-				and LOWER(ffs.isDeleted)='f') myffs, bookmarks bm
-		where myffs.ffs_ffid = bm.ffid(+) 
-		      and (bm.email=#{email} or bm.email is null)
-		      
-	</select> -->
-	
 	<select id="getMyRecentList" parameterType="map" resultType="FileFolder">
 		select myffs.ffs_email email, myffs.ffs_path path,
 		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
@@ -76,8 +59,6 @@
 		      and LOWER(myffs.ffs_isshared)='f'
 		      and LOWER(myffs.ffs_isdeleted)='f'
 		      order by strUpdate desc
-		
-		
 	</select>
 	
 	
@@ -286,7 +267,11 @@
    </insert>
    
    <update id="updateOwner" parameterType="map">
-   update shares set auth='VIEW' where ffid=#{ffid} and email=#{email}
+  	 update shares set auth='VIEW' where ffid=#{ffid} and email=#{email}
+   </update>
+   
+   <update id="move" >
+  	 update filefolders set path=#{1} where LOWER(path)=LOWER(#{0})
    </update>
    
     <select id="searchOwner" parameterType="int" resultType="FileFolder">

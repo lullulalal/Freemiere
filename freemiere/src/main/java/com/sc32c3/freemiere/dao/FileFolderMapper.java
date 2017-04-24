@@ -87,4 +87,5 @@ public interface FileFolderMapper {
 	public int updateOwner(HashMap<String, Object> map);
 	
 	public FileFolder searchOwner(int ffid);
+	public int move(String originPath, String destPath);
 }

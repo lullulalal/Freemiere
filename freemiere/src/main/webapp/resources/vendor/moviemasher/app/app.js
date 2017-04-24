@@ -34,6 +34,41 @@ function eventOnDraw( ctx, eventName ){
 	  };
 }
 
+var videoTotalDuration = 0;
+var videoClips = 0;
+function add_video0(id, url, count){
+	var duration = count/30;
+	var cntLength = String(count.toString()).length;
+	var zeroPlus = '';
+	for(var i = 0; i < 9-cntLength; i++){
+		zeroPlus += '0';
+	}
+    var add = {
+    		'id': id,
+    		'type': 'video', 
+    		'url': url,
+    		'fps': 30,
+    		'pattern': (zeroPlus+'%.jpg'),
+    		'duration' : duration
+   };
+   mm_player.add(add, 'video', videoTotalDuration , 0);
+   //alert(JSON.stringify(mm_player.mash, null, '\t'));
+   videoTotalDuration += duration;
+}
+
+function add_video0img(id, url){
+	alert(url);
+	var add = {
+	      'label': id,
+	      'type': 'image',
+	      'id': id,
+	      'url': url,
+	};
+	mm_player.add(add, 'video', videoTotalDuration , 0);
+	alert(JSON.stringify(mm_player.mash, null, '\t'));
+	videoTotalDuration += 2;
+}
+
 function mm_load() {
 	  var canvas = document.getElementById('mm-canvas');
 	  

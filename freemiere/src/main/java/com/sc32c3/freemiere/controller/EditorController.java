@@ -16,4 +16,11 @@ public class EditorController {
     	
 		return "editor";
     }
+	
+	@RequestMapping(value = "tsTest", method = RequestMethod.GET)
+	public String tsTest(){
+    	logger.info("서버:tsTest 실행 ");
+    	
+		return "demo";
+    }
 }

@@ -1,29 +1,29 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.rmi.server.SocketSecurityException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +33,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sc32c3.freemiere.dao.FileFolderDAO;
 import com.sc32c3.freemiere.dao.MemberDAO;
 import com.sc32c3.freemiere.util.FileManager;
@@ -190,7 +189,6 @@ public class FileFolderController {
 			all.put(ff.getFfid(), ff);
 			//여기까지 파일 가져오는 부분
 		}
-		System.out.println("해쉬맵에 담긴 파일"+ all);
 		
 		//가져온 파일을 해쉬맴으로 날짜별로 구분해보자 
 		HashSet<String> dateinfo = new HashSet<>();//날짜정보를 저장할 해시샛, 중복이 허용되지 않아 저장된 중복값은 하나로 된다
@@ -203,7 +201,6 @@ public class FileFolderController {
 			dateinfo.add(fileFolder.getStrUpdate());//날짜정보를 담고 있다 
 		}
 	
-		System.out.println("날짜정보" + dateinfo);
 		//System.out.println("정렬 테스트"+ rtn);
 
 		for (String date : dateinfo) {//날짜 정보가 담긴 dateinfo에서 날짜를 하나씩 꺼내본다
@@ -215,8 +212,6 @@ public class FileFolderController {
 				 }//if
 			}//inner for
 			
-			System.out.println("해쉬맵의 키값으로 있는 date정보 : " + date);
-			System.out.println("해쉬맵의 날짜정보를 array에 넣음" + dateFile2);//테스트 출력해보자
 			dateFile.put(date, dateFile2);//해쉬맵에 날짜를 키값으로 하고 그날짜에 해당되는  파일 정보(datefile2)를 담는다.
 			//해당 날짜에 대한 파일을 가지고 있다 
 		}
@@ -256,7 +251,6 @@ public class FileFolderController {
 		String loadPath = path;
 		if (path.charAt(path.length() - 1) != '\\')
 			loadPath += "\\";
-		System.out.println("1" + loadPath);
 		File[] files = FileManager.findFile(loadPath);
 		ArrayList<FileFolder> rtn = new ArrayList<>();
 
@@ -266,7 +260,6 @@ public class FileFolderController {
 			String p = f.getAbsolutePath();
 			if (f.isDirectory() == true)
 				p += "\\";
-			System.out.println("2" + p);
 			FileFolder ff = fileFolderDAO.getFilerFolerInfo(p, email);
 			if (ff == null)
 				continue;
@@ -363,20 +356,17 @@ public class FileFolderController {
 	public void upload(HttpSession session, MultipartHttpServletRequest upload, String nowPath) {
 		
 		System.out.println("컨트롤러파일업로드:"+nowPath);
-		if (upload == null)
-			System.out.println("폭신폭신 식빵");
 
 		String email = (String) session.getAttribute("loginMem");
 		if (nowPath.equals("root"))
 			nowPath = "c:\\freemiere\\" + email + "\\";
 
-	
+		if(nowPath.charAt(nowPath.length()-1) != '\\') nowPath += '\\';
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
 			List<MultipartFile> multiFiles = upload.getFiles(filesName.next());
 
 			for (int i = 0; i < multiFiles.size(); i++) {
-				System.out.println("길이" + multiFiles.size());
 				if (!multiFiles.get(i).isEmpty()) {
 					FileFolder file = new FileFolder();
 
@@ -419,7 +409,6 @@ public class FileFolderController {
 		public void newDir(String folderName, String path, HttpSession session) {
 			logger.debug("folderName : {}", folderName);
 			logger.debug("path : {}", path); // nowPath 현재의 경로
-			System.out.println("찌찌파티");
 			File directory = new File(path + folderName + "\\");
 			if (directory.exists() && directory.isFile()) {
 				System.out.println("찌찌파티");
@@ -464,7 +453,6 @@ public class FileFolderController {
 	@ResponseBody
 	@RequestMapping(value = "restore", method = RequestMethod.POST)
 	public void resotre(String[] path) {
-		System.out.println("복원갯수:"+path.length);
 		for(int i=0; i< path.length;i++){
 			ArrayList<File> reFileList = new ArrayList<>();
 			FileManager.getAllSubFile(path[i], reFileList);
@@ -480,7 +468,6 @@ public class FileFolderController {
 	      FileFolder search = fileFolderDAO.bookmarkSearch(ffid);
 	      String email= (String)session.getAttribute("loginMem");
 	      
-	      System.out.println("너는 과연 있니?" + search);
 	      int result = 0;
 	      int insert = 0;
 	      if(search == null){
@@ -530,7 +517,6 @@ public class FileFolderController {
        
        //thumb
        String path3 = path + ".thumb" + File.separator + filename + ".png";
-       System.out.println("path2야 !!!!!!!!!1" + path2);
        File f = new File(result.getPath());
        
        //기존에 있는thumb
@@ -589,9 +575,7 @@ public class FileFolderController {
 	   @RequestMapping(value="folderShare", method=RequestMethod.POST)
 	   public ArrayList<FileFolder> folderShare(int ffid){
 	      
-	      System.out.println("ffid : " + ffid);
 	      ArrayList<FileFolder> rtn = fileFolderDAO.shareList(ffid);
-	      System.out.println("얘두라 나오렴~{}"+rtn);
 	      return rtn;
 	   }
 	   
@@ -600,9 +584,7 @@ public class FileFolderController {
 	      @RequestMapping(value="folderShare2", method=RequestMethod.POST)
 	      public FileFolder folderShare2(int ffid){
 	         
-	         System.out.println("ffid : " + ffid);
 	         FileFolder rtn = fileFolderDAO.boardread(ffid);
-	         System.out.println("얘두라 나오렴~{}"+rtn);
 	         return rtn;
 	      }
 	   
@@ -612,7 +594,6 @@ public class FileFolderController {
 	   @RequestMapping(value="pathUpdate", method=RequestMethod.POST)
 	   public FileFolder pathUpdate(int ffid, String isShared, HttpSession session){
 	      
-	      logger.info("너의 ffid는...? " + ffid);
 	      
 	      String email= (String)session.getAttribute("loginMem");
 	      
@@ -698,7 +679,6 @@ public class FileFolderController {
 	      public FileFolder info(int ffid, HttpSession session){
 	         
 	      
-	      logger.info("너의 ffid는...? " + ffid);
 	      
 	      String email= (String)session.getAttribute("loginMem");
 	      
@@ -924,11 +904,104 @@ public class FileFolderController {
 	      @RequestMapping(value="getData", method=RequestMethod.POST)
 	      public FileFolder getData(int ffid){
 	         
-	         System.out.println("ffid : " + ffid);
 	         FileFolder rtn = fileFolderDAO.boardread(ffid);
-	         System.out.println("얘두라 나오렴~{}"+rtn);
 	         return rtn;
 	      }
-	   
+	      
+	      //파일 복사 이동 아래부터
+	      @ResponseBody
+	      @RequestMapping(value="fileCopy", method=RequestMethod.POST)
+	      public boolean fileCopy(HttpSession session, String[] paths, String[] fnames, String[] ffids, String destPath){
+	         if(destPath.charAt(destPath.length()-1) != '\\') destPath += '\\';
+		     String email= (String)session.getAttribute("loginMem");
+		     
+		     System.out.println("파일 갯수  : " + paths.length);
+		     
+	         for(int i = 0; i < paths.length; i++){
+	        	 File f = new File(paths[i]);
+	        	 
+	        	 if ( f.isDirectory() ) {//디렉토리
+	        		 String newFolderName = destPath + fnames[i];
+	        		 ArrayList<String> nPaths = new ArrayList<>();
+	        		 ArrayList<String> nFiles = new ArrayList<>();
+	        		 FileManager.findFileRecursive(paths[i], nPaths, nFiles);
+	        		 
+	        		 //File fn = new File(newFolderName);
+	        		 
+	        		 newDir(fnames[i], destPath , session);
+	        		 
+	        		 String[] nPathsArr = new String[nPaths.size()];
+	        		 nPathsArr = nPaths.toArray(nPathsArr);
+	        		 
+	        		 String[] nFilesArr = new String[nFiles.size()];
+	        		 nFilesArr = nFiles.toArray(nFilesArr);
+	        		 
+	        		 fileCopy(session, nPathsArr, nFilesArr ,null, newFolderName);
+	        	 }
+	        	 else { //파일
+	        		 //경로 만들기.
+	        		 //File file = new File("/path/to/file");
+	        		 FileItem fileItem = null;
+	        		 try {
+	        			 fileItem = new DiskFileItem("mainFile", 
+	        					 Files.probeContentType(f.toPath()), false, 
+	        					 	f.getName(), (int) f.length(), 
+	        					 	f.getParentFile());
+	        		     InputStream input = new FileInputStream(f);
+	        		     OutputStream os = fileItem.getOutputStream();
+	        		     IOUtils.copy(input, os);
+	        		 } catch (IOException ex) {
+	        		     // do something.
+	        		 }
 
+	        		 MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+	        		 
+						FileFolder file = new FileFolder();
+
+						String savefile = FileService.saveFile(multipartFile, destPath);
+
+						file.setFileName(savefile);
+						file.setPath(destPath + savefile);
+						file.setEmail(email);
+
+						fileFolderDAO.upload(file);
+
+						// sms 썸네일 추가. 파일 실제로 삭제 할때 함께 삭제 해야됨~!
+						// 썸네일 파일 규칙 (영상 + 이미지) : (원본파일이름.확장자.png)
+						String ext = ImageFileManager.checkImageFile(savefile);
+						if (ext != null) {
+							ImageFileManager.saveImageFile(ImageFileManager.resizeImageHighQuality(destPath + savefile), ext,
+									destPath + ".thumb\\" + savefile + ".png");
+						} else if (ImageFileManager.checkVideoFile(savefile) != null) {
+							ImageFileManager.videoThumbGender(destPath + savefile, destPath + ".thumb\\" + savefile + ".png");
+							ImageFileManager.saveImageFile(
+									ImageFileManager.resizeImageHighQuality(destPath + ".thumb\\" + savefile + ".png"),
+									"png", destPath + ".thumb\\" + savefile + ".png");
+							ImageFileManager.extractVideo(destPath + savefile, fileFolderDAO.getffid(destPath + savefile));
+						}
+	        	 }
+	         }
+	         return true;
+	      }
+
+	      @ResponseBody
+	      @RequestMapping(value="fileMove", method=RequestMethod.POST)
+	      public boolean fileMove(HttpSession session, String[] paths, String[] fnames, String[] ffids, String destPath, String[] isshared, String[] bookState){
+	    	  if(destPath.charAt(destPath.length()-1) != '\\') destPath += '\\';
+	    	  for(int i = 0; i < paths.length; i++){
+	    		  //썸네일 이동
+	    		File f = new File(paths[i]);
+	    		if(!f.isDirectory()) {
+					String ext = ImageFileManager.checkImageFile(paths[i]);
+					if (ext != null) {
+						FileManager.fileMove(f.getParent() + "\\.thumb\\" + fnames[i] + ".png", destPath + ".thumb\\" +fnames[i] + ".png");
+					} else if (ImageFileManager.checkVideoFile(paths[i]) != null) {
+						FileManager.fileMove(f.getParent() + "\\.thumb\\" + fnames[i] + ".png", destPath + ".thumb\\" +fnames[i] + ".png");
+					}
+	    		}
+				fileFolderDAO.move(paths[i], destPath);
+				FileManager.fileMove(paths[i], destPath + fnames[i]);
+	    	  }
+	         return true;
+	      }
 }

@@ -61,4 +61,12 @@ public class FolderVo {
 	public void setOpen(boolean open) {
 		this.open = open;
 	}
+
+	@Override
+	public String toString() {
+		return "FolderVo [id=" + id + ", pId=" + pId + ", name=" + name + ", isParent=" + isParent + ", open=" + open
+				+ ", path=" + path + "]";
+	}
+	
+	
 }

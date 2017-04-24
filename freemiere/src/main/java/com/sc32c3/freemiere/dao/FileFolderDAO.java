@@ -297,4 +297,26 @@ public class FileFolderDAO {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		return mapper.searchOwner(ffid);
 	}
+	   
+	   public void move(String OrginPath, String destPath){
+		   File f = new File(OrginPath);
+		   FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		   if(f.getName().equals(".thumb")) return;
+		   if ( f.isDirectory() ) {//디렉토리
+    		   System.out.println(f.getAbsolutePath() + '\\');
+    		   System.out.println(destPath + f.getName() + '\\');
+			   mapper.move(f.getAbsolutePath() + '\\', destPath + f.getName() + '\\');
+			   File[] files = f.listFiles();
+	    	   for( File ff : files )	
+	    	   {
+	    		   String newDestPath = destPath + f.getName() + '\\';
+	    		   //if(newDestPath.charAt(newDestPath.length()-1) != '\\') newDestPath += '\\';
+
+	    		   move( ff.getAbsolutePath() , newDestPath );
+	    	   }
+	       }else { //파일
+	    	  mapper.move(f.getAbsolutePath(), destPath + f.getName());
+	       	  return;
+	       }
+	   }
 }

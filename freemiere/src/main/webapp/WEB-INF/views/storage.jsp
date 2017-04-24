@@ -56,6 +56,7 @@
 
 <link href="resources/vendor/colorBox/colorbox.css" rel="stylesheet">
 
+<link rel="stylesheet" href="resources/vendor/zTree/css/awesomeStyle/awesome.css" type="text/css">
 <!-- Storage context -->
 <link href="resources/css/storage/context.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -71,8 +72,27 @@
 
 	<!-- 새폴더 id resources/js/storage 자바스크립트 처리 ===========-->
 	<div id="newFolder" class="w3-modal"></div>
+	<!-- 복사 이동 ===========-->
+	<div id="copyCut" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:300px">
+			<div class="section">
+				<div id="cm-contents">
+					<div><label>선택한 파일/폴더</label></div>
+					<!-- <div><ul id="selectedFile"></ul></div> -->
+					<textarea id="selectedFile" readonly="readonly" ></textarea>
+					<div><label>복사/이동 할 위치</label></div>
+					<div><ul id="copyCutTree" class="ztree"></ul></div>
+					<button id="copyBtn" class="w3-button w3-blue">복사</button>
+					<button id="moveBtn" class="w3-button w3-blue">이동</button>
+					<button onclick="document.getElementById('copyCut').style.display='none'" type="button" class="w3-button w3-red">취소</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<!-- ========================================================== -->
 	<div id="sharedSet"></div>
+	
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -118,7 +138,7 @@
 						<li><a id='shared' class='sideMenu'><i
 								class="fa fa-sitemap fa-fw"></i> 공유 저장소</a></li>
 						<li><a id='recent' class='sideMenu'><i
-								class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
+								class="fa fa-bar-chart-o fa-fw"></i> 최근 작업 파일</a></li>
 						<li><a id='bookMark' class='sideMenu'><i
 								class="fa fa-edit fa-fw"></i> 즐겨찾기</a></li>
 						<li><a id='trash' class='sideMenu'><i
@@ -153,7 +173,6 @@
 				<!-- /.row -->
 				<div id="dragDropZone">
 					<div id="outputList"></div>
-				</div>
 				<!--/#dragDropZone  -->
 			</div>
 		</div>
@@ -208,6 +227,9 @@
 
 		<!-- Storage JavaScript -->
 		<script src="resources/js/storage/storage.js"></script>
+		
+<script type="text/javascript" src="resources/vendor/zTree/js/jquery.ztree.all.min.js"></script>
+		
 		<!-- Storage 우클릭 이벤트 -->
 		<script src="resources/js/storage/rightMouse.js"></script>
 		<script src="resources/newDirModal/js/jquery.backstretch.min.js"></script>

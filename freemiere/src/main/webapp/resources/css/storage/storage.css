@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+
+.filebox-td{
+	width: 156px;
+	height: 161px;
+}
+
+.fileBox {
+	display: inline;
+}
+
+.naviBar {
+	cursor: pointer;
+}
+
+.sideMenu {
+	cursor: pointer;
+}
+
+.folder {
+	cursor: pointer;
+}
+
+.file {
+	cursor: pointer;
+}
+
+#dragDropZone{
+
+}

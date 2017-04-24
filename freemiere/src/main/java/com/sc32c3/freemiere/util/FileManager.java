@@ -1,10 +1,12 @@
 package com.sc32c3.freemiere.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.sc32c3.freemiere.vo.FileFolder;
 import com.sc32c3.freemiere.vo.FolderVo;
 
 /**
@@ -54,6 +56,13 @@ public class FileManager {
 		return files;
 	}
 	
+	public static int findFileNum(String path)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		return files.length;
+	}
+	
 	//재귀 호출하여 하위 폴더의 사이즈를 구함
 	public static long getFileFolderSize(File dir)
 	{
@@ -79,6 +88,12 @@ public class FileManager {
 		for( int i = 0; i < files.length; ++i )
 		{
 			if ( files[i].isDirectory() ) {
+				int j = 0;
+				for( j = 0; j < folderList.size(); j++ ){
+					if(files[i].getAbsolutePath().equalsIgnoreCase(
+							folderList.get(j).getPath())) break;
+				}
+				if( j != folderList.size() ) continue;
 				if( ".thumb".equals(files[i].getName()) )
 					continue;
 				int id = Integer.parseInt( Integer.toString(pid) + Integer.toString(fNum) );
@@ -128,6 +143,7 @@ public class FileManager {
 		for( File f : files )	//배열에 담긴 파일을 하나씩 가져온다 
 		{
 			if ( f.isDirectory() ) {//해당 패스에서 디렉토리(폴더)가 존재하는지 확인해서 있으면 
+				if(f.getName().equals(".thumb")) continue;
 				//result.add(f);
 				findFileRecursive( f.getAbsolutePath() , result );//절대경로로 정해서 다시 패스에 담는다, 파일은 result에 담는다
 			}
@@ -135,5 +151,59 @@ public class FileManager {
 				result.add(f);
 		}
 	}
+	
+	public static void findFileRecursive(String path,
+			ArrayList<String> resultPaths, 
+			ArrayList<String> resultFnames)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		for( File f : files )	
+		{
+			if ( f.isDirectory() ) {
+				if(f.getName().equals(".thumb")) continue;
+				resultPaths.add(f.getAbsolutePath());
+				resultFnames.add(f.getName());
+				findFileRecursive( f.getAbsolutePath() , resultPaths,  resultFnames);//절대경로로 정해서 다시 패스에 담는다, 파일은 result에 담는다
+			}
+			else {
+				resultFnames.add(f.getName());
+				resultPaths.add(f.getAbsolutePath());
+			}
+		}
+	}
+	
+	public static void fileMove(String orgFilePath, String newFilePath) {
+		System.out.println("fileMove : " + orgFilePath);
+		System.out.println("fileMove : " + newFilePath);
+	    File orgFile = new File(orgFilePath);
+	    File newFile = new File(newFilePath);
+	            
+	    if(orgFile.exists()) {
+	        boolean rst = orgFile.renameTo(newFile);
+	        if(rst == false)
+	        	System.out.println("fileMove : 왜안되");
+	    }
+	}
+	
+	
+	public static void fileCopy(String orgFilePath, String newFilePath) {
+	    File orgFile = new File(orgFilePath);
+	    try{
+	        FileInputStream inputStream = new FileInputStream(orgFile);
+	        FileOutputStream outputStream = new FileOutputStream(newFilePath); 
+	        FileChannel fcin =  inputStream.getChannel();
+	        FileChannel fcout = outputStream.getChannel(); 
+	        
+	        long size = fcin.size();
+	        fcin.transferTo(0, size, fcout); 
+	        
+	        fcout.close();
+	        fcin.close(); 
+	        outputStream.close();
+	        inputStream.close();
+	    }catch(Exception e){}
+	}
+
 }
 

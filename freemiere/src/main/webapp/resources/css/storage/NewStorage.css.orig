@@ -112,14 +112,14 @@
 	margin: auto;
 }
 
-a#btn-all, a#btn-del, a#btn-add, a#btncompleteDel, a#btn-resotre, a#file
+a#btn-all, a#btn-del, a#btn-add, a#btn-copycut , a#btncompleteDel, a#btn-resotre, a#file
 	{
 	background-color: #2d2d2e;
 	margin-left: 30px;
 	margin-top: 10px;
 }
 
-a#btn-all:hover, a#btn-del:hover, a#btn-add:hover, a#btncompleteDel:hover,
+a#btn-all:hover, a#btn-del:hover, a#btn-copycut:hover , a#btn-add:hover, a#btncompleteDel:hover,
 	a#btn-resotre:hover, a#file:hover, a#file:hover {
 	color: #26b999;
 }
@@ -216,6 +216,7 @@ div[class*=box-1] {
     transform: scale(0.1, 1);
 }
 
+<<<<<<< HEAD
 /* 속성에서 이미지 눌렀을때...  */
 .myBtn{
    width: 50px;
@@ -230,7 +231,7 @@ div[class*=box-1] {
    width: 50px;
    height: 50px;
 }
-
+=======
 #cm-contents{
 	border-top:20px;
 }
@@ -240,3 +241,4 @@ div[class*=box-1] {
 	width:300px; 
 	height:100px;
 }
+>>>>>>> origin/sms4

@@ -2,6 +2,14 @@ var myRootDir = '';
 var menu = 'MyStorage';
 var nowPath = '';
 
+ function eventInit(){
+	$('#btn-del').off('click');
+	$('#btn-copycut').off('click');
+	$('#file').off('click');
+	$('#btn-add').off('click');
+}
+
+
 // 마우스 우클릭버튼
 jQuery.fn.contextPopup = function(menuData) {
 	// Define default settings
@@ -145,7 +153,10 @@ $(document).ready(function() {
 		setNavTop(menu);
 		nowPath = myRootDir;
 		// 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
+		//복사 이동
+		$('#btn-copycut').on('click', copyCut);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
@@ -158,7 +169,10 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		// 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
+		//복사 이동
+		$('#btn-copycut').on('click', copyCut);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
@@ -169,6 +183,7 @@ $(document).ready(function() {
 		menu = 'Recent';
 		setNavRoot(menu);
 		// 하단 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
@@ -179,6 +194,7 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		// 하단 삭제버튼
+		eventInit()
 		$('#btn-del').on('click', go_to_Trash);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
@@ -191,6 +207,7 @@ $(document).ready(function() {
 		setNavRoot(menu);
 		setNavTop(menu);
 		// 하단 삭제버튼
+		eventInit();
 		$('#btn-del').on('click', go_to_Trash);
 		// 복원 버튼
 		$('#btn-resotre').on('click', restore);
@@ -200,6 +217,9 @@ $(document).ready(function() {
 	});
 
 	setNavTop(menu);
+	eventInit();
+	//복사 이동
+	$('#btn-copycut').on('click', copyCut);
 
 	// 하단 삭제버튼
 	$('#btn-del').on('click', go_to_Trash);
@@ -266,7 +286,6 @@ function loadList(path) {
 		loadRecentList();
 		return;
 	}
-		
 	
 	var url = 'load' + menu;
 	$.ajax({
@@ -565,7 +584,7 @@ set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>'
           success: function(search) {
              if(search != null){
                 User = search.email;
-                alert(User);
+                   //alert(User);
                 $('#content2').val(User);
                // $('#content').val().replaceAll("\r\n","<br>");
              }               
@@ -592,6 +611,7 @@ set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>'
           return false;
        }
        
+         // alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
        $.ajax({
           url:'setAuth',
           type: 'POST',
@@ -628,7 +648,7 @@ $('#sharedS').modal();
 
 function updateOk(text){
 //alert('등록완료');
-
+ //alert(text);
 document.getElementById('sharedS').style.display = 'none';
 $('.modal-backdrop').remove();
 init();
@@ -644,6 +664,7 @@ var User;
 //alert(JSON.stringify(obj));
 var set = '';
 var num = ffid;
+ //alert('ffid 자알받았습니다.' +ffid)
  $(document).ready(function() {
     $("#search").click(function(){
          var searchName = $('#fName').val();
@@ -656,7 +677,7 @@ var num = ffid;
           success: function(search) {
              if(search != null){
                 User = search.email;
-                alert(User);
+                   //alert(User);
                 $('#content2').val(User);
              }               
           },
@@ -675,7 +696,7 @@ var num = ffid;
        var ffid = num;
        var email = $('#content2').val();
        var select = selectAuth.value;
-           
+          //alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
            if(email==''){
               alert('아이디를 검색해주세요.');
               document.getElementById("fName").focus();
@@ -1079,7 +1100,7 @@ function outputList(list) {
 																							bookstate : item.bookState
 																						},
 																					success : function() {
-																							alert('중요하지 않군요... ');
+																							//alert('중요하지 않군요... ');
 																							init();
 																						},
 																						error : function(e) {
@@ -1414,7 +1435,7 @@ function outputList(list) {
 																								bookstate : item.bookState
 																							},
 																						success : function() {
-																								alert('중요하지 않군요... ');
+																								//alert('중요하지 않군요... ');
 																								init();
 																							},
 																						error : function(e) {
@@ -1652,7 +1673,7 @@ function outputList(list) {
 																								bookstate : item.bookState
 																							},
 																						success : function() {
-																								alert('중요하지 않군요... ');
+																								//alert('중요하지 않군요... ');
 																								init();
 																							},
 																						error : function(e) {
@@ -1853,6 +1874,7 @@ function outputList(list) {
 					data += '</ul>';
 
 	if(recentHTML == ''){
+		//alert("dd");
 		$('#outputList').html(data);
 	}
 	else{
@@ -1861,6 +1883,7 @@ function outputList(list) {
 		return;
 	}
 	// 하단 전체선택 메뉴버튼
+	$('#btn-all').off('click');
 	$('#btn-all').click(function() {
 		if ($('.file_check').is(':checked')) {
 			// 선택해제
@@ -1898,11 +1921,14 @@ function outputList(list) {
 			loadList(path);
 			setNavTop('inFolder');
 			// 삭제버튼
+			eventInit();
 			$('#btn-del').on('click', go_to_Trash);
+			
+			$('#btn-copycut').off('click',copyCut);
+			//복사 이동
+			$('#btn-copycut').on('click', copyCut);
 			// 업로드버튼
 			$('#file').on('click', fileUpload);
-			// 하단 새폴더 버튼
-			$('#btn-add').on('click', newDir);
 			// 하단 새폴더 버튼
 			$('#btn-add').on('click', newDir);
 		});
@@ -1934,14 +1960,88 @@ function setNavRoot(nr) {
 	else if (navRoot == 'Bookmark')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '즐겨 찾기</a>';
+	else if (navRoot == 'Recent')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '최근 작업 파일</a>';
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '휴지통</a>';
-	else if (navRoot == 'Recent')
-		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '최근작업파일</a>';
 	setNav();
 }
+
+function outputNavi(fullPath) {
+	// alert(nav);
+	function getPatialPath(dirArray, index) {
+		var rtn = '';
+		for (j = 0; j <= index; j++) {
+			rtn += dirArray[j];
+			rtn += '\\';
+		}
+		return rtn;
+	}
+
+	if (fullPath != null) {
+		var tmp = fullPath.split('\\');
+		var rootDir = tmp[0] + '\\' + tmp[1] + '\\' + tmp[2] + '\\';
+
+		if (rootDir.length != fullPath.length) {
+			path = fullPath.substring(rootDir.length, fullPath.length);
+			var dirArray = path.split('\\');
+
+			var iEnd = dirArray.length - 2;
+			nav += '<a class="navbar-brand">/</a>';
+			nav += '<a class="navbar-brand naviBar"';
+			nav += ' path="' + (rootDir + getPatialPath(dirArray, iEnd)) + '">';
+			nav += dirArray[iEnd] + '</a>';
+		}
+	}
+	setNav();
+	regEvent();
+}
+
+function setNav() {
+	$('#navigator').html(nav);
+}
+
+function regEvent() {
+	$(".naviBarRoot").click(function() {
+		var path = $(this).attr('nav');
+		if(path='MyStorage')
+			nowPath = myRootDir;
+		else
+			nowPath = '';
+		menu = path;
+		setNavRoot(menu)
+		alert(navRoot);
+		loadList();
+	});
+
+	$(".naviBar").click(function() {
+		var naviArray = $('.naviBar');
+		var num = 0;
+		for (var i = 0; i < naviArray.length; i++) {
+			if(naviArray[i].outerHTML == $(this)[0].outerHTML){
+				num = i;
+				break;
+			}
+		}
+		var path = $(this).attr('path');
+		
+		if(nowPath.length >= path.length){
+			nav = '';
+			alert(navRoot);
+			setNavRoot(navRoot);
+			for (var i = 0; i < num; i++) {
+				nav += '<a class="navbar-brand">/</a>';
+				nav += naviArray[i].outerHTML;
+			}
+		}
+		nowPath = path;
+		menu = 'List';
+		loadList(path);
+	});
+}
+
 
 function setNavTop(nr) {
 	var data = '';
@@ -1953,6 +2053,13 @@ function setNavTop(nr) {
 		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-check-square-o" aria-hidden="true">';
 		data += '			</i> 전체선택';
+		data += '		</a>';
+		data += '	</li>';
+		
+		data += '	<li>';
+		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-files-o" aria-hidden="true">';
+		data += '			</i> 복사/이동';
 		data += '		</a>';
 		data += '	</li>';
 		data += '	<li>';
@@ -1988,6 +2095,12 @@ function setNavTop(nr) {
 		data += '		</a>';
 		data += '	</li>';
 		data += '	<li>';
+		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-files-o" aria-hidden="true">';
+		data += '			</i> 복사/이동';
+		data += '		</a>';
+		data += '	</li>';
+		data += '	<li>';
 		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-trash" aria-hidden="true">';
 		data += '			</i> 삭제';
@@ -2004,6 +2117,12 @@ function setNavTop(nr) {
 		data += '         </i> 전체선택';
 		data += '      </a>';
 		data += '   </li>';
+		data += '	<li>';
+		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
+		data += '			<i class="fa fa-files-o" aria-hidden="true">';
+		data += '			</i> 복사/이동';
+		data += '		</a>';
+		data += '	</li>';
 		data += '   <li>';
 		data += '      <a id="btn-del" class=' + 'topMenu' + '>';
 		data += '         <i class="fa fa-trash" aria-hidden="true">';
@@ -2077,6 +2196,7 @@ function setNavTop(nr) {
 		data += '			</i> 전체선택';
 		data += '		</a>';
 		data += '	</li>';
+
 		data += '	<li>';
 		data += '		<a id="btn-del" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-trash" aria-hidden="true">';
@@ -2088,76 +2208,6 @@ function setNavTop(nr) {
 		$('#setNavTop').html(data);
 	}
 
-}
-
-function outputNavi(fullPath) {
-	function getPatialPath(dirArray, index) {
-		var rtn = '';
-		for (j = 0; j <= index; j++) {
-			rtn += dirArray[j];
-			rtn += '\\';
-		}
-		return rtn;
-	}
-
-	if (fullPath != null) {
-		var tmp = fullPath.split('\\');
-		var rootDir = tmp[0] + '\\' + tmp[1] + '\\' + tmp[2] + '\\';
-
-		if (rootDir.length != fullPath.length) {
-			path = fullPath.substring(rootDir.length, fullPath.length);
-			var dirArray = path.split('\\');
-
-			var iEnd = dirArray.length - 2;
-			nav += '<a class="navbar-brand">/</a>';
-			nav += '<a class="navbar-brand naviBar"';
-			nav += ' path="' + (rootDir + getPatialPath(dirArray, iEnd)) + '">';
-			nav += dirArray[iEnd] + '</a>';
-		}
-	}
-	setNav();
-	regEvent();
-}
-
-function setNav() {
-	$('#navigator').html(nav);
-}
-
-function regEvent() {
-	$(".naviBarRoot").click(function() {
-		var path = $(this).attr('nav');
-		if (path = 'MyStorage')
-			nowPath = myRootDir;
-		else
-			nowPath = '';
-		menu = path;
-		setNavRoot(menu)
-		loadList();
-	});
-
-	$(".naviBar").click(function() {
-		var naviArray = $('.naviBar');
-		var num = 0;
-		for (var i = 0; i < naviArray.length; i++) {
-			if (naviArray[i].outerHTML == $(this)[0].outerHTML) {
-				num = i;
-				break;
-			}
-		}
-		var path = $(this).attr('path');
-
-		if (nowPath.length >= path.length) {
-			nav = '';
-			setNavRoot(navRoot);
-			for (var i = 0; i < num; i++) {
-				nav += '<a class="navbar-brand">/</a>';
-				nav += naviArray[i].outerHTML;
-			}
-		}
-		nowPath = path;
-		menu = 'List';
-		loadList(path);
-	});
 }
 
 // 파일 업로드
@@ -2250,8 +2300,9 @@ function go_to_Trash() {
 
 	});
 }
+
 function newDir() {
-	alert('hell');
+	//alert('hell');
 
 	var dirCreate = '';
 
@@ -2425,6 +2476,7 @@ function outputRecentList(dateFile) {
 			loadList(path);
 			setNavTop('inFolder');
 			// 삭제버튼
+			eventInit();
 			$('#btn-del').on('click', go_to_Trash);
 
 		});
@@ -2460,6 +2512,161 @@ function sortObject(o){
 
 
 
+//복사 이동 추가.
 
+var copyMoveFfid = [];
+var copyMoveDestPath = '';
+var copyMovepaths = [];
+var copyMovefnames = [];
+
+function copyCut(){
+	 copyMoveFfid = [];
+	 copyMoveDestPath = '';
+	 copyMovepaths = [];
+	 copyMovefnames = [];
+	 
+		var isshared = [];
+		var bookState = [];
+		
+		$('.file_check').each(function(index, item) {
+			if ($(item).is(":checked")) {
+				copyMoveFfid.push($(item).attr('ffid'));
+				isshared.push($(item).attr('isshared'));
+				bookState.push($(item).attr('bookState'));
+			}
+		});
+		
+		if(copyMoveFfid.length == 0) return;
+		
+		
+		$('.file_check').each(function(index, item) {
+			if ($(item).is(":checked")) {
+				var path = $(item).attr('path');
+				copyMovepaths.push(path);
+				
+				var tmp = path.split('\\');
+				//alert(tmp[tmp.length-2]);
+				if(tmp[tmp.length-1] == '' || tmp[tmp.length-1] == null)
+					copyMovefnames.push(tmp[tmp.length-2]);
+				else
+					copyMovefnames.push(tmp[tmp.length-1]);
+				
+			}
+		});
+		
+		ouputCopyMoveFiles(copyMovefnames);
+		loadMyStorageFolder();
+	
+		document.getElementById('copyCut').style.display = 'block';
+	
+		$('#copyBtn').off('click');
+		$('#copyBtn').on('click',function(){
+			if(copyMoveDestPath == '') alert("경로를 선택 해주세요.");
+			
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : 'fileCopy',
+				type : 'POST',
+				data : {
+					paths : copyMovepaths,
+					fnames : copyMovefnames,
+					ffids : copyMoveFfid,
+					destPath : copyMoveDestPath
+				},
+				success : function() {
+					document.getElementById('copyCut').style.display='none';
+					loadListUnchangNav(nowPath);
+				},
+				error : function(e) {
+					//alert(JSON, stringify(e));
+				}
+			});
+		});
+		
+		
+		$('#moveBtn').off('click');
+		$('#moveBtn').on('click',function(){
+			if(copyMoveDestPath == '') alert("경로를 선택 해주세요.");
+			
+			jQuery.ajaxSettings.traditional = true;
+
+			$.ajax({
+				
+				url : 'fileMove',
+				type : 'POST',
+				data : {
+					paths : copyMovepaths,
+					fnames : copyMovefnames,
+					ffids : copyMoveFfid,
+					destPath : copyMoveDestPath,
+					isshared : isshared,
+					bookState : bookState
+				},
+				success : function() {
+					document.getElementById('copyCut').style.display='none';
+					loadListUnchangNav(nowPath);
+				},
+				error : function(e) {
+					//alert(JSON, stringify(e));
+				}
+			});
+		});
+}
+
+function ouputCopyMoveFiles(paths){
+	var fileListText = '';
+	
+	for(var i = 0; i < paths.length; i++){
+		fileListText += paths[i];
+		fileListText += '  ';
+	}
+	
+	$("#selectedFile").val(fileListText);
+}
+
+function loadMyStorageFolder() {
+	var url = 'loadMyStorageForEditor';
+	$.ajax({
+		url : url,
+		type : 'GET',
+		dataType : 'json',
+		success : function(nodes) {
+			//alert(JSON.stringify(nodes));
+		    var setting = {
+		            view: {
+		                //addHoverDom: addHoverDom,
+		               // removeHoverDom: removeHoverDom,
+		                selectedMulti: false
+		            },
+		            data: {
+		                simpleData: {
+		                    enable: true
+		                }
+		            },
+		            edit: {
+		                enable: false
+		            },
+					callback: {
+						//beforeClick: beforeClick,
+						onClick: onClickCC
+					}
+		     };
+		    
+	        $.fn.zTree.init($("#copyCutTree"), setting, nodes);
+	        
+		},
+		error : function(e) {
+			alert(JSON.stringify(e));
+		}
+	});
+}
+
+function onClickCC(event, treeId, treeNode, clickFlag) {
+	requestFileListCC(treeNode.path)
+}	
+
+function requestFileListCC(path){
+	copyMoveDestPath = path;
+}
 
 
