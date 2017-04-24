@@ -65,7 +65,7 @@ function outputFileList(list){
 			
 			var fileType = getFileType(item.path);
 			if( fileType == 'image'){
-				contents += '<img id="image' + index + '" ondragstart="drag(event)" draggable="true" class="file fimage-editor" path="' + imgPath + '" src="' + thumbPath +'">';
+				contents += '<img id="image' + index + '" ondragstart="drag(event)" draggable="true" class="file fimage-editor" ffid="' + item.ffid + '" path="' + imgPath + '" src="' + thumbPath +'">';
 			}
 			else if(fileType == 'video'){
 				
@@ -81,6 +81,7 @@ function outputFileList(list){
 				contents += '<video id="video' + index 
 						 + '" draggable="true" ondragstart="drag(event)" ' 
 						 + 'path="' + videoPath + '" '
+						 + 'ffid="' + item.ffid + '" '
 						 + 'width=156 height=auto controls'
 						 + ' poster="' + thumbPath +'">';
 				contents +=   '<source src="' + videoPath + '" type="video/mp4">';
@@ -99,7 +100,7 @@ function outputFileList(list){
 					if(j < (audioPathrray.length-1) )
 						audioPath += '/';
 				}
-				contents +='<img draggable="true" ondragstart="drag(event)" path="' + audioPath + '" id="audio' + index + '" src="./resources/img/storage/audio.png">';
+				contents +='<img draggable="true" ondragstart="drag(event)" ffid="' + item.ffid + '" path="' + audioPath + '" id="audio' + index + '" src="./resources/img/storage/audio.png">';
 				contents +='<audio controls>';
 				contents +='  <source src=' + audioPath + ' type="audio/mpeg">';
 				contents +='  Your browser does not support the audio tag.';
@@ -199,7 +200,8 @@ $(document).ready(function () {
 		name: 'timeLine',
 		panels: [
 			{ type:'main', style: 'background: #333333', size:'88%'},
-			{ type:'bottom', style: 'background: #333333', size:'12%' }
+			{ type:'bottom', style: 'background: #333333', size:'12%' },
+			{ type:'right', style: 'background: #262626', size:'15%'}
 		]
 	});
 	
@@ -215,7 +217,7 @@ $(document).ready(function () {
 	var bottomContents = '';
 	bottomContents += '<span class="toolbox"><i class="itool fa fa-reply" aria-hidden="true"> undo</i></span>';
 	bottomContents += '<span class="toolbox"><i class="itool fa fa-share" aria-hidden="true"> redo</i></span>';
-	bottomContents += '<span class="toolbox"><i class="itool fa fa-scissors" aria-hidden="true"> cut</i></span>';
+	bottomContents += '<span class="toolbox"><i id="split" class="itool fa fa-scissors" aria-hidden="true"> split</i></span>';
 	bottomContents += '<span class="toolbox"><i class="itool fa fa-trash" aria-hidden="true"> delete</i></span>';
 	bottomContents += '<span class="toolbox"><i class="itool fa fa-trash-o" aria-hidden="true"> clear</i></span>';
 	bottomContents += '<span style="padding-left: 450px"></span>';
@@ -225,7 +227,10 @@ $(document).ready(function () {
 	
 	timeLineSlider();
 	trackDragAndDropEventHander();
+	//timeLineMenuEventHandler();
 });
+
+
 
 function timeLineSlider(){
 	

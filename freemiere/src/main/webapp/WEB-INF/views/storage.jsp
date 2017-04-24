@@ -138,7 +138,7 @@
 						<li><a id='shared' class='sideMenu'><i
 								class="fa fa-sitemap fa-fw"></i> 공유 저장소</a></li>
 						<li><a id='recent' class='sideMenu'><i
-								class="fa fa-bar-chart-o fa-fw"></i> 최근 사용 저장소</a></li>
+								class="fa fa-bar-chart-o fa-fw"></i> 최근 작업 파일</a></li>
 						<li><a id='bookMark' class='sideMenu'><i
 								class="fa fa-edit fa-fw"></i> 즐겨찾기</a></li>
 						<li><a id='trash' class='sideMenu'><i

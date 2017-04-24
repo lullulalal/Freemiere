@@ -127,7 +127,7 @@ jQuery.fn.contextPopup = function(menuData) {
 
 $(document).ready(function() {
 
-	alert(loginMem);
+	//alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
 	myRootDir += loginMem;
 	myRootDir += '\\';
@@ -226,7 +226,7 @@ $(document).ready(function() {
 	$('#btn-del').on('click', go_to_Trash);
 	// 업로드
 	$('#fileUpload').change(function() {
-		alert('up');
+		//alert('up');
 		var formData = new FormData();
 		// formData.append('upload', $('input[type=file]')[0].files[0]);
 
@@ -583,7 +583,7 @@ function shareSet(obj){
              success: function(search) {
                 if(search != null){
                    User = search.email;
-                   alert(User);
+                   //alert(User);
                    $('#content').val(User);
                 }               
              },
@@ -609,7 +609,7 @@ function shareSet(obj){
              return false;
           }
           
-          alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
+         // alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
           $.ajax({
              url:'setAuth',
              type: 'POST',
@@ -645,7 +645,7 @@ function shareSet(obj){
 
 function updateOk(text){
  //alert('등록완료');
- alert(text);
+ //alert(text);
  document.getElementById('sharedS').style.display = 'none';
  $('.modal-backdrop').remove();
  init();
@@ -660,7 +660,7 @@ function shareSet2(ffid){
  //alert(JSON.stringify(obj));
  var set = '';
  var num = ffid;
- alert('ffid 자알받았습니다.' +ffid)
+ //alert('ffid 자알받았습니다.' +ffid)
     $(document).ready(function() {
        $("#search").click(function(){
             var searchName = $('#fName').val();
@@ -673,7 +673,7 @@ function shareSet2(ffid){
              success: function(search) {
                 if(search != null){
                    User = search.email;
-                   alert(User);
+                   //alert(User);
                    $('#content').val(User);
                 }               
              },
@@ -690,7 +690,7 @@ function shareSet2(ffid){
           
           var email = $('#content').val();
           var select = selectAuth.value;
-          alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
+          //alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
           
           $.ajax({
              url:'setAuth',
@@ -1114,7 +1114,7 @@ function outputList(list) {
 																							bookstate : item.bookState
 																						},
 																						success : function() {
-																							alert('중요하지 않군요... ');
+																							//alert('중요하지 않군요... ');
 																							init();
 																						},
 																						error : function(
@@ -1487,7 +1487,7 @@ function outputList(list) {
 																								bookstate : item.bookState
 																							},
 																							success : function() {
-																								alert('중요하지 않군요... ');
+																								//alert('중요하지 않군요... ');
 																								init();
 																							},
 																							error : function(
@@ -1760,7 +1760,7 @@ function outputList(list) {
 																								bookstate : item.bookState
 																							},
 																							success : function() {
-																								alert('중요하지 않군요... ');
+																								//alert('중요하지 않군요... ');
 																								init();
 																							},
 																							error : function(
@@ -1990,7 +1990,7 @@ function outputList(list) {
 	data += '</ul>';
 
 	if(recentHTML == ''){
-		alert("dd");
+		//alert("dd");
 		$('#outputList').html(data);
 	}
 	else{
@@ -2002,7 +2002,7 @@ function outputList(list) {
 	// 하단 전체선택 메뉴버튼
 	$('#btn-all').off('click');
 	$('#btn-all').click(function() {
-		alert('hi1');
+		//alert('hi1');
 		if ($('.file_check').is(':checked')) {
 			// 선택해제
 			$('.file_check').each(function(index, item) {
@@ -2092,6 +2092,9 @@ function setNavRoot(nr) {
 	else if (navRoot == 'Bookmark')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '즐겨 찾기</a>';
+	else if (navRoot == 'Recent')
+		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
+				+ navRoot + '">' + '최근 작업 파일</a>';
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '휴지통</a>';
@@ -2141,6 +2144,7 @@ function regEvent() {
 			nowPath = '';
 		menu = path;
 		setNavRoot(menu)
+		alert(navRoot);
 		loadList();
 	});
 
@@ -2343,9 +2347,9 @@ function setNavTop(nr) {
 
 // 파일 업로드
 function fileUpload(){
-	   alert("파일1");
+	   //alert("파일1");
 	      $('#fileUpload').change(function() {
-	         alert('up');
+	         //alert('up');
 	         var formData = new FormData();
 	         // formData.append('upload', $('input[type=file]')[0].files[0]);
 	         
@@ -2381,7 +2385,7 @@ function FileMultiUpload(files, dragDrop) {
 	for (var i = 0; i < files.length; i++) {
 		formData.append('upload[]', files[i]);
 	}
-	alert(nowPath);
+	//alert(nowPath);
 	formData.append('nowPath', nowPath);
 
 	$.ajax({
@@ -2414,7 +2418,7 @@ function go_to_Trash() {
 			bookState.push($(item).attr('bookState'))
 		}
 	});
-	alert(ffid);
+	//alert(ffid);
 
 	jQuery.ajaxSettings.traditional = true;
 
@@ -2438,7 +2442,7 @@ function go_to_Trash() {
 }
 
 function newDir() {
-	alert('hell');
+	//alert('hell');
 
 	var dirCreate = '';
 	// 아이디를 변경하지 말아주떼연.
@@ -2482,7 +2486,7 @@ function newDir() {
 	$('#confirm').click(function() {
 
 		var folderName = document.getElementById('insertFolderName').value;
-		alert(nowPath)
+		//alert(nowPath)
 		$.ajax({
 			url : 'newDir',
 			type : 'POST',
@@ -2528,7 +2532,7 @@ function getFileType(path) {
 
 // 복원
 function restore() {
-	alert('복원');
+	//alert('복원');
 	var path = [];
 	$('.file_check').each(function(index, item) {
 		if ($(item).is(":checked")) {
@@ -2536,7 +2540,7 @@ function restore() {
 		}
 	});
 
-	alert(path);
+	//alert(path);
 	jQuery.ajaxSettings.traditional = true;
 
 	$.ajax({
@@ -2566,7 +2570,7 @@ function completeDelete() {
 		}
 	});
 
-	alert(path);
+	//alert(path);
 	jQuery.ajaxSettings.traditional = true;
 
 	$.ajax({
@@ -2685,6 +2689,7 @@ function sortObject(o){
     return sorted;
 }
 
+//복사 이동 추가.
 
 var copyMoveFfid = [];
 var copyMoveDestPath = '';

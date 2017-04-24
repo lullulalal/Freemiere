@@ -85,4 +85,6 @@ public interface FileFolderMapper {
 	public int firstOwner(HashMap<String, Object> map);
 	
 	public int updateOwner(HashMap<String, Object> map);
+	
+	public int move(String originPath, String destPath);
 }

@@ -8,9 +8,8 @@ import com.xuggle.xuggler.IStreamCoder;
 
 public class VideoInfo {
     
-    private static final String filename = "c:/myvideo.mp4";
     
-    public static void main(String[] args) {
+    public static int getVideoFrameRate(String filename) {
         
         // first we create a Xuggler container object
         IContainer container = IContainer.make();
@@ -73,13 +72,15 @@ public class VideoInfo {
                 System.out.printf("height: %d; ", coder.getHeight());
                 System.out.printf("format: %s; ", coder.getPixelType());
                 System.out.printf("frame-rate: %5.2f; ", coder.getFrameRate().getDouble());
+               
+                return (int)(stream.getDuration() * coder.getFrameRate().getDouble());
             }
             
             System.out.println();
             System.out.println("*** End of Stream Info ***");
             
         }
-        
+        return 0;
     }
 
 }

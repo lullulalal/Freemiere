@@ -358,7 +358,7 @@ public class FileFolderController {
 		if (nowPath.equals("root"))
 			nowPath = "c:\\freemiere\\" + email + "\\";
 
-	
+		if(nowPath.charAt(nowPath.length()-1) != '\\') nowPath += '\\';
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
 
@@ -876,6 +876,7 @@ public class FileFolderController {
 	         return rtn;
 	      }
 	      
+	      //파일 복사 이동 아래부터
 	      @ResponseBody
 	      @RequestMapping(value="fileCopy", method=RequestMethod.POST)
 	      public boolean fileCopy(HttpSession session, String[] paths, String[] fnames, String[] ffids, String destPath){
@@ -954,13 +955,21 @@ public class FileFolderController {
 	      @ResponseBody
 	      @RequestMapping(value="fileMove", method=RequestMethod.POST)
 	      public boolean fileMove(HttpSession session, String[] paths, String[] fnames, String[] ffids, String destPath, String[] isshared, String[] bookState){
-
-	    	 fileCopy(session, paths, fnames, ffids, destPath);
-	    	 deleteFileFolder(ffids, isshared, bookState, session);
-
-	    	 completeDeleteFileFolder(paths);
-	    	 //ileCopy();
+	    	  if(destPath.charAt(destPath.length()-1) != '\\') destPath += '\\';
+	    	  for(int i = 0; i < paths.length; i++){
+	    		  //썸네일 이동
+	    		File f = new File(paths[i]);
+	    		if(!f.isDirectory()) {
+					String ext = ImageFileManager.checkImageFile(paths[i]);
+					if (ext != null) {
+						FileManager.fileMove(f.getParent() + "\\.thumb\\" + fnames[i] + ".png", destPath + ".thumb\\" +fnames[i] + ".png");
+					} else if (ImageFileManager.checkVideoFile(paths[i]) != null) {
+						FileManager.fileMove(f.getParent() + "\\.thumb\\" + fnames[i] + ".png", destPath + ".thumb\\" +fnames[i] + ".png");
+					}
+	    		}
+				fileFolderDAO.move(paths[i], destPath);
+				FileManager.fileMove(paths[i], destPath + fnames[i]);
+	    	  }
 	         return true;
 	      }
-
 }

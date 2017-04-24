@@ -56,6 +56,13 @@ public class FileManager {
 		return files;
 	}
 	
+	public static int findFileNum(String path)
+	{
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		return files.length;
+	}
+	
 	//재귀 호출하여 하위 폴더의 사이즈를 구함
 	public static long getFileFolderSize(File dir)
 	{
@@ -81,6 +88,12 @@ public class FileManager {
 		for( int i = 0; i < files.length; ++i )
 		{
 			if ( files[i].isDirectory() ) {
+				int j = 0;
+				for( j = 0; j < folderList.size(); j++ ){
+					if(files[i].getAbsolutePath().equalsIgnoreCase(
+							folderList.get(j).getPath())) break;
+				}
+				if( j != folderList.size() ) continue;
 				if( ".thumb".equals(files[i].getName()) )
 					continue;
 				int id = Integer.parseInt( Integer.toString(pid) + Integer.toString(fNum) );
@@ -141,13 +154,13 @@ public class FileManager {
 	
 	public static void findFileRecursive(String path,
 			ArrayList<String> resultPaths, 
-			ArrayList<String> resultFnames)//사용자컴터에서 폴더를 확인해 파일을 담아온다
+			ArrayList<String> resultFnames)
 	{
-		File file = new File (path);	//경로를 받아온다
-		File[] files = file.listFiles();//받아온 경로의 파일 리스트를 배열에 담는다
-		for( File f : files )	//배열에 담긴 파일을 하나씩 가져온다 
+		File file = new File (path);	
+		File[] files = file.listFiles();
+		for( File f : files )	
 		{
-			if ( f.isDirectory() ) {//해당 패스에서 디렉토리(폴더)가 존재하는지 확인해서 있으면
+			if ( f.isDirectory() ) {
 				if(f.getName().equals(".thumb")) continue;
 				resultPaths.add(f.getAbsolutePath());
 				resultFnames.add(f.getName());
@@ -161,16 +174,18 @@ public class FileManager {
 	}
 	
 	public static void fileMove(String orgFilePath, String newFilePath) {
+		System.out.println("fileMove : " + orgFilePath);
+		System.out.println("fileMove : " + newFilePath);
 	    File orgFile = new File(orgFilePath);
 	    File newFile = new File(newFilePath);
 	            
 	    if(orgFile.exists()) {
-	        orgFile.renameTo(newFile);
+	        boolean rst = orgFile.renameTo(newFile);
+	        if(rst == false)
+	        	System.out.println("fileMove : 왜안되");
 	    }
 	}
 	
-	
-
 	
 	public static void fileCopy(String orgFilePath, String newFilePath) {
 	    File orgFile = new File(orgFilePath);

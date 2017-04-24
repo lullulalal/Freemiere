@@ -2,6 +2,7 @@ package com.sc32c3.freemiere.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -36,9 +37,7 @@ public class EditorStorageController {
     	String path = "c:\\freemiere\\" + email + "\\"; 
     	
     	ArrayList<FolderVo> rtnList = new ArrayList<>();
-    	FolderVo root = new FolderVo(path, 1, 0, "MyStorage", true, true);
-    	rtnList.add(root);
-    	FileManager.findFolderVoRecursive(path, 1, rtnList);
+
     	//(String path, int id, int pid, String name, boolean isParent, boolean open)
 		
     	FolderVo shared = new FolderVo("", 2, 0, "Shared", true, true);
@@ -55,6 +54,11 @@ public class EditorStorageController {
 			rtnList.add(shared2nd);
     		FileManager.findFolderVoRecursive(f.getAbsolutePath(), id, rtnList);
     	}
+    	
+    	FolderVo root = new FolderVo(path, 1, 0, "MyStorage", true, true);
+    	rtnList.add(root);
+    	FileManager.findFolderVoRecursive(path, 1, rtnList);
+    	
     	
 		return rtnList;
 	}
@@ -87,4 +91,24 @@ public class EditorStorageController {
 		}
 		return rtnList;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getVideoInfo", method = RequestMethod.GET ,
+					produces = "application/json;charset=utf-8")
+	public HashMap getVideoInfo(int ffid, String path){
+		
+		HashMap<String, Object> rtn  = new HashMap<>();
+		logger.info("서버:getVideoInfo 실행 ");
+	
+		//1. 영상의 사진 갯수
+		String videoPath = "C:\\freemiere\\videoExtract\\" + ffid;
+		int count = FileManager.findFileNum(videoPath) - 1;
+		rtn.put("count", count);
+		//2. 영상의 주소
+		String vExtractPath = "storageResources\\videoExtract\\" + ffid + "\\";
+		rtn.put("extractPath", vExtractPath);
+		
+		return rtn;
+	}
+	
 }

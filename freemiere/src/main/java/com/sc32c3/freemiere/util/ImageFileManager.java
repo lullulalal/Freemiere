@@ -67,6 +67,7 @@ public class ImageFileManager {
 	public static BufferedImage resizeImageHighQuality(String orgImgPath)  {
 		BufferedImage originalImage;
 		try {
+			System.out.println("어디야 : " + orgImgPath );
 			originalImage = ImageIO.read(new File(orgImgPath));
 			Dimension origin = new Dimension();
 			origin.setSize(originalImage.getWidth(), originalImage.getHeight());
@@ -122,14 +123,15 @@ public class ImageFileManager {
 	public static void extractVideo(String originPath, int ffid){
 		Thread thread = new Thread(() -> {
 			Runtime run = Runtime.getRuntime();
-			
+			//int a = VideoInfo.getVideoFrameRate(originPath);
+			//System.out.println("이미지 자릿수 : " + a);
 			File dir = new File("c:\\freemiere\\videoExtract\\" + ffid +"\\");
 			dir.mkdirs();
 			
 			String command = "ffmpeg -i "
 					+ originPath
 					+ " -r 30 -qscale:v 1 "
-					+ "c:\\freemiere\\videoExtract\\" + ffid +"\\%4d.jpg";
+					+ "c:\\freemiere\\videoExtract\\" + ffid +"\\%09d.jpg";
 			
 			String command2 = "ffmpeg -y -i "
 					+ originPath

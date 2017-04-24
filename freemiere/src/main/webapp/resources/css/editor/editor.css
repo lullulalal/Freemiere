@@ -155,7 +155,7 @@
 #t-slider {
     -webkit-appearance: none;
     background-color: #ffffff;
-    width: 1110px;
+    width: 932px;
     height:1px;
     border:1px;
 }
@@ -242,43 +242,44 @@
 
 
 #image-track{
-	width: 1143px; 
+	width: 968px; 
 	height: 60px; 
 	background-color: #2e2e2e;	
 }
 
 .track-name{
+	display:inline-block; width:38px; 
 	padding-left:8px;
 	padding-right:9px;	
 	color:#b3b3b3;
 }
 
 #video-track{
-	width: 1143px; 
+	width: 968px; 
 	height: 60px; 
 	background-color: #2e2e2e;		
 }
 
 #audio1-track{
-	width: 1143px; 
+	width: 968px; 
 	height: 60px; 
 	background-color: #262626;		
 }
 
 #audio2-track{
-	width: 1143px; 
+	width: 968px; 
 	height: 60px; 
 	background-color: #2e2e2e;		
 }
 
 #video-filter-track{
-	width: 1143px; 
+	width: 968px; 
 	height: 23px; 
 	background-color: #262626;		
 }
 
 #image-filter-track{
-	width: 1143px; 
+	width: 968px; 
 	height: 23px; 
 	background-color: #262626;		
 }
@@ -293,3 +294,13 @@ audio {
 	height: 100px; 
 	display: inline;
 }
+
+.video-obj{
+	display: inline-block;
+	background-color:#ffffff;
+	border: 2px solid;
+	border-color: #000000;
+	cursor: pointer;
+}
+
+
