@@ -6,6 +6,17 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 @import url(http://fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
 
+
+#content{
+   width: 368px;
+   height: 210px;
+}
+
+#content2{
+   width: 368px;
+   height: 3px;
+}
+
 html {
 	font-family: sans-serif;
 	-webkit-text-size-adjust: 100%;
@@ -6485,6 +6496,50 @@ button.close {
 	overflow-x: hidden;
 	overflow-y: auto;
 }
+
+
+
+.modal-body .addPerson{
+   background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 3px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+   border-radius: 8px;
+}
+
+
+
+#dialog{
+   width: 470px;
+}
+
+#dialog2{
+   width: 480px;
+}
+
+textarea{
+   resize: none;
+}
+
+#content2{
+   height: 40px;
+   border: 0;
+}
+
+#content{
+   width: 468px;
+}
+
+#content3{
+   width: 370px;
+}
+
 
 .modal-dialog {
 	position: relative;

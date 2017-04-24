@@ -5,7 +5,7 @@
 	max-height:1100px;
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 10px;
 	overflow-y: auto;
 }
 
@@ -215,4 +215,19 @@ div[class*=box-1] {
 .btn-moveiEdit:hover::after {
     opacity: 0; 
     transform: scale(0.1, 1);
+}
+
+/* 속성에서 이미지 눌렀을때...  */
+.myBtn{
+   width: 50px;
+   height: 50px;
+    background-color: rgba(255,255,255,0.1);
+    border: 0;
+    outline: 0;
+    z-index: 4;
+}
+
+.modify_image{
+   width: 50px;
+   height: 50px;
 }

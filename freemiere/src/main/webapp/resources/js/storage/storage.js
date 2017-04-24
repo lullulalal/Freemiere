@@ -119,7 +119,6 @@ jQuery.fn.contextPopup = function(menuData) {
 
 $(document).ready(function() {
 
-	alert(loginMem);
 	myRootDir += 'C:\\freemiere\\';
 	myRootDir += loginMem;
 	myRootDir += '\\';
@@ -204,18 +203,20 @@ $(document).ready(function() {
 
 	// 하단 삭제버튼
 	$('#btn-del').on('click', go_to_Trash);
-	// 업로드
-	$('#fileUpload').change(function() {
-		alert('up');
-		var formData = new FormData();
-		// formData.append('upload', $('input[type=file]')[0].files[0]);
+	
 
+	
+	//업로드
+	$('#fileUpload').change(function() {
+		alert('맨처음');
+		var formData = new FormData();
+		
 		// 다중파일업로드
 		$($("#fileUpload")[0].files).each(function(index, file) {
 			formData.append("multi_file[]", file);
 		});
 		formData.append('nowPath', nowPath);
-
+		
 		$.ajax({
 			url : 'fileUpload',
 			type : 'POST',
@@ -253,16 +254,8 @@ $(document).ready(function() {
 
 	// 하단 새폴더 버튼
 	$('#btn-add').on('click', newDir);
+	
 
-	// $('#btn-download').on('click', fileDownLoad);
-
-	/*
-	 * // 복원 버튼 $('#btn-resotre').on('click', restore);
-	 */
-
-	/*
-	 * // 휴지통에서 완전 삭제 $('#btncompleteDel').on('click', completeDelete);
-	 */
 
 });
 
@@ -276,7 +269,6 @@ function loadList(path) {
 		
 	
 	var url = 'load' + menu;
-	// alert(url);
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -305,7 +297,6 @@ function loadListUnchangNav(path) {
 	}
 
 	var url = 'load' + menu;
-	// alert(url);
 	$.ajax({
 		url : url,
 		type : 'GET',
@@ -320,459 +311,477 @@ function loadListUnchangNav(path) {
 	});
 }
 
-// 파일속성
+//파일속성
 function soksung(obj) {
-	sokObject = obj;
+sokObject = obj;
+var path2 = obj.path.length; //42
+var ext = obj.path.lastIndexOf(".");
+var ext2 = obj.path.substring(ext, path2);
+$(document).ready(function() {
+	$("#myBtn").click(function() {
+        document.getElementById("fName").focus();
+        $("#fName").attr("readonly", false);
+        $("#content3").attr("readonly", false);
+     });
+   
 
-	$(document).ready(function() {
-		$("#myBtn").click(function() {
-			$("#fName").attr("readonly", false);
-		});
-		$("#conUp").click(function() {
-			$("#content").attr("readonly", false);
-		});
+   $("#subm").click(function() {
+      var fName = $('#fName').val() + ext2;
+      var info = $('#content3').val();
+      var ffid = obj.ffid;
+      var nowPa = nowPath;
+      $.ajax({
+         url : 'sokUpdate',
+         type : 'POST',
+         dataType : 'json',
+         data : {
+            ffid : ffid,
+            filename : fName,
+            info : info,
+            path : nowPa
+         },
+         success : function(obj) {
+            alert('성공하였습니다.');
+            init();
+         },
+         error : function(e) {
+            alert(JSON.stringify(e));
+            // alert('에-러');
+         }
+      });
+   });
+});
 
-		$("#subm").click(function() {
-			var fName = $('#fName').val();
-			var info = $('#content').val();
-			var ffid = obj.ffid;
-			var nowPa = nowPath;
-			$.ajax({
-				url : 'sokUpdate',
-				type : 'POST',
-				dataType : 'json',
-				data : {
-					ffid : ffid,
-					filename : fName,
-					info : info,
-					path : nowPa
-				},
-				success : function(obj) {
-					alert('성공하였습니다.');
-					init();
-				},
-				error : function(e) {
-					alert(JSON.stringify(e));
-					// alert('에-러');
-				}
-			});
-		});
-	});
+var test = '';
+test += '<form id= "updateForm">';
+test += '<div id="id01" class="modal fade">';
+test += '<div class="modal-dialog" id="dialog2">';
+test += '<div class="modal-content">';
 
-	var test = '';
-	test += '<form id= "updateForm">';
-	test += '<div id="id01" class="modal fade">';
-	test += '<div class="modal-dialog">';
-	test += '<div class="modal-content">';
+test += '<h2 class="modal-title">';
+test += '<input id="fName" name="fName" type="text" placeholder=' + obj.fileName
+      + ' readonly=readonly> &nbsp;&nbsp;';
 
-	test += '<h2 class="modal-title">';
+test += '<button type="button" id="myBtn" class="myBtn"><img class="modify_image"src="./resources/img/storage/modify.png"></button>';
+//test += '<button type="button"class="btn btn-info btn-lg" id="myBtn">제목수정</button>';
+test += '<button type="button" class="close" data-dismiss="modal">x</button></h2>';
 
-	test += '<input id="fName" type="text" placeholder=' + obj.fileName
-			+ ' readonly=readonly>';
 
-	test += '<button type="button" class="close" data-dismiss="modal">x</button></h2>';
 
-	test += '<button type="button"class="btn btn-info btn-lg" id="myBtn">제목수정</button>';
+test += '<div class="modal-body">';
+test += '<textarea id="content3" rows="10" cols="30" readonly=readonly>'
+      + obj.info + '</textarea>';
+//test += '<button type="button"class="btn btn-info btn-lg" id="conUp">내용수정</button>';
+test += '<p>파일크기' + obj.volume + '</p>';
+test += '<p>업로드날짜 ' + obj.uploadDate + '</p>';
+test += '<p>수정 날짜  ' + obj.lastModify + '</p>';
 
-	test += '<div class="modal-body">';
-	test += '<textarea id="content" rows="10" cols="30" readonly=readonly>'
-			+ obj.info + '</textarea>';
-	test += '<button type="button"class="btn btn-info btn-lg" id="conUp">내용수정</button>';
-	test += '<p>파일크기' + obj.volume + '</p>';
-	test += '<p>업로드날짜 ' + obj.uploadDate + '</p>';
-	test += '<p>수정 날짜  ' + obj.lastModify + '</p>';
-	test += '<button id="subm" type="button" class="btn btn-default">수정하기</button>';
-	test += '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-	test += '</div>';
-	test += '</div>';
-	test += '</div>';
-	test += ' </div>';
-	test += '</form>';
-	$('#test').html(test);
+test += '<div id="area1" align="center">';
+test += '<button id="subm" type="button" class="btn btn-default">수정하기</button>';
+test += '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+test += '</div>';
 
-	$('#id01').modal();
+test += '</div>';
+test += '</div>';
+test += '</div>';
+test += ' </div>';
+test += '</form>';
+$('#test').html(test);
+
+$('#id01').modal();
 }
 
-// 폴더속성일 경우
+//폴더속성일 경우
 function soksungFolder(obj) {
 
-	$(document).ready(function() {
-		$("#myBtn").click(function() {
-			$("#fName").attr("readonly", false);
-		});
-		$("#conUp").click(function() {
-			$("#content").attr("readonly", false);
-		});
+$(document).ready(function() {
+	$("#myBtn").click(function() {
+        document.getElementById("fName").focus();
+        $("#fName").attr("readonly", false);
+        $("#content3").attr("readonly", false);
+     });
 
-		$("#subm").click(function() {
-			var fName = $('#fName').val();
-			var info = $('#content').val();
-			var ffid = obj.ffid;
-			var nowPa = nowPath;
-			$.ajax({
-				url : 'sokUpdate',
-				type : 'POST',
-				dataType : 'json',
-				data : {
-					ffid : ffid,
-					filename : fName,
-					info : info,
-					path : nowPa
-				},
-				success : function(obj) {
-					alert('성공하였습니다.');
-					init();
-				},
-				error : function(e) {
-					alert(JSON.stringify(e));
-					// alert('에-러');
-				}
-			});
-		});
-	});
+   $("#subm").click(function() {
+      var fName = $('#fName').val();
+      var info = $('#content3').val();
+      var ffid = obj.ffid;
+      var nowPa = nowPath;
+      $.ajax({
+         url : 'sokUpdate',
+         type : 'POST',
+         dataType : 'json',
+         data : {
+            ffid : ffid,
+            filename : fName,
+            info : info,
+            path : nowPa
+         },
+         success : function(obj) {
+            alert('성공하였습니다.');
+            init();
+         },
+         error : function(e) {
+            alert(JSON.stringify(e));
+            // alert('에-러');
+         }
+      });
+   });
+});
 
-	var test = '';
-	test += '<form id= "updateForm">';
-	test += '<div id="id01" class="modal fade">';
-	test += '<div class="modal-dialog">';
-	test += '<div class="modal-content">';
+var test = '';
+test += '<form id= "updateForm" name="updateForm">';
+test += '<div id="id01" class="modal fade">';
+test += '<div class="modal-dialog" id="dialog">';
+test += '<div class="modal-content">';
 
-	test += '<h2 class="modal-title">';
+test += '<h2 class="modal-title">';
 
-	test += '<input id="fName" type="text" placeholder=' + obj.fileName
-			+ ' readonly=readonly>';
+test += '<input id="fName" name="fName" type="text" placeholder=' + obj.fileName
+      + ' readonly=readonly> &nbsp;&nbsp;';
+test += '<button type="button" id="myBtn" class="myBtn"><img class="modify_image"src="./resources/img/storage/modify.png"></button>';
+test += '<button type="button" class="close" data-dismiss="modal">x</button></h2>';
 
-	test += '<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+//test += '<button type="button"class="btn btn-info btn-lg" id="myBtn">제목수정</button>';
 
-	test += '<button type="button"class="btn btn-info btn-lg" id="myBtn">제목수정</button>';
+test += '<div class="modal-body">';
 
-	test += '<div class="modal-body">';
+test += '<textarea id="content3" name="content" rows="10" cols="30" readonly=readonly>'
+      + obj.info + '</textarea>';
+//test += '<button type="button"class="btn btn-info btn-lg" id="conUp">내용수정</button>';
+test += '<p>파일크기' + obj.volume + '</p>';
+test += '<p>수정 날짜  ' + obj.lastModify + '</p>';
 
-	test += '<textarea id="content" rows="10" cols="30" readonly=readonly>'
-			+ obj.info + '</textarea>';
-	test += '<button type="button"class="btn btn-info btn-lg" id="conUp">내용수정</button>';
-	test += '<p>파일크기' + obj.volume + '</p>';
-	test += '<p>수정 날짜  ' + obj.lastModify + '</p>';
+test += '<div id="area1" align="center">';
+test += '<button id="subm" type="button" class="btn btn-default">수정하기</button>';
+test += '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+test += '</div>';
 
-	test += '<button id="subm" type="button" class="btn btn-default">수정하기</button>';
-	test += '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+test += '</div>';
+test += '</div>';
+test += '</div>';
+test += ' </div>';
+test += '</form>';
+$('#test').html(test);
 
-	test += '</div>';
-	test += '</div>';
-	test += '</div>';
-	test += ' </div>';
-	test += '</form>';
-	$('#test').html(test);
-
-	$('#id01').modal();
+$('#id01').modal();
 }
 
-// 휴지통에 있는 속성일 경우
+//휴지통에 있는 속성일 경우
 function soksungTrash(obj) {
 
-	$(document).ready(function() {
-		$("#myBtn").click(function() {
-			$("#fName").attr("readonly", false);
-		});
-		$("#conUp").click(function() {
-			$("#content").attr("readonly", false);
-		});
-	});
+$(document).ready(function() {
+   $("#myBtn").click(function() {
+      $("#fName").attr("readonly", false);
+   });
+   $("#conUp").click(function() {
+      $("#content").attr("readonly", false);
+   });
+});
 
-	var test = '';
-	test += '<form id= "updateForm">';
-	test += '<div id="id01" class="modal fade">';
-	test += '<div class="modal-dialog">';
-	test += '<div class="modal-content">';
+var test = '';
+test += '<form id= "updateForm">';
+test += '<div id="id01" class="modal fade">';
+test += '<div class="modal-dialog" id="dialog">';
+test += '<div class="modal-content">';
 
-	test += '<h2 class="modal-title">';
+test += '<h2 class="modal-title">';
 
-	test += '<input id="fName" type="text" placeholder=' + obj.fileName
-			+ ' readonly=readonly>';
+test += '<input id="fName" type="text" placeholder=' + obj.fileName
+      + ' readonly=readonly>';
 
-	test += '<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+test += '<button type="button" class="close" data-dismiss="modal">x</button></h2>';
 
-	test += '<div class="modal-body">';
+test += '<div class="modal-body">';
 
-	test += '<textarea id="content" rows="10" cols="30" readonly=readonly>'
-			+ obj.info + '</textarea>';
-	test += '<p>파일크기' + obj.volume + '</p>';
-	test += '<p>수정 날짜  ' + obj.lastModify + '</p>';
+test += '<textarea id="content3" rows="10" cols="30" readonly=readonly>'
+      + obj.info + '</textarea>';
+test += '<p>파일크기' + obj.volume + '</p>';
+test += '<p>수정 날짜  ' + obj.lastModify + '</p>';
 
-	test += '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+test += '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
 
-	test += '</div>';
-	test += '</div>';
-	test += '</div>';
-	test += ' </div>';
-	test += '</form>';
-	$('#test').html(test);
+test += '</div>';
+test += '</div>';
+test += '</div>';
+test += ' </div>';
+test += '</form>';
+$('#test').html(test);
 
-	$('#id01').modal();
+$('#id01').modal();
 }
 
 
-//공유 설정
+//공유 된 상태에서 열었을경우
 function shareSet(obj){
+
+var User;
+//alert(JSON.stringify(obj));
+var set = '';
+var num;
+$.each(obj, function(index, item){ 
+ num = item.ffid;
+});
+set +='<form id= "updateForm">';
+set +='<div id="sharedS" class="modal fade">';
+set +='<div class="modal-dialog" id="dialog">';
+set +='<div class="modal-content">';
+  
+set +='<h2 class="modal-title">';
+  
+set +='<input id="fName" type="text" placeholder="아이디 검색">';
+//set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
+set += '<button type="button" id="search" class="myBtn"><img class="modify_image"src="./resources/img/storage/search.png"></button>';
+set += '</form>';
+set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
  
- var User;
- //alert(JSON.stringify(obj));
- var set = '';
+ set +='<div class="modal-body">';
+ 
+ set +='<div id="auth1">';
+ set +='<textarea id="content2" rows="2" cols="30" readonly=readonly></textarea>';
+ set +='<form id= "updateForm2">';
+ set +='<select id="selectAuth" name="selectAuth">';
+ set +='<option value="OWNER">Owner</option>';
+ set +='<option value="VIEW">View</option>';
+ set +='<option value="EDIT">Edit</option>';
+ set +='</select>';
+ set +='&nbsp;&nbsp;&nbsp;';
+ set +='<button type="button" id="addAuth" class="addPerson">추가</button>';
+ set +='</div>';
+ 
+ 
+ set +='</div>';
+ 
+ set +='<div id="shareList">';
+ set +='<textarea id="content" rows="10" cols="30" readonly=readonly>';
+
+ $(document).ready(function() {
+    $("#search").click(function(){
+         var searchName = $('#fName').val();
+         $.ajax({
+          url:'searchUser',
+          type: 'POST',
+          dataType: 'json',
+          data: {email: searchName},
+          success: function(search) {
+             if(search != null){
+                User = search.email;
+                alert(User);
+                $('#content2').val(User);
+               // $('#content').val().replaceAll("\r\n","<br>");
+             }               
+          },
+          error: function(e) {
+             //alert(JSON.stringify(e));
+              alert('존재하지 않습니다.');
+          }
+       });
+       
+     });   
+    
+    $("#addAuth").click(function(){
+     //  $.each(obj, function(index, item){   
+       var selectAuth = document.getElementById("selectAuth");
+       
+       var ffid = num;
+       var email = $('#content2').val();
+       var select = selectAuth.value;
+       
+       if(email==''){
+          alert('아이디를 검색해주세요.');
+          document.getElementById("fName").focus();
+          return false;
+       }
+       
+       $.ajax({
+          url:'setAuth',
+          type: 'POST',
+          dataType: 'text',
+          data: {auth: select, ffid:ffid, email:email},
+         
+          success: updateOk,
+          error: function(text) {
+             alert(text);
+             // alert('에-러');
+          }
+       });
+  //   });   
+    }); 
+ });
+$.each(obj, function(index, item){   
+ set += item.email+'&nbsp;&nbsp;&nbsp;'+item.auth + '\n';
+     
+});
+set += '</textarea>';
+set +='</div>';
+set +='</form>';
+set +='</div>';
+
+
+set +='</div>';
+set +='</div>';
+set +=' </div>';
+set +='</form>';
+$('#sharedSet').html(set);      
+
+$('#sharedS').modal();   
+}
+
+function updateOk(text){
+//alert('등록완료');
+
+document.getElementById('sharedS').style.display = 'none';
+$('.modal-backdrop').remove();
+init();
+alert(text)
+}
+
+
+
+//공유되지 않은 상황에서 열었을 경우
+function shareSet2(ffid){
+
+var User;
+//alert(JSON.stringify(obj));
+var set = '';
+var num = ffid;
+ $(document).ready(function() {
+    $("#search").click(function(){
+         var searchName = $('#fName').val();
+         
+         $.ajax({
+          url:'searchUser',
+          type: 'POST',
+          dataType: 'json',
+          data: {email: searchName, ffid: num},
+          success: function(search) {
+             if(search != null){
+                User = search.email;
+                alert(User);
+                $('#content2').val(User);
+             }               
+          },
+          error: function(e) {
+             //alert(JSON.stringify(e));
+              alert('존재하지 않습니다.');
+          }
+       });
+       
+     });   
+    
+    $("#addAuth").click(function(){
+   
+       var selectAuth = document.getElementById("selectAuth");
+       
+       var ffid = num;
+       var email = $('#content2').val();
+       var select = selectAuth.value;
+           
+           if(email==''){
+              alert('아이디를 검색해주세요.');
+              document.getElementById("fName").focus();
+              return false;
+           }
+       
+       $.ajax({
+          url:'setAuth',
+          type: 'POST',
+          dataType: 'text',
+          data: {auth: select, ffid:ffid, email:email},
+          success: updateOk,
+          error: function(text) {
+             //alert(JSON.stringify(e));
+              alert(text);
+          }
+       });
+     });   
+ });
+ 
+ 
  
  set +='<form id= "updateForm">';
  set +='<div id="sharedS" class="modal fade">';
- set +='<div class="modal-dialog">';
+ set +='<div class="modal-dialog" id="dialog">';
  set +='<div class="modal-content">';
      
  set +='<h2 class="modal-title">';
      
  set +='<input id="fName" type="text" placeholder="아이디 검색">';
- set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
+ set += '<button type="button" id="search" class="myBtn"><img class="modify_image"src="./resources/img/storage/search.png"></button>';
+// set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
  set += '</form>';
  set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
  
-    
-    
     set +='<div class="modal-body">';
     
     set +='<div id="auth1">';
-    set +='<textarea id="content" rows="2" cols="30" readonly=readonly></textarea>';
+    set +='<textarea id="content2" rows="2" cols="30" readonly=readonly></textarea>';
     set +='<form id= "updateForm2">';
     set +='<select id="selectAuth" name="selectAuth">';
     set +='<option value="OWNER">Owner</option>';
-    set +='<option value="VIEW">View</option>'
-    set +='<option value="EDIT">Edit</option>'
-    set +='</select>'
-    set +='<button type="button"class="btn btn-info btn-lg" id="addAuth">추가</button>';
+    set +='<option value="VIEW">View</option>';
+    set +='<option value="EDIT">Edit</option>';
+    set +='</select>';
+    set +='&nbsp;&nbsp;&nbsp;';
+    set +='<button type="button" id="addAuth" class="addPerson">추가</button>';
     set +='</div>';
     
     set +='<div id="shareList">';
-    set +='<textarea id="content" rows="10" cols="30" readonly=readonly>';
+    //set +='<textarea id="content" rows="10" cols="30" readonly=readonly>'+item.email+'&nbsp;&nbsp;&nbsp;'+item.auth+'</textarea>';
+    set +='</div>';
+    set +='</form>';
+    set +='</div>';
     
+    set +='</div>';
+    set +='</div>';
+    set +=' </div>';
+    set +='</form>';
+     
+    $('#sharedSet').html(set);      
     
-    
-    
- 
-    $(document).ready(function() {
-       $("#search").click(function(){
-            var searchName = $('#fName').val();
-            $.ajax({
-             url:'searchUser',
-             type: 'POST',
-             dataType: 'json',
-             data: {email: searchName},
-             success: function(search) {
-                if(search != null){
-                   User = search.email;
-                   alert(User);
-                   $('#content').val(User);
-                }               
-             },
-             error: function(e) {
-                //alert(JSON.stringify(e));
-                 alert('존재하지 않습니다.');
-             }
-          });
-          
-        });   
-       
-       $("#addAuth").click(function(){
-          $.each(obj, function(index, item){   
-          var selectAuth = document.getElementById("selectAuth");
-          
-          var ffid = item.ffid;
-          var email = $('#content').val();
-          var select = selectAuth.value;
-          
-          if(email==''){
-             alert('아이디를 검색해주세요.');
-             document.getElementById("fName").focus();
-             return false;
-          }
-          
-          alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
-          $.ajax({
-             url:'setAuth',
-             type: 'POST',
-             dataType: 'text',
-             data: {auth: select, ffid:ffid, email:email},
-             success: updateOk,
-             error: function(text) {
-                alert(text);
-                // alert('에-러');
-             }
-          });
-        });   
-    });
-    });
- $.each(obj, function(index, item){   
-    set += item.email+'&nbsp;&nbsp;&nbsp;'+item.auth;
-        
- });
- set += '</textarea>';
- set +='</div>';
- set +='</form>';
- set +='</div>';
- 
- 
- set +='</div>';
- set +='</div>';
-  set +=' </div>';
-  set +='</form>';
- $('#sharedSet').html(set);      
- 
- $('#sharedS').modal();   
-}
-
-function updateOk(text){
- //alert('등록완료');
- alert(text);
- document.getElementById('sharedS').style.display = 'none';
- $('.modal-backdrop').remove();
- init();
-}
-
-
-
-//공유 설정2
-function shareSet2(ffid){
- 
- var User;
- //alert(JSON.stringify(obj));
- var set = '';
- var num = ffid;
- alert('ffid 자알받았습니다.' +ffid)
-    $(document).ready(function() {
-       $("#search").click(function(){
-            var searchName = $('#fName').val();
-            
-            $.ajax({
-             url:'searchUser',
-             type: 'POST',
-             dataType: 'json',
-             data: {email: searchName, ffid: num},
-             success: function(search) {
-                if(search != null){
-                   User = search.email;
-                   alert(User);
-                   $('#content').val(User);
-                }               
-             },
-             error: function(e) {
-                //alert(JSON.stringify(e));
-                 alert('존재하지 않습니다.');
-             }
-          });
-          
-        });   
-       
-       $("#addAuth").click(function(){
-          var selectAuth = document.getElementById("selectAuth");
-          
-          var email = $('#content').val();
-          var select = selectAuth.value;
-          alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
-          
-          $.ajax({
-             url:'setAuth',
-             type: 'POST',
-             dataType: 'text',
-             data: {auth: select, ffid:ffid, email:email},
-             success: updateOk,
-             error: function(text) {
-                //alert(JSON.stringify(e));
-                 alert(text);
-             }
-          });
-        });   
-    });
-    
-    
-    
-    set +='<form id= "updateForm">';
-    set +='<div id="sharedS" class="modal fade">';
-    set +='<div class="modal-dialog">';
-    set +='<div class="modal-content">';
-        
-    set +='<h2 class="modal-title">';
-        
-    set +='<input id="fName" type="text" placeholder="아이디 검색">';
-    set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
-    set += '</form>';
-    set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
-    
-       
-       
-       set +='<div class="modal-body">';
-       
-       set +='<div id="auth1">';
-       set +='<textarea id="content" rows="2" cols="30" readonly=readonly></textarea>';
-       set +='<form id= "updateForm2">';
-       set +='<select id="selectAuth" name="selectAuth">';
-       set +='<option value="OWNER">Owner</option>';
-       set +='<option value="VIEW">View</option>';
-       set +='<option value="EDIT">Edit</option>';
-       set +='</select>';
-       set +='<button type="button"class="btn btn-info btn-lg" id="addAuth">추가</button>';
-       set +='</div>';
-       
-       set +='<div id="shareList">';
-       //set +='<textarea id="content" rows="10" cols="30" readonly=readonly>'+item.email+'&nbsp;&nbsp;&nbsp;'+item.auth+'</textarea>';
-       set +='</div>';
-       set +='</form>';
-       set +='</div>';
-       
-       
-       set +='</div>';
-       set +='</div>';
-        set +=' </div>';
-        set +='</form>';
-        
-        $('#sharedSet').html(set);      
-       
-       $('#sharedS').modal();   
+    $('#sharedS').modal();   
 }
 
 
 function goToUpload(obj){
-	 
-	 var test = '';
-	 
-	 $.each(obj, function(index, item) {
-	    var path = obj.path;
-	    var sPath = path.substring(13,path.length);
-	    var path2 = sPath.split('\\').join("/");
-	    var url = 'http://203.233.196.137:8888/freemiere/storageResources/'+path2;
-	    var text = 'text...?';
-	    test +='<form id= "updateForm">';
-	    test +='<div id="id01" class="modal fade">';
-	     test +='<div class="modal-dialog">';
-	     test +='<div class="modal-content">';
-	     
-	     test +='<h2 class="modal-title">';
-	     
-	     test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
-	     
-	     test +='<div class="modal-body">';
-	     test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_blank"><img id="face" src="./resources/img/storage/facebook.png"></a>';
-	    // test +='<a href="http://twitter.com/intent/tweet?url='+url+' "&text="'+text+'" target="_blank"><img src="./resources/img/storage/twitter.png"></a>';
-	     test +='<a href="http://share.naver.com/web/shareView.nhn?url='+url+'&title='+text+'" target="_blank"><img src="./resources/img/storage/naver.jpg"></a>';
-	        
-	     // test +='<a href="http://twitter.com/intent/tweet?url=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'&text=하하하하하" target="_black"><img src="./resources/img/storage/twitter.png"></a>';
-	     
-	     test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-	     test +='</div>';
-	     test +='</div>';
-	     test +='</div>';
-	     test +=' </div>';
-	     test +='</form>';
-	 });
-	 
-	  $('#test').html(test);      
+ 
+ var test = '';
+ 
+ $.each(obj, function(index, item) {
+    var path = obj.path;
+    var sPath = path.substring(13,path.length);
+    var path2 = sPath.split('\\').join("/");
+    
+    //서버주소바꾸고 싶으면 밑 ip주소만 바꾸면됨.
+    var url = 'http://203.233.196.137:8888/freemiere/storageResources/'+path2;
+    var text = 'text...?';
+    test +='<form id= "updateForm">';
+    test +='<div id="id01" class="modal fade">';
+     test +='<div class="modal-dialog">';
+     test +='<div class="modal-content">';
+     
+     test +='<h2 class="modal-title">';
+     
+     test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+     
+     test +='<div class="modal-body">';
+     test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_blank"><img id="face" src="./resources/img/storage/facebook.png"></a>';
+    // test +='<a href="http://twitter.com/intent/tweet?url='+url+' "&text="'+text+'" target="_blank"><img src="./resources/img/storage/twitter.png"></a>';
+     test +='<a href="http://share.naver.com/web/shareView.nhn?url='+url+'&title='+text+'" target="_blank"><img src="./resources/img/storage/naver.jpg"></a>';
+        
+     // test +='<a href="http://twitter.com/intent/tweet?url=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'&text=하하하하하" target="_black"><img src="./resources/img/storage/twitter.png"></a>';
+     
+     test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+     test +='</div>';
+     test +='</div>';
+     test +='</div>';
+     test +=' </div>';
+     test +='</form>';
+ });
+ 
+  $('#test').html(test);      
 
-	  $('#id01').modal();   
-	}
-
+  $('#id01').modal();   
+}
 
 function outputList(list) {
 	// alert(JSON.stringify(list));
@@ -794,40 +803,36 @@ function outputList(list) {
 								+ '" '
 								+ 'path="'
 								+ item.path
-								+ '"' + 'id="file_check' + item.ffid + '" >';
+								+ '"'
+								+ 'checkboxNum=' + index + '>';
 						data += '</td></tr>';
 						data += '<tr align="center">';
-						data += '	<label for="file_check' + item.ffid+ '">';
-						data += '   		<td class="filebox-td">';
+						data += '	<label for="file_check">';
+						data += '   		<td class="filebox-td" fileboxNum='+index+'>';
 						if (item.isDeleted.toLowerCase() == 't') {
 							if (item.isFolder == true) {
 								$(function() {
 									// var image =
 									// document.getElementById("#file");
-									$('#sfolders' + item.ffid + '')
-											.contextPopup(
+									$('#sfolders' + item.ffid + '').contextPopup(
 													{
 														title : 'Image/Avi File',
 														items : [
 																{
 																	label : '복구',
 																	action : function() {
-																		$
-																				.ajax({
-																					url : 'conRemove',
-																					type : 'POST',
-																					data : {
-																						ffid : item.ffid
-																					},
-																					success : function(
-																							obj) {
+																		$.ajax({
+																				url : 'conRemove',
+																				type : 'POST',
+																				data : {
+																					ffid : item.ffid
+																				},
+																				success : function(obj) {
 																						alert('복구되었습니다.');
 																						init();
 																					},
-																					error : function(
-																							e) {
-																						alert(JSON
-																								.stringify(e));
+																					error : function(e) {
+																						alert(JSON.stringify(e));
 																						// alert('에-러');
 																					}
 																				});
@@ -838,23 +843,19 @@ function outputList(list) {
 																{
 																	label : '속성',
 																	action : function() {
-																		$
-																				.ajax({
-																					url : 'info',
-																					type : 'POST',
-																					dataType : 'json',
-																					data : {
-																						ffid : item.ffid,
-																						path : item.path
-																					},
-																					success : function(
-																							obj) {
+																		$.ajax({
+																				url : 'info',
+																				type : 'POST',
+																				dataType : 'json',
+																				data : {
+																					ffid : item.ffid,
+																					path : item.path
+																				},
+																				success : function(obj) {
 																						soksungTrash(obj);
 																					},
-																					error : function(
-																							e) {
-																						alert(JSON
-																								.stringify(e));
+																					error : function(e) {
+																						alert(JSON.stringify(e));
 																						// alert('에-러');
 																					}
 																				});
@@ -863,22 +864,18 @@ function outputList(list) {
 																{
 																	label : '삭제',
 																	action : function() {
-																		$
-																				.ajax({
-																					url : 'conAllRemove',
-																					type : 'POST',
-																					data : {
-																						ffid : item.ffid
+																		$.ajax({
+																				url : 'conAllRemove',
+																				type : 'POST',
+																				data : {
+																					ffid : item.ffid
 																					},
-																					success : function(
-																							obj) {
-																						alert('삭제되었습니다.');
-																						init();
+																				success : function(obj) {
+																					alert('삭제되었습니다.');
+																					init();
 																					},
-																					error : function(
-																							e) {
-																						alert(JSON
-																								.stringify(e));
+																				error : function(e) {
+																						alert(JSON.stringify(e));
 																						// alert('에-러');
 																					}
 																				});
@@ -889,7 +886,7 @@ function outputList(list) {
 													});
 								});
 
-								data += '<label for="file_check' + item.ffid+ '">';
+								data += '<label for="file_check">';
 								data += '<img id="sfolders' 
 									  + item.ffid 
 									  + '"class="folder sfolder" path="' 
@@ -903,30 +900,25 @@ function outputList(list) {
 									// var image =
 									// document.getElementById("#file");
 
-									$('#file' + item.ffid + '')
-											.contextPopup(
+									$('#file' + item.ffid + '').contextPopup(
 													{
 														title : 'Image/Avi File',
 														items : [
 																{
 																	label : '복구',
 																	action : function() {
-																		$
-																				.ajax({
-																					url : 'conRemove',
-																					type : 'POST',
-																					data : {
-																						ffid : item.ffid
+																		$.ajax({
+																				url : 'conRemove',
+																				type : 'POST',
+																				data : {
+																					ffid : item.ffid
 																					},
-																					success : function(
-																							obj) {
+																				success : function(obj) {
 																						alert('복구되었습니다.');
 																						init();
 																					},
-																					error : function(
-																							e) {
-																						alert(JSON
-																								.stringify(e));
+																				error : function(e) {
+																						alert(JSON.stringify(e));
 																						// alert('에-러');
 																					}
 																				});
@@ -936,23 +928,19 @@ function outputList(list) {
 																{
 																	label : '속성',
 																	action : function() {
-																		$
-																				.ajax({
-																					url : 'info',
-																					type : 'POST',
-																					dataType : 'json',
-																					data : {
+																		$.ajax({
+																				url : 'info',
+																				type : 'POST',
+																				dataType : 'json',
+																				data : {
 																						ffid : item.ffid,
 																						path : item.path
 																					},
-																					success : function(
-																							obj) {
+																				success : function(	obj) {
 																						soksungTrash(obj);
 																					},
-																					error : function(
-																							e) {
-																						alert(JSON
-																								.stringify(e));
+																				error : function(e) {
+																						alert(JSON.stringify(e));
 																						// alert('에-러');
 																					}
 																				});
@@ -961,22 +949,18 @@ function outputList(list) {
 																{
 																	label : '삭제',
 																	action : function() {
-																		$
-																				.ajax({
-																					url : 'conAllRemove',
-																					type : 'POST',
-																					data : {
+																		$.ajax({
+																				url : 'conAllRemove',
+																				type : 'POST',
+																				data : {
 																						ffid : item.ffid
 																					},
-																					success : function(
-																							obj) {
+																				success : function(obj) {
 																						alert('휴지통으로 이동하였습니다.');
 																						init();
 																					},
-																					error : function(
-																							e) {
-																						alert(JSON
-																								.stringify(e));
+																				error : function(e) {
+																						alert(JSON.stringify(e));
 																						// alert('에-러');
 																					}
 																				});
@@ -992,64 +976,66 @@ function outputList(list) {
 								 * onclick="window.open(this.src)">';
 								 */
 								var path = item.path;
-								var pathArray = path.split('\\');
-								var thumbPath = './storageResources/';
-								var imgPath = './storageResources/';
-								for (var j = 2; j < pathArray.length; j++) {
-									imgPath += pathArray[j];
-									thumbPath += pathArray[j];
-									if (j < (pathArray.length - 1)) {
-										thumbPath += '/';
-										imgPath += '/';
-									}
-									if (j == (pathArray.length - 2))
-										thumbPath += '.thumb/';
-								}
-								thumbPath += '.png';
+		                           var pathArray = path.split('\\');
+		                           var thumbPath = './storageResources/';
+		                           var imgPath = './storageResources/';
+		                           for (var j = 2; j < pathArray.length; j++) {
+		                              imgPath += pathArray[j];
+		                              thumbPath += pathArray[j];
+		                              if (j < (pathArray.length - 1)) {
+		                                 thumbPath += '/';
+		                                 imgPath += '/';
+		                              }
+		                              if (j == (pathArray.length - 2))
+		                                 thumbPath += '.thumb/';
+		                           }
+		                           thumbPath += '.png';
 
-								var fileType = getFileType(item.path);
-								if (fileType == 'image') {
-									data += '<label for="file_check' + item.ffid
-											+ '">';
-									data += '<img id="file' + item.ffid
-											+ '" class="file fimage" path="'
-											+ imgPath + '" src="' + thumbPath
-											+ '">';
-									data += '</label>';
-								} else if (fileType == 'video') {
+		                           var fileType = getFileType(item.path);
+		                           if (fileType == 'image') {
+		                              data += '<label for="file_check'
+		                                    + index + '">';
+		                              data += '<img id="file'
+		                                    + item.ffid
+		                                    + '" class="file fimage" path="'
+		                                    + imgPath + '" src="'
+		                                    + thumbPath + '">';
+		                              data += '</label>';
+		                           } else if (fileType == 'video') {
 
-									var p = item.path;
-									var videoPathrray = p.split('\\');
-									var videoPath = './storageResources/';
-									for (var j = 2; j < videoPathrray.length; j++) {
-										videoPath += videoPathrray[j];
-										if (j < (videoPathrray.length - 1))
-											videoPath += '/';
-									}
-									data += '<div class="checkDiv">';
-									data += '<label class="videoLibel" for="file_check'
-											+ item.ffid + '">';
-									data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
-											+ thumbPath
-											+ '" onclick="videoCheck()">';
-									data += '<source src="' + videoPath
-											+ '" type="video/mp4">';
-									data += '<source src="' + item.path
-											+ '" type="video/ogg">';
-									data += '<source src="' + item.path
-											+ '" type="video/webm">';
-									data += 'Your browser does not support the video tag.';
-									data += '</video>';
-									data += '</label>';
-									data += '</div>';
-								} else {
-									data += '<label for="file_check' + item.ffid+ '">';
-									data += '<img id="file'
-											+ item.ffid
-											+ '" class="file" src="./resources/img/storage/file.png">';
-									data += '</label>';
-								}
-							}
+		                              var p = item.path;
+		                              var videoPathrray = p.split('\\');
+		                              var videoPath = './storageResources/';
+		                              for (var j = 2; j < videoPathrray.length; j++) {
+		                                 videoPath += videoPathrray[j];
+		                                 if (j < (videoPathrray.length - 1))
+		                                    videoPath += '/';
+		                              }
+		                              data += '<div class="checkDiv">';
+		                              data += '<label class="videoLibel" for="file_check'
+		                                    + index + '">';
+		                              data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
+		                                    + thumbPath + '">';
+		                              data += '<source src="' + videoPath
+		                                    + '" type="video/mp4">';
+		                              data += '<source src="' + item.path
+		                                    + '" type="video/ogg">';
+		                              data += '<source src="' + item.path
+		                                    + '" type="video/webm">';
+		                              data += 'Your browser does not support the video tag.';
+		                              data += '</video>';
+		                              data += '</label>';
+		                              data += '</div>';
+		                           } else {
+		                              data += '<label for="file_check'
+		                                    + index + '">';
+		                              data += '<img id="file'
+		                                    + item.ffid
+		                                    + '" class="file" src="./resources/img/storage/file.png">';
+		                              data += '</label>';
+		                           }
+
+		                        }
 
 						}
 
@@ -1061,8 +1047,7 @@ function outputList(list) {
 									$(function() {
 										// var image =
 										// document.getElementById("#file");
-										$('#file' + item.ffid + '')
-												.contextPopup(
+										$('#file' + item.ffid + '').contextPopup(
 														{
 															title : 'Image/Avi File',
 															items : [
@@ -1086,22 +1071,19 @@ function outputList(list) {
 																	{
 																		label : '중요        ★',
 																		action : function() {
-																			$
-																					.ajax({
-																						url : 'bookmarkUpdate',
-																						type : 'POST',
-																						data : {
+																			$.ajax({
+																					url : 'bookmarkUpdate',
+																					type : 'POST',
+																					data : {
 																							ffid : item.ffid,
 																							bookstate : item.bookState
 																						},
-																						success : function() {
+																					success : function() {
 																							alert('중요하지 않군요... ');
 																							init();
 																						},
-																						error : function(
-																								e) {
-																							alert(JSON
-																									.stringify(e));
+																						error : function(e) {
+																							alert(JSON.stringify(e));
 																							// alert('에-러');
 																						}
 																					});
@@ -1111,23 +1093,19 @@ function outputList(list) {
 																	{
 																		label : '속성',
 																		action : function() {
-																			$
-																					.ajax({
-																						url : 'info',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
+																			$.ajax({
+																					url : 'info',
+																					type : 'POST',
+																					dataType : 'json',
+																					data : {
 																							ffid : item.ffid,
 																							path : item.path
 																						},
-																						success : function(
-																								obj) {
+																					success : function(obj) {
 																							soksung(obj);
 																						},
-																						error : function(
-																								e) {
-																							alert(JSON
-																									.stringify(e));
+																					error : function(e) {
+																							alert(JSON.stringify(e));
 																							// alert('에-러');
 																						}
 																					});
@@ -1136,22 +1114,18 @@ function outputList(list) {
 																	{
 																		label : '삭제',
 																		action : function() {
-																			$
-																					.ajax({
-																						url : 'conDelete',
-																						type : 'POST',
-																						data : {
+																			$.ajax({
+																					url : 'conDelete',
+																					type : 'POST',
+																					data : {
 																							ffid : item.ffid
 																						},
-																						success : function(
-																								obj) {
+																					success : function(obj) {
 																							alert('휴지통으로 이동하였습니다.');
 																							init();
 																						},
-																						error : function(
-																								e) {
-																							alert(JSON
-																									.stringify(e));
+																						error : function(e) {
+																							alert(JSON.stringify(e));
 																							// alert('에-러');
 																						}
 																					});
@@ -1179,8 +1153,7 @@ function outputList(list) {
 
 									var fileType = getFileType(item.path);
 									if (fileType == 'image') {
-										data += '<label for="file_check'
-												+ item.ffid + '">';
+										data += '<label for="file_check">';
 										data += '<img id="file'
 												+ item.ffid
 												+ '" class="file fimage" path="'
@@ -1197,9 +1170,7 @@ function outputList(list) {
 											if (j < (videoPathrray.length - 1))
 												videoPath += '/';
 										}
-										data += '<div class="checkDiv">';
-										data += '<label class="videoLibel" for="file_check'
-												+ item.ffid + '">';
+										data += '<label class="videoLibel" for="file_check">';
 										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 												+ thumbPath
 												+ '" onclick="videoCheck()">';
@@ -1212,13 +1183,11 @@ function outputList(list) {
 										data += 'Your browser does not support the video tag.';
 										data += '</video>';
 										data += '</label>';
-										data += '</div>';
 									} else {
-										data += '<label for="file_check'
-												+ item.ffid + '">';
+										data += '<label for="file_check">';
 										data += '<img id="file'
 												+ item.ffid
-												+ '" class="file" src="./resources/img/storage/file.png">';
+												+ '" class="file" src="./resources/img/storage/save.png">';
 										data += '</label>';
 									}
 
@@ -1254,22 +1223,19 @@ function outputList(list) {
 																	{
 																		label : '중요',
 																		action : function() {
-																			$
-																					.ajax({
-																						url : 'bookmarkUpdate',
-																						type : 'POST',
-																						data : {
+																			$.ajax({
+																					url : 'bookmarkUpdate',
+																					type : 'POST',
+																					data : {
 																							ffid : item.ffid,
 																							bookstate : item.bookState
 																						},
-																						success : function() {
+																					success : function() {
 																							alert('중요로 변경되었습니다.');
 																							init();
 																						},
-																						error : function(
-																								e) {
-																							alert(JSON
-																									.stringify(e));
+																					error : function(e) {
+																							alert(JSON.stringify(e));
 																							// alert('에-러');
 																						}
 																					});
@@ -1285,24 +1251,19 @@ function outputList(list) {
 																	{
 																		label : '속성',
 																		action : function() {
-																			$
-																					.ajax({
-																						url : 'info',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
+																			$.ajax({
+																					url : 'info',
+																					type : 'POST',
+																					dataType : 'json',
+																					data : {
 																							ffid : item.ffid,
 																							path : item.path
 																						},
-																						success : function(
-																								obj) {
-
+																					success : function(obj) {
 																							soksung(obj);
 																						},
-																						error : function(
-																								e) {
-																							alert(JSON
-																									.stringify(e));
+																					error : function(e) {
+																							alert(JSON.stringify(e));
 																							// alert('에-러');
 																						}
 																					});
@@ -1311,22 +1272,18 @@ function outputList(list) {
 																	{
 																		label : '삭제',
 																		action : function() {
-																			$
-																					.ajax({
-																						url : 'conDelete',
-																						type : 'POST',
-																						data : {
+																			$.ajax({
+																					url : 'conDelete',
+																					type : 'POST',
+																					data : {
 																							ffid : item.ffid
 																						},
-																						success : function(
-																								obj) {
+																					success : function(obj) {
 																							alert('휴지통으로 이동하였습니다.');
 																							init();
 																						},
-																						error : function(
-																								e) {
-																							alert(JSON
-																									.stringify(e));
+																						error : function(e) {
+																							alert(JSON.stringify(e));
 																							// alert('에-러');
 																						}
 																					});
@@ -1354,8 +1311,7 @@ function outputList(list) {
 
 									var fileType = getFileType(item.path);
 									if (fileType == 'image') {
-										data += '<label for="file_check'
-												+ item.ffid + '">';
+										data += '<label for="file_check">';
 										data += '<img id="file'
 												+ item.ffid
 												+ '" class="file fimage" path="'
@@ -1372,9 +1328,7 @@ function outputList(list) {
 											if (j < (videoPathrray.length - 1))
 												videoPath += '/';
 										}
-										data += '<div class="checkDiv">';
-										data += '<label class="videoLibel" for="file_check'
-												+ item.ffid + '">';
+										data += '<label class="videoLibel" for="file_check">';
 										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
 												+ thumbPath + '">';
 										data += '<source src="' + videoPath
@@ -1386,13 +1340,11 @@ function outputList(list) {
 										data += 'Your browser does not support the video tag.';
 										data += '</video>';
 										data += '</label>';
-										data += '</div>';
 									} else {
-										data += '<label for="file_check'
-												+ item.ffid + '">';
+										data += '<label for="file_check">';
 										data += '<img id="file'
 												+ item.ffid
-												+ '" class="file" src="./resources/img/storage/file.png">';
+												+ '" class="file" src="./resources/img/storage/save.png">';
 										data += '</label>';
 									}
 
@@ -1420,30 +1372,25 @@ function outputList(list) {
 											// var image =
 											// document.getElementById("#file");
 
-											$('#sfolders' + item.ffid + '')
-													.contextPopup(
+											$('#sfolders' + item.ffid + '').contextPopup(
 															{
 																title : 'My Popup Menu',
 																items : [
 																		{
 																			label : '공유설정',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'folderShare',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'folderShare',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								shareSet(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																							error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1459,22 +1406,19 @@ function outputList(list) {
 																		{
 																			label : '중요        ★',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'bookmarkUpdate',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'bookmarkUpdate',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid,
 																								bookstate : item.bookState
 																							},
-																							success : function() {
+																						success : function() {
 																								alert('중요하지 않군요... ');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1484,24 +1428,19 @@ function outputList(list) {
 																		{
 																			label : '속성',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'info',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'info',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid,
 																								path : item.path
 																							},
-																							success : function(
-																									obj) {
-
+																						success : function(obj) {
 																								soksungFolder(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																							error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1511,22 +1450,18 @@ function outputList(list) {
 																			label : '삭제',
 																			action : function() {
 
-																				$
-																						.ajax({
-																							url : 'conDelete',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'conDelete',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								alert('휴지통으로 이동하였습니다.');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1536,7 +1471,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + item.ffid+ '">';
+										data += '<label for="file_check">';
 										data += '<img id="sfolders'
 												+ item.ffid
 												+ '" class="folder sfolder" path="'
@@ -1556,30 +1491,25 @@ function outputList(list) {
 											// var image =
 											// document.getElementById("#file");
 
-											$('#sfolders' + item.ffid + '')
-													.contextPopup(
+											$('#sfolders' + item.ffid + '').contextPopup(
 															{
 																title : 'My Popup Menu',
 																items : [
 																		{
 																			label : '공유설정',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'folderShare',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'folderShare',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								shareSet(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1595,22 +1525,19 @@ function outputList(list) {
 																		{
 																			label : '중요',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'bookmarkUpdate',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'bookmarkUpdate',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid,
 																								bookstate : item.bookState
 																							},
-																							success : function() {
+																						success : function() {
 																								alert('중요로 설정되었습니다.');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1620,24 +1547,19 @@ function outputList(list) {
 																		{
 																			label : '속성',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'info',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'info',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid,
 																								path : item.path
 																							},
-																							success : function(
-																									obj) {
-
+																						success : function(obj) {
 																								soksungFolder(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1646,23 +1568,18 @@ function outputList(list) {
 																		{
 																			label : '삭제',
 																			action : function() {
-
-																				$
-																						.ajax({
-																							url : 'conDelete',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'conDelete',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								alert('휴지통으로 이동하였습니다.');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																							error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1672,7 +1589,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + item.ffid+ '">';
+										data += '<label for="file_check' + index+ '">';
 										data += '<img id="sfolders'
 												+ item.ffid
 												+ '" class="folder sfolder" path="'
@@ -1693,30 +1610,25 @@ function outputList(list) {
 											// var image =
 											// document.getElementById("#file");
 
-											$('#mfolders' + item.ffid + '')
-													.contextPopup(
+											$('#mfolders' + item.ffid + '').contextPopup(
 															{
 																title : 'My Popup Menu',
 																items : [
 																		{
 																			label : '공유설정',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'folderShare',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'folderShare',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								shareSet(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1732,22 +1644,19 @@ function outputList(list) {
 																		{
 																			label : '중요        ★',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'bookmarkUpdate',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'bookmarkUpdate',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid,
 																								bookstate : item.bookState
 																							},
-																							success : function() {
+																						success : function() {
 																								alert('중요하지 않군요... ');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1757,24 +1666,19 @@ function outputList(list) {
 																		{
 																			label : '속성',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'info',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'info',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid,
 																								path : item.path
 																							},
-																							success : function(
-																									obj) {
-
+																						success : function(obj) {
 																								soksungFolder(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1783,23 +1687,18 @@ function outputList(list) {
 																		{
 																			label : '삭제',
 																			action : function() {
-
-																				$
-																						.ajax({
-																							url : 'conDelete',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'conDelete',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								alert('휴지통으로 이동하였습니다.');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1809,7 +1708,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + item.ffid+ '">';
+										data += '<label for="file_check' + index+ '">';
 										data += '<img id="mfolders'
 												+ item.ffid
 												+ '" class="folder mfolder" path="'
@@ -1829,8 +1728,7 @@ function outputList(list) {
 											// var image =
 											// document.getElementById("#file");
 
-											$('#mfolders' + item.ffid + '')
-													.contextPopup(
+											$('#mfolders' + item.ffid + '').contextPopup(
 															{
 																title : 'My Popup Menu',
 																items : [
@@ -1838,22 +1736,18 @@ function outputList(list) {
 																			label : '공유설정',
 																			action : function() {
 																				var ffid = item.ffid;
-																				$
-																						.ajax({
-																							url : 'folderShare2',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'folderShare2',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								shareSet2(obj.ffid);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1863,22 +1757,19 @@ function outputList(list) {
 																		{
 																			label : '중요',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'bookmarkUpdate',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'bookmarkUpdate',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid,
 																								bookstate : item.bookState
 																							},
-																							success : function() {
+																						success : function() {
 																								alert('중요로 변경되었습니다.');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1888,24 +1779,19 @@ function outputList(list) {
 																		{
 																			label : '속성',
 																			action : function() {
-																				$
-																						.ajax({
-																							url : 'info',
-																							type : 'POST',
-																							dataType : 'json',
-																							data : {
+																				$.ajax({
+																						url : 'info',
+																						type : 'POST',
+																						dataType : 'json',
+																						data : {
 																								ffid : item.ffid,
 																								path : item.path
 																							},
-																							success : function(
-																									obj) {
-
+																						success : function(obj) {
 																								soksungFolder(obj);
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1915,22 +1801,18 @@ function outputList(list) {
 																			label : '삭제',
 																			action : function() {
 
-																				$
-																						.ajax({
-																							url : 'conDelete',
-																							type : 'POST',
-																							data : {
+																				$.ajax({
+																						url : 'conDelete',
+																						type : 'POST',
+																						data : {
 																								ffid : item.ffid
 																							},
-																							success : function(
-																									obj) {
+																						success : function(obj) {
 																								alert('휴지통으로 이동하였습니다.');
 																								init();
 																							},
-																							error : function(
-																									e) {
-																								alert(JSON
-																										.stringify(e));
+																						error : function(e) {
+																								alert(JSON.stringify(e));
 																								// alert('에-러');
 																							}
 																						});
@@ -1940,7 +1822,7 @@ function outputList(list) {
 																]
 															});
 										});
-										data += '<label for="file_check' + item.ffid+ '">';
+										data += '<label for="file_check">';
 										data += '<img id="mfolders'
 												+ item.ffid
 												+ '" class="folder mfolder" path="'
@@ -1968,10 +1850,9 @@ function outputList(list) {
 						data += '</table>';
 						data += '</li>';
 					});
-	data += '</ul>';
+					data += '</ul>';
 
 	if(recentHTML == ''){
-		alert("dd");
 		$('#outputList').html(data);
 	}
 	else{
@@ -1979,50 +1860,35 @@ function outputList(list) {
 		recentHTML += data;
 		return;
 	}
-//	alert('gaga');
 	// 하단 전체선택 메뉴버튼
 	$('#btn-all').click(function() {
-		alert('hi1');
 		if ($('.file_check').is(':checked')) {
 			// 선택해제
 			$('.file_check').each(function(index, item) {
 				$(this).prop("checked", false);
-				/*
-				 * $('.file').css('background-color', '');
-				 * $('.folder').css('background-color', '');
-				 * $('.videoLibel').css('background-color', '');
-				 */
 				$('.filebox-td').css('background-color', '');
 			});
 		} else {
 			// 선택
 			$('.file_check').each(function(index, item) {
 				$(this).prop("checked", true);
-				/*
-				 * $('.file').css('background-color', '#ccffeb');
-				 * $('.folder').css('background-color', '#ccffeb');
-				 * $('.videoLibel').css('background-color', '#ccffeb');
-				 */
 				$('.filebox-td').css('background-color', '#ccffeb');
 			});
 		}
 	});
 
-	/*// 이미지 클릭시 색깔 바꾸기
+	/// 이미지 클릭시 색깔 바꾸기
 	$('.filebox-td').click(function() {
-		$(this).each(function(){
-			if ($('').is(':checked')) {
-				$(this).removeClass('highlight');
-			}else{
-				$('').prop("checked", true);
-				$(this).addClass('highlight');
-			}
-		});
-	});*/
+		var fileboxNum = $(".filebox-td").index(this);
+		if($('.file_check:eq("'+fileboxNum+'")').is(':checked')){
+			$('.file_check:eq("'+fileboxNum+'")').prop("checked", false);
+			$(this).css('background-color', '');
+		}else{
+			$('.file_check:eq("'+fileboxNum+'")').prop("checked", true);
+			$(this).css('background-color', '#ccffeb');
+		}
+	});
 
-	/*
-	 * $('.folder').click(function() { $(this).toggleClass('highlight'); });
-	 */
 
 	if (navRoot != 'Trash') {
 		$('.folder').dblclick(function() {
@@ -2043,7 +1909,6 @@ function outputList(list) {
 	}
 
 	$('.fimage').on('dblclick', function() {
-		
 		var path = $(this).attr('path');
 		$.colorbox({
 			maxWidth : "75%",
@@ -2061,7 +1926,6 @@ var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 function setNavRoot(nr) {
 	navRoot = nr;
 	if (navRoot == 'MyStorage') {
-		// alert('haha');
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '내 저장소</a>';
 	} else if (navRoot == 'Shared')
@@ -2080,11 +1944,10 @@ function setNavRoot(nr) {
 }
 
 function setNavTop(nr) {
-	// alert(nr);
 	var data = '';
-	navRoot = nr;
+	var root = nr;
 
-	if (navRoot == 'MyStorage') {
+	if (root == 'MyStorage') {
 		data += '<ul class="nav navbar-nav">';
 		data += '	<li class="active">';
 		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
@@ -2108,16 +1971,15 @@ function setNavTop(nr) {
 		data += '		<a id="file" >';
 		data += '			<label for="fileUpload" class="uploadLabel" class="topMenu">';
 		data += '				 <i class="fa fa-cloud-upload" aria-hidden="true">';
-		data += '					업로드</i>';
+		data += '				</i>업로드';
 		data += '			</label>';
 		data += '		</a>';
 		data += '		<input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
-		/* data += ' </form>'; */
 		data += '	</li>'
 		data += '</ul>';
 
 		$('#setNavTop').html(data);
-	} else if (navRoot == 'Shared') {
+	} else if (root == 'Shared') {
 		data += '<ul class="nav navbar-nav">';
 		data += '	<li class="active">';
 		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
@@ -2134,7 +1996,7 @@ function setNavTop(nr) {
 		data += '</ul>';
 
 		$('#setNavTop').html(data);
-	} else if (navRoot == 'inFolder') {
+	} else if (root == 'inFolder') {
 		data += '<ul class="nav navbar-nav">';
 		data += '   <li class="active">';
 		data += '      <a id="btn-all" class=' + 'topMenu' + '>';
@@ -2145,7 +2007,7 @@ function setNavTop(nr) {
 		data += '   <li>';
 		data += '      <a id="btn-del" class=' + 'topMenu' + '>';
 		data += '         <i class="fa fa-trash" aria-hidden="true">';
-		data += '         </i> 삭제';
+		data += '          </i>삭제';
 		data += '      </a>';
 		data += '   </li>';
 		data += '   <li>';
@@ -2158,17 +2020,16 @@ function setNavTop(nr) {
 		data += '		<a id="file" >';
 		data += '			<label for="fileUpload" class="uploadLabel" class="topMenu">';
 		data += '				 <i class="fa fa-cloud-upload" aria-hidden="true">';
-		data += '					업로드</i>';
+		data += '				</i>업로드';
 		data += '			</label>';
 		data += '		</a>';
 		data += '		<input type="file" id="fileUpload" name="upload" multiple="multiple"> ';
-		/* data += ' </form>'; */
 		data += '	</li>'
 		data += '</ul>';
 
 		$('#setNavTop').html(data);
 
-	} else if (navRoot == 'Bookmark') {
+	} else if (root == 'Bookmark') {
 		data += '<ul class="nav navbar-nav">';
 		data += '	<li class="active">';
 		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
@@ -2185,7 +2046,7 @@ function setNavTop(nr) {
 		data += '</ul>';
 
 		$('#setNavTop').html(data);
-	} else if (navRoot == 'Trash') {
+	} else if (root == 'Trash') {
 		data += '<ul class="nav navbar-nav">';
 		data += '	<li class="active">';
 		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
@@ -2208,7 +2069,7 @@ function setNavTop(nr) {
 		data += '</ul>';
 
 		$('#setNavTop').html(data);
-	} else if (navRoot == 'recent') {
+	} else if (root == 'recent') {
 		data += '<ul class="nav navbar-nav">';
 		data += '	<li class="active">';
 		data += '		<a id="btn-all" class=' + 'topMenu' + '>';
@@ -2229,11 +2090,7 @@ function setNavTop(nr) {
 
 }
 
-/*
- * $('#setNavTop').html(data); }
- */
 function outputNavi(fullPath) {
-	// alert(nav);
 	function getPatialPath(dirArray, index) {
 		var rtn = '';
 		for (j = 0; j <= index; j++) {
@@ -2305,11 +2162,10 @@ function regEvent() {
 
 // 파일 업로드
 function fileUpload(){
-	   alert("파일1");
+	alert('!!!!');
 	      $('#fileUpload').change(function() {
-	         alert('up');
+	    	  alert('hi');
 	         var formData = new FormData();
-	         // formData.append('upload', $('input[type=file]')[0].files[0]);
 	         
 	         // 다중파일업로드
 	         $($("#fileUpload")[0].files).each(function(index, file) {
@@ -2338,12 +2194,9 @@ function fileUpload(){
 function FileMultiUpload(files, dragDrop) {
 
 	var formData = new FormData();
-	/* formData.append('upload', $('input[type=file]')[0].files[0]); */
-
 	for (var i = 0; i < files.length; i++) {
 		formData.append('upload[]', files[i]);
 	}
-	alert(nowPath);
 	formData.append('nowPath', nowPath);
 
 	$.ajax({
@@ -2376,7 +2229,6 @@ function go_to_Trash() {
 			bookState.push($(item).attr('bookState'))
 		}
 	});
-	alert(ffid);
 
 	jQuery.ajaxSettings.traditional = true;
 
@@ -2402,35 +2254,17 @@ function newDir() {
 	alert('hell');
 
 	var dirCreate = '';
-	// 아이디를 변경하지 말아주떼연.
-	/*
-	 * dirCreate += '<div class="modal fade" id="modal-register" tabindex="-1"
-	 * role="dialog" aria-labelledby="modal-register-label"
-	 * aria-hidden="true">'; dirCreate += '<div class="modal-dialog">';
-	 * dirCreate += '<div class="modal-content">'; dirCreate += '<div
-	 * class="modal-header">'; dirCreate += '<button type="button"
-	 * class="close" data-dismiss="modal">'; dirCreate += '<span
-	 * aria-hidden="true">&times;</span>'; dirCreate += '<span
-	 * class="sr-only">Close</span>'; dirCreate += '</button>'; dirCreate += '<h3 class="modal-title" id="modal-register-label">새
-	 * 폴더 만들기</h3>'; dirCreate += '</div>'; dirCreate += '<div
-	 * class="modal-body">'; dirCreate += '<form role="form" action=""
-	 * method="post" class="registration-form">'; dirCreate += '<div
-	 * class="form-group">'; dirCreate += '<label class="sr-only"
-	 * for="form-first-name">새폴더</label>'; dirCreate += '<input type="text"
-	 * name="form-first-name" placeholder="폴더명을 입력하세요" class="form-first-name
-	 * form-control" id="form-first-name">'; dirCreate += '</div>'; dirCreate += '<button
-	 * id ="confirm" type="submit" class="btn">확인</button>'; dirCreate += '</form></div></div></div></div>';
-	 */
 
 	// 아이디를 변경하지 말아주떼연.
 	dirCreate += '<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">';
 	dirCreate += '<div class="w3-center"><br>';
 	dirCreate += '<span onclick="document.getElementById(\'newFolder\').style.display=\'none\'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;';
 	dirCreate += '</span></div>';
+	dirCreate += '<div class="w3-container">';
 	dirCreate += '<div class="section">';
 	dirCreate += '<label><b>새 폴더 이름</b></label>';
 	dirCreate += '<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="생성할 폴더명을 입력하세요." name="insertFolderName" id="insertFolderName">';
-	dirCreate += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">확인</button>';
+	dirCreate += '<button id="confirm" class="w3-button w3-block w3-blue w3-section w3-padding">확인</button></div>';
 	dirCreate += '</div>';
 	dirCreate += '<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">';
 	dirCreate += '<button onclick="document.getElementById(\'newFolder\').style.display=\'none\'" type="button" class="w3-button w3-red">취소</button>';
@@ -2443,7 +2277,6 @@ function newDir() {
 	$('#confirm').click(function() {
 
 		var folderName = document.getElementById('insertFolderName').value;
-		alert(nowPath)
 		$.ajax({
 			url : 'newDir',
 			type : 'POST',
@@ -2489,7 +2322,6 @@ function getFileType(path) {
 
 // 복원
 function restore() {
-	alert('복원');
 	var path = [];
 	$('.file_check').each(function(index, item) {
 		if ($(item).is(":checked")) {
@@ -2497,7 +2329,6 @@ function restore() {
 		}
 	});
 
-	alert(path);
 	jQuery.ajaxSettings.traditional = true;
 
 	$.ajax({
@@ -2527,7 +2358,6 @@ function completeDelete() {
 		}
 	});
 
-	alert(path);
 	jQuery.ajaxSettings.traditional = true;
 
 	$.ajax({
@@ -2576,7 +2406,6 @@ function loadRecentList() {
 var recentHTML = '';
 function outputRecentList(dateFile) {
 	//alert(JSON.stringify(dateFile));	
-	alert("gkgk");
 	var sorted = sortObject(dateFile);
 	
 	$.each(sorted, function(date, value) {
@@ -2587,23 +2416,6 @@ function outputRecentList(dateFile) {
 	});
 	$('#outputList').html(recentHTML);
 	recentHTML = '';
-	// 하단 전체선택 메뉴버튼
-
-	/*// 이미지 클릭시 색깔 바꾸기
-	$('.filebox-td').click(function() {
-		$(this).each(function(){
-			if ($('').is(':checked')) {
-				$(this).removeClass('highlight');
-			}else{
-				$('').prop("checked", true);
-				$(this).addClass('highlight');
-			}
-		});
-	});*/
-
-	/*
-	 * $('.folder').click(function() { $(this).toggleClass('highlight'); });
-	 */
 
 	if (navRoot != 'Trash') {
 		$('.folder').dblclick(function() {
@@ -2645,6 +2457,8 @@ function sortObject(o){
     }
     return sorted;
 }
+
+
 
 
 

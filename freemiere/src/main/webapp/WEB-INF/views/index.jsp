@@ -1,528 +1,205 @@
-<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>F R E E M I E R E</title>
 <meta name="description" content="">
 <meta name="author" content="">
 
-<!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"
-	href="resources/main/css/bootstrap.css">
-<link rel="stylesheet" type="text/css"
-	href="resources/main/fonts/font-awesome/css/font-awesome.css">
-<!-- Stylesheet
-    ================================================== -->
-<link rel="stylesheet" type="text/css"
-	href="resources/main/css/style.css">
-<link rel="stylesheet" type="text/css"
-	href="resources/main/css/prettyPhoto.css">
-<link
-	href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300'
-	rel='stylesheet' type='text/css'>
 
-<!-- 메인 본고딕 -->
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans:700"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300"
-	rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Poiret+One"
-	rel="stylesheet">
+<title>F R E E M I R E</title>
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- Bootstrap Core CSS -->
+<link href="resources/main/css/bootstrap.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="resources/main/css/half-slider.css" rel="stylesheet">
+
+
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 </head>
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-	<div id="preloader">
-		<div id="status">
-			<img src="resources/main/img/preloader.gif" height="64" width="64"
-				alt="">
-		</div>
-	</div>
+
+<body>
+
 	<!-- Navigation -->
-	<!--  <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse"> <i class="fa fa-bars"></i> </button>
-      <a class="navbar-brand page-scroll" href="#page-top"> <i class="fa fa-paper-plane-o"></i> Modus</a> </div>
-     
-    Collect the nav links, forms, and other content for toggling
-    <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-      <ul class="nav navbar-nav">
-        Hidden li included to remove active class from about link when scrolled up past about section
-        <li class="hidden"> <a href="#page-top"></a> </li>
-        <li> <a class="page-scroll" href="#about">About</a> </li>
-        <li> <a class="page-scroll" href="#services">Services</a> </li>
-        <li> <a class="page-scroll" href="#works">Portfolio</a> </li>
-        <li> <a class="page-scroll" href="#team">Team</a> </li>
-        <li> <a class="page-scroll" href="#testimonials">Testimonials</a> </li>
-        <li> <a class="page-scroll" href="#contact">Contact</a> </li>
-      </ul>
-    </div> 
-   
-    /.navbar-collapse 
-  </div>
-  /.container 
-</nav> -->
-	<!-- Header -->
-	<div id="intro">
-		<div class="intro-body">
-			<div class="container">
-			<!-- <video autoplay loop class="intro_video" width="1920" height="1080"	 muted>
-			<source src="resources/video/intro_bg.mp4" type="video/webm">
-  <source src="resources/video/intro_bg.mp4" type="video/mp4">
-</video> -->
-  <span class="brand-heading"><h1>F R E E M I E R E</h1></span>
-				<div class="row">
-					<!--         <div class="col-md-10 col-md-offset-1">
-          <video autoplay loop muted poster="screenshot.jpg" class="video">
-    <source src="http://techslides.com/demos/sample-videos/small.mp4" type="video/mp4">
-</video> -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img src="resources/main/img/Untitled-6.png" style="width: 140px; height: 30px; vertical-align: top;"></a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<!--  <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
 
+	<!-- Half Page Image Background Carousel Header -->
+	<header id="myCarousel" class="carousel slide">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
 
-
-
-					<p class="intro-text"></p>	
-					<a href="#about" class="btn-login btn btn-default-intro page-scroll">　로그인　</a>
+		<!-- Wrapper for Slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				Set the first background image using inline CSS below.
+				<div class="fill"
+					style="background-image: url('resources/main/img/main_1.png');"></div>
+				<div class="carousel-caption">
+					<!--  <h2>Caption 1</h2> -->
+				</div>
+			</div>
+			<div class="item">
+				Set the second background image using inline CSS below.
+				<div class="fill"
+					style="background-image: url('resources/main/img/main_2_image.png');"></div>
+				<div class="carousel-caption">
+					<!-- <h2>Caption 2</h2> -->
+				</div>
+			</div>
+			<div class="item">
+				Set the third background image using inline CSS below.
+				<div class="fill"
+					style="background-image: url('resources/main/img/main_3.png');"></div>
+				<div class="carousel-caption">
+					<!-- <h2>Caption 3</h2> -->
 				</div>
 			</div>
 		</div>
-	</div>
-	</div>
-	<!-- About Section -->
-	<div id="about">
-		<div class="container">
-			<div class="section-title text-center center">
-				<h2>LOG IN</h2>
-				<hr>
-			</div>
-			<div class="col-md-8 col-md-offset-2">
-				<form action="login" method="post" name="sentMessage"
-					id="contactForm" novalidate>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<input type="text" name="email" id="email" class="form-control"
-									placeholder="Email" required="required">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input type="password" name="password" id="password"
-									class="form-control" placeholder="PassWord" required="required">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div id="success"></div>
-						<button type="submit" class="btn btn-default_login">　로그인　</button>
-						<a href="#contact" class="btn btn-default page-scroll">　회원가입　</a>
-					</div>
-				</form>
-			</div>
-			<!-- <div class="row">
-      <div class="col-md-4"><img src="resources/img/about.jpg" class="img-responsive"></div>
-      <div class="col-md-4">
-        <div class="about-text">
-          <h4>Who We Are</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam. Sed commodo nibh ante facilisis bibendum dolor feugiat at. Duis sed dapibus leo nec ornare diam commodo nibh.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam. Sed commodo nibh ante facilisis bibendum. </p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="about-text">
-          <h4>What We Do</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diam. Sed commodo nibh ante facilisis bibendum dolor feugiat at. Duis sed dapibus leo nec ornare diam.</p>
-          <ul>
-            <li>Lorem ipsum dolor sit amet</li>
-            <li>Consectetur adipiscing commodo</li>
-            <li>Duis sed dapibus leo sed dapibus</li>
-            <li>Sed commodo nibh ante bibendum</li>
-          </ul>
-        </div>
-      </div>
-    </div> -->
-		</div>
-	</div>
-	<!-- Services Section -->
 
-	<div id="services" class="text-center">
-		<div class="container">
-			<div class="section-title center">
-				<h1>간편하게 편집하세요.</h1>
-				<hr class="hr1">
-				<!-- 	<div class="save"></div> -->
+		<!-- Controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="icon-prev"></span>
+		</a> <a class="right carousel-control" href="#myCarousel"
+			data-slide="next"> <span class="icon-next"></span>
+		</a>
 
-				<div class="service_edit">
-					<i class="fa fa-film fa-5x"></i>
-					<h3></h3>
-					<p>초보자도 쉽고 빠르게 영상을 만들 수 있습니다.</p>
+	</header>
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="left-box">
+				<i class="fa fa-heart fa-5x" aria-hidden="true"></i>	
+					<h3>모두를 위한 비디오 제작.</h3>
+					<br><br>
+					<p>
+						이제 간단한 인터페이스로 초보자라면 누구라도 쉽게 영상을 만들 수 있습니다.
+						<!-- <code>half-slider.css</code>
+						file. -->
+					</p>
 				</div>
-
-			</div>
-			<div class="space"></div>
-			<!--   <div class="row">
-      <div class="col-md-10 col-md-offset-1">
-        <div class="row testimonials">
-          <div class="col-sm-4">
-            <blockquote><i class="fa fa-quote-left"></i>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitduis sed dapibus leo nec ornare.</p>
-              <div class="clients-name">
-                <p><strong>John Doe</strong><br>
-                  <em>CEO, Company Inc.</em></p>
-              </div>
-            </blockquote>
-          </div>
-          <div class="col-sm-4">
-            <blockquote><i class="fa fa-quote-left"></i>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitduis sed dapibus leo nec ornare.</p>
-              <div class="clients-name">
-                <p><strong>Jane Doe</strong><br>
-                  <em>CEO, Company Inc.</em></p>
-              </div>
-            </blockquote>
-          </div>
-          <div class="col-sm-4">
-            <blockquote><i class="fa fa-quote-left"></i>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitduis sed dapibus leo nec ornare.</p>
-              <div class="clients-name">
-                <p><strong>Chris Smith</strong><br>
-                  <em>CEO, Company Inc.</em></p>
-              </div>
-            </blockquote>
-          </div>
-        </div>
-      </div>
-    </div> -->
-		</div>
-	</div>
-
-	<!-- Portfolio Section -->
-	<!-- <div id="works">
-  <div class="container"> Container
-    <div class="section-title text-center center">
-      <h2>Our Portfolio</h2>
-      <hr>
-      <div class="clearfix"></div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed dapibus leo nec ornare diamcommodo nibh ante facilisis.</p>
-    </div>
-    <div class="categories">
-      <ul class="cat">
-        <li>
-          <ol class="type">
-            <li><a href="#" data-filter="*" class="active">All</a></li>
-            <li><a href="#" data-filter=".lorem">Web Design</a></li>
-            <li><a href="#" data-filter=".consectetur">Web Development</a></li>
-            <li><a href="#" data-filter=".dapibus">Branding</a></li>
-          </ol>
-        </li>
-      </ul>
-      <div class="clearfix"></div>
-    </div>
-    <div class="row">
-      <div class="portfolio-items">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 lorem">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/01.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Design</p>
-              </div>
-              <img src="resources/img/portfolio/01.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 consectetur">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/02.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Development</p>
-              </div>
-              <img src="resources/img/portfolio/02.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 lorem">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/03.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Design</p>
-              </div>
-              <img src="resources/img/portfolio/03.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 lorem">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/04.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Design</p>
-              </div>
-              <img src="resources/img/portfolio/04.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 consectetur">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/05.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Development</p>
-              </div>
-              <img src="resources/img/portfolio/05.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 dapibus">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/06.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Branding</p>
-              </div>
-              <img src="resources/img/portfolio/06.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 dapibus consectetur">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/07.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Development, Branding</p>
-              </div>
-              <img src="resources/img/portfolio/07.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 lorem">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="resources/img/portfolio/08.jpg" title="Project description" rel="prettyPhoto">
-              <div class="hover-text">
-                <h4>Project Title</h4>
-                <p>Web Design</p>
-              </div>
-              <img src="resources/img/portfolio/08.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-	<!-- Team Section -->
-	<div id="team" class="text-center">
-		<div class="container">
-			<div class="section-title center">
-				<h1>언제 어디서든 공유하세요.</h1>
-				<hr>
-				<i class="fa fa-share-alt fa-5x"></i>
-				<h3></h3>
-				<p>이용자가 어디에 있든 서버에 등록된 자료는 모두 확인가능합니다.</p>
-			</div>
-			<div class="share"></div>
-			<!-- <div id="row">
-      <div class="col-xs-6 col-md-3 col-sm-6">
-        <div class="thumbnail"> <img src="resources/img/team/01.jpg" alt="..." class="img-thumbnail team-img">
-          <div class="caption">
-            <h3>John Doe</h3>
-            <p>Founder / CEO</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-3 col-sm-6">
-        <div class="thumbnail"> <img src="resources/img/team/02.jpg" alt="..." class="img-thumbnail team-img">
-          <div class="caption">
-            <h3>Mike Doe</h3>
-            <p>Web Designer</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-3 col-sm-6">
-        <div class="thumbnail"> <img src="resources/img/team/03.jpg" alt="..." class="img-thumbnail team-img">
-          <div class="caption">
-            <h3>Jane Doe</h3>
-            <p>Creative Director</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-3 col-sm-6">
-        <div class="thumbnail"> <img src="resources/img/team/04.jpg" alt="..." class="img-thumbnail team-img">
-          <div class="caption">
-            <h3>Larry Show</h3>
-            <p>Project Manager</p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-		</div>
-	</div>
-	<!-- Testimonials Section -->
-	<div id="testimonials" class="text-center">
-		<div class="container">
-
-			<div class="section-title center">
-				<h1>소중한 추억을 남기세요.</h1>
-				<hr class="hr3">
-				<i class="fa fa-picture-o"></i>
-				<h3></h3>
-				<p>간직하고 싶은 영상들을 만들고 내 저장소에 저장하세요.</p>
-			</div>
-			<div class="save"></div>
-			<!--   <div class="row">
-      <div class="col-md-10 col-md-offset-1">
-        <div class="row testimonials">
-          <div class="col-sm-4">
-            <blockquote><i class="fa fa-quote-left"></i>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitduis sed dapibus leo nec ornare.</p>
-              <div class="clients-name">
-                <p><strong>John Doe</strong><br>
-                  <em>CEO, Company Inc.</em></p>
-              </div>
-            </blockquote>
-          </div>
-          <div class="col-sm-4">
-            <blockquote><i class="fa fa-quote-left"></i>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitduis sed dapibus leo nec ornare.</p>
-              <div class="clients-name">
-                <p><strong>Jane Doe</strong><br>
-                  <em>CEO, Company Inc.</em></p>
-              </div>
-            </blockquote>
-          </div>
-          <div class="col-sm-4">
-            <blockquote><i class="fa fa-quote-left"></i>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitduis sed dapibus leo nec ornare.</p>
-              <div class="clients-name">
-                <p><strong>Chris Smith</strong><br>
-                  <em>CEO, Company Inc.</em></p>
-              </div>
-            </blockquote>
-          </div>
-        </div>
-      </div>
-    </div> -->
-		</div>
-	</div>
-
-	<!-- Contact Section -->
-	<div id="contact" class="text-center">
-		<!-- <div class="container">
-  
-        <div class="form-group">
-          <textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
-          <p class="help-block text-danger"></p>
-        </div>  -->
-		<div class="col-md-8 col-md-offset-2">
-			<br>
-			<br>
-			<br>
-			<br>
-			<br><br><br><br>
-			<span class="footer-join"> 가 입 하 세 요 ! </span>
-			<br>
-			<hr>
-			<form name="sentMessage" id="contactForm" novalidate>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control"
-								placeholder="Email" required="required">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<input type="password" id="email" class="form-control"
-								placeholder="PassWord" required="required">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<div id="success"></div>
-					<button type="submit" class="btn btn-default">　Join　</button>
-			</form>
-			<div class="section-title center">
-				<h2>　</h2>
-				<!-- <hr> -->
-				<p>　</p>
-			</div>
-			<div class="col-md-8 col-md-offset-2">
-				<div class="col-md-4">
-					<div class="contact-item">
-						<!-- <i class="fa fa-map-marker fa-2x"></i> -->
-						<p>
-							　
+				<div class="left-box2">
+				<i class="fa fa-desktop fa-5x" aria-hidden="true"></i>
+				<h3>어디서든 편집하십시오.</h3>
+				<br><br>
+					<p>
+						포함된 스토리지에서 사진, 비디오 및 오디오를 언제 어디서나 편집하고 볼 수 있습니다. 
+						<!-- <code>half-slider.css</code>
+						file. -->
+					</p>
+				</div>
+				<div class="left-box3">
+				<i class="fa fa-bolt fa-5x" aria-hidden="true"></i>
+				<h3>쉽고 빠릅니다.</h3>
+				<br><br>
+					<p>
+						편집모드를 선택하여 아이디어를 몇 분 만에 놀라운 영화로 바꿀 수 있습니다.
+						<!-- <code>half-slider.css</code>
+						file. -->
+					</p>
+				</div>
+				<div class="right-box">
+				<br>
+					<p style="color: #26b999; font-size: 25px;">이야기를 들려주세요</p>
+					<br>
+					<form class="login-form" action="login" method="post">
+						<p class="login-text">
+							<span class="fa-stack fa-lg"> 
+								<i class="fa fa-circle fa-stack-2x"></i> 
+								<i class="fa fa-lock fa-stack-1x"></i>
+							</span>
 						</p>
-					</div>
+							<input type="email" class="login-username" autofocus="true"  name="email" id="email" 
+								required="true" placeholder="Email" />
+							<input type="password" class="login-password" autofocus="true" name="password" id="password"
+								required="true" placeholder="Password" />
+							<input type="submit" name="Login" value="　로그인　" class="login-submit" />
+					</form>
+					<!-- <a href="#" class="login-forgot-pass">forgot password?</a> -->
+					<!-- <div class="underlay-photo"></div> -->
+					<!-- <div class="underlay-black"></div> -->
 				</div>
-				<div class="col-md-4">
-					<div class="contact-item">
-						<!-- <i class="fa fa-envelope-o fa-2x"></i> -->
-						<p>　</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="contact-item">
-						<!-- <i class="fa fa-phone fa-2x"></i> -->
-						<p>
-							　
-						</p>
-					</div>
-				</div>
-				<div class="clearfix"></div>
 			</div>
-
-			<!-- <div class="social">
-        <h3>Follow us</h3>
-        <ul>
-          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-          <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-          <li><a href="#"><i class="fa fa-github"></i></a></li>
-          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-          <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-        </ul>
-      </div> -->
 		</div>
-	</div>
-	</div>
 
-	<div>
-		<div class="qqqq"
-			style="position: fixed; bottom: 5px; right: 5px; opacity: 100;">
-			<!-- 상위메뉴로가기 버튼 -->
+		<hr>
 
-			<!-- <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="navbar-inner navbar-content-center">
-         <a href="#page-top" class="btn btn-default page-scroll">▲</a>
-        </div>
-    </nav>
-     -->
-			<nav class="navbar">
-				<a href="#page-top" class="btn btn-default page-scroll">Top</a>
-			</nav>
-		</div>
+		<!-- Footer -->
+		<footer>
+			<div class="row">
+				<div class="col-lg-12">
+					<p></p>
+				</div>
+			</div>
+			<!-- /.row -->
+		</footer>
+
 	</div>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script type="text/javascript" src="resources/main/js/jquery.1.11.1.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script type="text/javascript" src="resources/main/js/bootstrap.js"></script>
-	<script type="text/javascript" src="resources/main/js/SmoothScroll.js"></script>
-	<script type="text/javascript"
-		src="resources/main/js/jquery.prettyPhoto.js"></script>
-	<script type="text/javascript"
-		src="resources/main/js/jquery.isotope.js"></script>
-	<script type="text/javascript"
-		src="resources/main/js/jquery.parallax.js"></script>
-	<script type="text/javascript"
-		src="resources/main/js/jqBootstrapValidation.js"></script>
-	<!-- <script type="text/javascript" src="resources/js/contact_me.js"></script>  -->
+	<!-- /.container -->
 
-	<!-- Javascripts
-    ================================================== -->
-	<script type="text/javascript" src="resources/main/js/main.js"></script>
+	<!-- jQuery -->
+	<script src="resources/main/js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="resources/main/js/bootstrap.min.js"></script>
+
+	<!-- Script to Activate the Carousel -->
+	<script>
+		$('.carousel').carousel({
+			interval : 5000
+		//changes the speed
+		})
+	</script>
+
 </body>
+
 </html>

@@ -2,6 +2,7 @@ package com.sc32c3.freemiere.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -304,41 +305,43 @@ public class FileFolderController {
 		return searchall;
 	}*/
 	// 휴지통으로 이동
-	@ResponseBody
-	@RequestMapping(value = "deleteFileFolder", method = RequestMethod.POST)
-	public int deleteFileFolder(String[] ffid, String[] isshared, String[] bookState, HttpSession session) {
+	   @ResponseBody
+	   @RequestMapping(value = "deleteFileFolder", method = RequestMethod.POST)
+	   public int deleteFileFolder(String[] ffid, String[] isshared, String[] bookState, HttpSession session) {
 
-		logger.debug("ffid={}", ffid);
-		logger.debug("issshared{}", isshared);
-		logger.debug("book{}", bookState);
+	      logger.debug("ffid={}", ffid);
+	      logger.debug("issshared{}", isshared);
+	      logger.debug("book{}", bookState);
 
-		int result = 0;
-		String email = (String) session.getAttribute("loginMem");
+	      int result = 0;
+	      String email = (String) session.getAttribute("loginMem");
 
-		for (int i = 0; i < isshared.length; i++) {
+	      for (int i = 0; i < isshared.length; i++) {
+	         System.out.println("북마크여부"+bookState[i]);
+	         // 공유 아닌 파일
+	         if (isshared[i].equalsIgnoreCase("F")) {
+	            if (bookState[i].equalsIgnoreCase("F")) {
+	               fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
+	            } else {
+	               // 공유는 아니고 북파크 표시 폴더
+	               int book = fileFolderDAO.deleteBookmarks(Integer.parseInt(ffid[i]), email);
+	               System.out.println("book"+book);
+	               fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
+	            }
+	         } else if (isshared[i].equalsIgnoreCase("T")) {
+	            if (bookState[i].equalsIgnoreCase("T")) {
+	               // 공유&북마크폴더
+	               fileFolderDAO.deleteShare(Integer.parseInt(ffid[i]), email);
+	               fileFolderDAO.deleteBookmarks(Integer.parseInt(ffid[i]), email);
+	               fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
+	            } else {
+	               fileFolderDAO.deleteShare(Integer.parseInt(ffid[i]), email);
+	            }
+	         }
+	      }
 
-			// 공유 아닌 파일
-			if (isshared[i].equalsIgnoreCase("F")) {
-				if (bookState[i].equalsIgnoreCase("F")) {
-					fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
-				} else {
-					// 공유는 아니고 북파크 표시 폴더
-					fileFolderDAO.deleteBookmarks(Integer.parseInt(ffid[i]), bookState[i]);
-					fileFolderDAO.deleteFileFolder(Integer.parseInt(ffid[i]));
-				}
-			} else if (isshared[i].equalsIgnoreCase("T")) {
-				if (bookState[i].equalsIgnoreCase("T")) {
-					// 공유&북마크폴더
-					fileFolderDAO.deleteShare(Integer.parseInt(ffid[i]), email);
-					fileFolderDAO.deleteBookmarks(Integer.parseInt(ffid[i]), bookState[i]);
-				} else {
-					fileFolderDAO.deleteShare(Integer.parseInt(ffid[i]), email);
-				}
-			}
-		}
-
-		return result;
-	}
+	      return result;
+	   }
 
 	
 	
@@ -358,7 +361,8 @@ public class FileFolderController {
 	@ResponseBody
 	@RequestMapping(value = "fileUpload", method = RequestMethod.POST)
 	public void upload(HttpSession session, MultipartHttpServletRequest upload, String nowPath) {
-
+		
+		System.out.println("컨트롤러파일업로드:"+nowPath);
 		if (upload == null)
 			System.out.println("폭신폭신 식빵");
 
@@ -369,7 +373,6 @@ public class FileFolderController {
 	
 		Iterator<String> filesName = upload.getFileNames();
 		while (filesName.hasNext()) {
-
 			List<MultipartFile> multiFiles = upload.getFiles(filesName.next());
 
 			for (int i = 0; i < multiFiles.size(); i++) {
@@ -411,38 +414,38 @@ public class FileFolderController {
 	}
 
 	// 새폴더
-	@ResponseBody
-	@RequestMapping(value = "newDir", method = RequestMethod.POST)
-	public void newDir(String folderName, String path, HttpSession session) {
-		logger.debug("folderName : {}", folderName);
-		logger.debug("path : {}", path); // nowPath 현재의 경로
-		System.out.println("찌찌파티");
-		File directory = new File(path + folderName + "\\");
-		if (directory.exists() && directory.isFile()) {
+		@ResponseBody
+		@RequestMapping(value = "newDir", method = RequestMethod.POST)
+		public void newDir(String folderName, String path, HttpSession session) {
+			logger.debug("folderName : {}", folderName);
+			logger.debug("path : {}", path); // nowPath 현재의 경로
 			System.out.println("찌찌파티");
-		} else {
-			try {
-				if (!directory.exists()) {
-					// 파일을 확인 후 없으면 폴더를 생성한다.
-					// mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
-					boolean mkdirRst = directory.mkdirs();
-					if (mkdirRst == true) {
-						String email = (String) session.getAttribute("loginMem");
-						fileFolderDAO.newDir(path + folderName + "\\", email);
+			File directory = new File(path + folderName + "\\");
+			if (directory.exists() && directory.isFile()) {
+				System.out.println("찌찌파티");
+			} else {
+				try {
+					if (!directory.exists()) {
+						// 파일을 확인 후 없으면 폴더를 생성한다.
+						// mkdirs는 트리구조의 디렉토리를 생성할 수 있다.
+						boolean mkdirRst = directory.mkdirs();
+						if (mkdirRst == true) {
+							String email = (String) session.getAttribute("loginMem");
+							fileFolderDAO.newDir(path + folderName + "\\", email);
 
-						// sms - 썸네일 폴더 만들기
-						File newThumbFolder = new File(path + folderName + "\\" + "." + "thumb\\");
-						if (!newThumbFolder.exists())
-							newThumbFolder.mkdirs();
+							// sms - 썸네일 폴더 만들기
+							File newThumbFolder = new File(path + folderName + "\\" + "." + "thumb\\");
+							if (!newThumbFolder.exists())
+								newThumbFolder.mkdirs();
+						}
+					} else {
+						System.out.println("이거 실화냐?");
 					}
-				} else {
-					System.out.println("이거 실화냐?");
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
-	}
 
 
 	// 휴지통에서 삭제
@@ -508,62 +511,76 @@ public class FileFolderController {
 	   }
 	   
 	   
-	   //속성내부에서 수정하기 기능
-	   @ResponseBody
-	   @RequestMapping(value="sokUpdate", method=RequestMethod.POST)
-	   public FileFolder sokUpdate(int ffid, String info, String filename,String path){
-	      
-	      FileFolder result = fileFolderDAO.boardread(ffid);
-	      String path1 = path + filename;
-	      String path2 = path1 + File.separator;
-	      
-	      System.out.println("path2야 !!!!!!!!!1" + path2);
-	      File f = new File(result.getPath());
-	      File movePath = new File(path1);
-	      File movePath2 = new File(path2);
-	      int fol = 0;
-	      
-	      //폴더일경우
-	      if(f.isDirectory()){
-	         if(result != null){
-	            
-	            try{
-	               //디렉토리 파일내에서 이름변경 
-	               f.renameTo(movePath2);
-	               
-	               //DB update
-	               fol = fileFolderDAO.sokUpdate(ffid,info,path2);
-	               //Filename VO에 담음.
-	               result.setFileName(filename);
-	            }catch (Exception e) {
-	               fol = 0;
-	            }
-	         }
-	      }
-	      //파일일경우
-	      else{
-	         if(result != null){
-	            
-	            try{
-	               //디렉토리 파일내에서 이름변경 
-	               f.renameTo(movePath);
-	               
-	               //DB update
-	               fol = fileFolderDAO.sokUpdate(ffid,info,path1);
-	               //Filename VO에 담음.
-	               result.setFileName(filename);
-	            }catch (Exception e) {
-	               fol = 0;
-	            }
-	         }
-	      }
-	      
-	      
-	      
-	      
-	      
-	      return result;
-	   }
+	 //속성내부에서 수정하기 기능
+    @ResponseBody
+    @RequestMapping(value="sokUpdate", method=RequestMethod.POST)
+    public FileFolder sokUpdate(int ffid, String info, String filename,String path){
+       
+      
+      
+       FileFolder result = fileFolderDAO.boardread(ffid);
+       String oriFileName = result.getPath();
+       int test = oriFileName.lastIndexOf(File.separator)+1;
+       String test2 = oriFileName.substring(test, oriFileName.length());
+      // System.out.println("나왔으면 좋곘다 헤헤헤..."+ test2);
+       result.setFileName(test2);
+       
+       String path1 = path + filename; //파일
+       String path2 = path1 + File.separator; //폴더
+       
+       //thumb
+       String path3 = path + ".thumb" + File.separator + filename + ".png";
+       System.out.println("path2야 !!!!!!!!!1" + path2);
+       File f = new File(result.getPath());
+       
+       //기존에 있는thumb
+       File f2 = new File(path + ".thumb" + File.separator + result.getFileName()+ ".png");
+       
+       File movePath = new File(path1);
+       File movePath2 = new File(path2);
+       File movePath3 = new File(path3);
+       
+       int fol = 0;
+       
+       System.out.println("dma...."+f2);
+       System.out.println("gn...."+movePath3);
+       //폴더일경우
+       if(f.isDirectory()){
+          if(result != null){
+             
+             try{
+                //디렉토리 파일내에서 이름변경 
+                f.renameTo(movePath2);
+                //DB update
+                fol = fileFolderDAO.sokUpdate(ffid,info,path2);
+                //Filename VO에 담음.
+                result.setFileName(filename);
+             }catch (Exception e) {
+                fol = 0;
+             }
+          }
+       }
+       //파일일경우
+       else{
+          if(result != null){
+             
+             try{
+                //디렉토리 파일내에서 이름변경 
+                f.renameTo(movePath);
+                f2.renameTo(movePath3);
+                //DB update
+                fol = fileFolderDAO.sokUpdate(ffid,info,path1);
+                //Filename VO에 담음.
+                result.setFileName(filename);
+             }catch (Exception e) {
+                fol = 0;
+             }
+          }
+       }
+       
+       
+       return result;
+    }
 	   
 	   
 	   
@@ -838,53 +855,69 @@ public class FileFolderController {
 	      return search;
 	   }
 	 //폴더 공유 권한 설정하였을때 행해지는 것들
-	      @ResponseBody
-	      @RequestMapping(value="setAuth", method=RequestMethod.POST, produces = "application/text; charset=utf8")
-	      public String setAuth(int ffid, String auth, String email, HttpSession session){
-	         
-	      String myEmail = (String)session.getAttribute("loginMem");
-	      int insertResult = 0;
-	      int updateResult = 0;
-	      FileFolder search = fileFolderDAO.searchShare(ffid, email);
-	      int updateFileFolder = 0;
-	      int firstOwner = 0;
-	      String message = null;
-	      int updateOwner = 0;
-	      
-	      //만약 auth값이 owner일 경우 shares에서 view로 변경이 되게 만들어버림...
-	      //만약 공유버튼 눌렀을 때의 나자신이 OWNER가 아닐경우, null던져버려야겠음...
-	      
-	      if(auth.equals("OWNER")){
-	         
-	         updateResult = fileFolderDAO.updateAuth(ffid, email, auth);
-	         updateOwner = fileFolderDAO.updateOwner(ffid, myEmail, auth);
-	         
-	         message = "권한이 변경되었습니다.";
-	         return message;
-	      }
-	      else{
-	         if (search != null){
-	            try{
-	               updateResult = fileFolderDAO.updateAuth(ffid, email, auth);
-	               message = "변경되었습니다.";
-	            }catch (Exception e) {
-	               e.printStackTrace();
-	               // TODO: handle exception
-	            }
-	         }else{
-	            try {
-	               firstOwner = fileFolderDAO.firstOwner(ffid, myEmail);
-	               updateFileFolder = fileFolderDAO.updateFileShare(ffid);   
-	               insertResult = fileFolderDAO.shareInsert(ffid, email, auth);
-	               message = "변경되었습니다.";
-	            } catch (Exception e) {
-	               e.printStackTrace();
-	            }
-	         }
-	      }
-	         
-	         return message;
-	      }
+	 //폴더 공유 권한 설정하였을때 행해지는 것들
+       @ResponseBody
+       @RequestMapping(value="setAuth", method=RequestMethod.POST, produces = "application/text; charset=utf8")
+       public String setAuth(int ffid, String auth, String email, HttpSession session){
+          
+       String myEmail = (String)session.getAttribute("loginMem");
+       int insertResult = 0;
+       int updateResult = 0;
+       FileFolder search = fileFolderDAO.searchShare(ffid, email);
+       int updateFileFolder = 0;
+       int firstOwner = 0;
+       String message = null;
+       int updateOwner = 0;
+       
+       FileFolder searchOwner = fileFolderDAO.searchOwner(ffid);
+       
+       //만약 auth값이 owner일 경우 shares에서 view로 변경이 되게 만들어버림...
+       //만약 공유버튼 눌렀을 때의 나자신이 OWNER가 아닐경우, null던져버려야겠음...
+       
+       if(auth.equals("OWNER")){
+          
+          updateResult = fileFolderDAO.updateAuth(ffid, email, auth);
+          updateOwner = fileFolderDAO.updateOwner(ffid, myEmail, auth);
+          
+          message = "권한이 변경되었습니다.";
+          return message;
+       }
+       else{
+          if (search != null){
+             try{
+                updateResult = fileFolderDAO.updateAuth(ffid, email, auth);
+                message = "변경되었습니다.";
+             }catch (Exception e) {
+                e.printStackTrace();
+                // TODO: handle exception
+             }
+          }else{
+             if(searchOwner != null){
+                try {
+                   updateFileFolder = fileFolderDAO.updateFileShare(ffid);   
+                    insertResult = fileFolderDAO.shareInsert(ffid, email, auth);
+                    message = "변경이...되었...습니...다....";
+             } catch (Exception e) {
+                e.printStackTrace();
+             }
+               
+             }
+             else{
+                try {
+                     firstOwner = fileFolderDAO.firstOwner(ffid, myEmail);
+                     updateFileFolder = fileFolderDAO.updateFileShare(ffid);   
+                     insertResult = fileFolderDAO.shareInsert(ffid, email, auth);
+                     message = "변경되었습니다...?";
+                  } catch (Exception e) {
+                     e.printStackTrace();
+                  }
+             }
+             
+          }
+       }
+          
+          return message;
+       }
 	      
 	      
 	      @ResponseBody

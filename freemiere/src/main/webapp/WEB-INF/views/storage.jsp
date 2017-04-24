@@ -126,6 +126,12 @@
 						<li>
 						<div class="box-1" id="edit">
 						</div>
+						<li>
+                     		<a style="cursor:pointer" id='logout' class="navbar-brand" href="logout">
+                        <i class="fa fa-sign-out" aria-hidden="true">로그아웃</i>
+                     </a> 
+                     
+                  </li>
 						</li>
 
 					</ul>
@@ -147,19 +153,13 @@
 				<!-- /.row -->
 				<div id="dragDropZone">
 					<div id="outputList"></div>
-					<!-- 
-					하단메뉴
-	
-										</form>
-
 				</div>
-						<!--/#dragDropZone  -->
-				</div>
-				<!-- /#page-wrapper -->
+				<!--/#dragDropZone  -->
 			</div>
-
-			<!-- /#wrapper -->
 		</div>
+		<!-- /#page-wrapper -->
+	</div>
+<!-- /#wrapper -->
 		<!-- MODAL -->
 		<div class="modal fade" id="modal-register" tabindex="-1"
 			role="dialog" aria-labelledby="modal-register-label"
