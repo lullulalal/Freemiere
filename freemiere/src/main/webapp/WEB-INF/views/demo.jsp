@@ -1,92 +1,55 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-	<title>TimeSlider Demo</title>
-	<meta name="description" content="TimeSlider Plugin for jQuery">
-	<meta name="keywords" content="timeslider, time-slider, time slider, rangeslider, range-slider, range slider, jquery, javascript">
-	<link rel="stylesheet" href="resources/vendor/jquery/jquery-ui/jquery-ui.css">
-	<link href="resources/vendor/timeSlider/css/timeslider.css" rel="stylesheet" type="text/css"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Draggable - Constrain movement</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  .draggable { width: 90px; height: 90px; padding: 0.5em; float: left; margin: 0 10px 10px 0; }
+  #draggable, #draggable2 { margin-bottom:20px; }
+  #draggable { cursor: n-resize; }
+  #draggable2 { cursor: e-resize; }
+  #containment-wrapper { width: 95%; height:150px; border:2px solid #ccc; padding: 10px; }
+  h3 { clear: left; }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#draggable" ).draggable({ axis: "y" });
+    $( "#draggable2" ).draggable({ axis: "x" });
+ 
+    $( "#draggable3" ).draggable({ axis: "y" , containment: "#containment-wrapper", scroll: false });
+    $( "#draggable4" ).draggable({ containment: "parent" });
+  } );
+  </script>
 </head>
 <body>
-	<h3 id="version"></h3>
-	<div style="margin: 50px 30px;">
-		<p>With standard options</p>
-		<p>Zoom 1...48 hours:</p>
-        <div id="zoom-slider123" style="width:300px;margin-bottom:10px;"></div>
-		<div id="slider123" class="time-slider"></div>
-	</div>
-	<div style="margin: 50px 30px;">
-		<p>Using milliseconds</p>
-		<p>Zoom 1...48 hours:</p>
-        <div id="zoom-slider456" style="width:300px;margin-bottom:10px;"></div>
-		<div id="slider456" class="time-slider" style="width: 65%"></div>
-	</div>
-	<p id="messages"></p>
-	<script src="resources/vendor/jquery/jquery.min.js"></script>
-	<script src="resources/vendor/jquery/jquery-ui/jquery-ui.js"></script>
-	<script src="resources/vendor/timeSlider/js/timeslider.js"></script>
-	<script type="text/javascript">
-        var current_time = (new Date()).getTime() + ((new Date()).getTimezoneOffset() * 60 * 1000 * -1);
-		$(document).ready(function () {
-			(function () {
-				$('#version').text('Version: '+ $.fn.TimeSlider.VERSION);
-				$('#zoom-slider123').slider({
-					min: 1,
-					max: 48,
-					value: 24,
-					step: 0.2,
-					slide: function(event, ui) {
-						$('#slider123').TimeSlider({hours_per_ruler: ui.value});
-					}
-				});
-
-				$('#zoom-slider456').slider({
-					min: 1,
-					max: 48,
-					value: 9,
-					step: 0.2,
-					slide: function(event, ui) {
-						$('#slider456').TimeSlider({hours_per_ruler: ui.value});
-					}
-				});
-
-				$('#slider123').TimeSlider({
-					start_timestamp: current_time - 3600 * 12 * 1000,
-					show_ms: true,
-					hours_per_ruler: 0.33,
-					init_cells: [
-						{
-                            '_id': 'c1',
-                            'start': (current_time - (3600 * 5.4 * 1000) + 1234),
-                            'stop': current_time - 3600 * 3.2 * 1000,
-                            'style': {
-                                'background-color': '#76C4FF'
-                            }
-                        },
-						{
-                            '_id': 'c2',
-                            'start': (current_time - (3600 * 2.1 * 1000))
-                        }
-					]
-				});
-
-				$('#slider456').TimeSlider({
-					update_timestamp_interval: 10,
-					update_interval: 10,
-					show_ms: true,
-					hours_per_ruler: 1,
-					graduation_step: 6,
-					start_timestamp: current_time - 3600 * 7 * 1000,
-					init_cells: [
-						{'_id': 'c1', 'start': (current_time - (3600 * 6.2 * 1000) + 5678), 'stop': current_time - 3600 * 4.8 * 1000},
-						{'_id': 'c2', 'start': (current_time - (3600 * 3.1 * 1000) + 864), 'stop': current_time}
-					]
-				});
-		    })();
-		});
-	</script>
+ 
+<h3>Constrain movement along an axis:</h3>
+ 
+<div id="draggable" class="draggable ui-widget-content">
+  <p>I can be dragged only vertically</p>
+</div>
+ 
+ <div>
+<div id="draggable2" class="draggable ui-widget-content">
+  <p>I can be dragged only horizontally</p>
+</div>
+ </div>
+<h3>Or to within another DOM element:</h3>
+<div id="containment-wrapper">
+  <div id="draggable3" class="draggable ui-widget-content">
+    <p>I'm contained within the box</p>
+  </div>
+ 
+  <div class="draggable ui-widget-content">
+    <p id="draggable4" class="ui-widget-header">I'm contained within my parent</p>
+  </div>
+</div>
+ 
+ 
 </body>
 </html>

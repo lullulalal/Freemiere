@@ -39,6 +39,20 @@ function outputPlayer(){
    
 }
 
+function getThumbPath(path){
+	var pathArray = path.split('/');
+	var thumbPath = '';
+	
+	for (var j = 0; j < pathArray.length-1; j++) {
+		thumbPath += pathArray[j];
+		thumbPath += '/';
+	}
+	thumbPath += '.thumb/';
+	thumbPath += pathArray[pathArray.length-1];
+	thumbPath += '.png';
+	return thumbPath;
+}
+
 function outputFileList(list){
 	var contents = '<div id="dragDropZone">';
 	
@@ -231,7 +245,9 @@ $(document).ready(function () {
 });
 
 
-
+var order = 'odd';
+var vorder = 3;
+var aorder = 3;
 function timeLineSlider(){
 	
 	var t_slider = '';
@@ -241,55 +257,80 @@ function timeLineSlider(){
 	t_slider +=		"<input type='range' id='t-slider' step='0.001' value='0' min='0' max='1' oninput='javascript:sliderSync(\"tslider\")' />";   
 	t_slider += "</span>";
 	
-	t_slider +=	'<div>';
+/*	t_slider +=	'<div>';
 	t_slider +=		'<div class="track" id="image-filter-track">';
 	t_slider +=			'<span class="track-name">';
 	t_slider +=				'<i class="fa fa-magic" aria-hidden="true"></i>';
 	t_slider +=			'</span>';
 	t_slider +=		'</div>';
 	t_slider +=	'</div>';
+	*/
+
 	
+/*	t_slider +=	'<div>';
+	t_slider +=		'<div class="track" id="video-filter-track">';
+	t_slider +=			'<span class="track-name">';
+	t_slider +=				'<i class="fa fa-magic" aria-hidden="true"></i>';
+	t_slider +=			'</span>';
+	t_slider +=		'</div>';
+	t_slider +=	'</div>';*/
 	t_slider +=	'<div>';
-	t_slider +=		'<div  class="track" id="image-track">';
-	t_slider +=			'<br><span class="track-name">';
+	t_slider +=		'<div  class="track track-even ui-state-default" id="video-track">';
+	t_slider +=			'<span class="track-name">';
+	t_slider +=				'<i class="fa fa-video-camera" aria-hidden="true"></i>';
+	t_slider +=			'</span>';
+	t_slider +=		'</div>';
+	t_slider +=	'</div>';
+
+	t_slider +=	'<div>';
+	t_slider +=		'<div  class="track track-odd" id="vtrack-1">';
+	t_slider +=			'<span class="track-name">';
 	t_slider +=				'<i class="fa fa-picture-o" aria-hidden="true"></i>';
 	t_slider +=			'</span>';
 	t_slider +=		'</div>';
 	t_slider +=	'</div>';
 	
 	t_slider +=	'<div>';
-	t_slider +=		'<div class="track" id="video-filter-track">';
+	t_slider +=		'<div class="track track track-even" id="atrack-1">';
 	t_slider +=			'<span class="track-name">';
-	t_slider +=				'<i class="fa fa-magic" aria-hidden="true"></i>';
-	t_slider +=			'</span>';
-	t_slider +=		'</div>';
-	t_slider +=	'</div>';
-	
-	t_slider +=	'<div>';
-	t_slider +=		'<div  class="track" id="video-track">';
-	t_slider +=			'<br><span class="track-name">';
-	t_slider +=				'<i class="fa fa-video-camera" aria-hidden="true"></i>';
-	t_slider +=			'</span>';
-	t_slider +=		'</div>';
-	t_slider +=	'</div>';
-	
-	t_slider +=	'<div>';
-	t_slider +=		'<div class="track" id="audio1-track">';
-	t_slider +=			'<br><span class="track-name">';
 	t_slider +=				'<i class="fa fa-music" aria-hidden="true"></i>';
 	t_slider +=			'</span>';
 	t_slider +=		'</div>';
 	t_slider +=	'</div>';
 	
 	t_slider +=	'<div>';
-	t_slider +=		'<div class="track" id="audio2-track">';
-	t_slider +=			'<br><span class="track-name">';
+	t_slider +=		'<div  class="track track-odd" id="vtrack-2">';
+	t_slider +=			'<span class="track-name">';
+	t_slider +=				'<i class="fa fa-picture-o" aria-hidden="true"></i>';
+	t_slider +=			'</span>';
+	t_slider +=		'</div>';
+	t_slider +=	'</div>';
+	
+	t_slider +=	'<div>';
+	t_slider +=		'<div class="track track track-even" id="atrack-2">';
+	t_slider +=			'<span class="track-name">';
 	t_slider +=				'<i class="fa fa-music" aria-hidden="true"></i>';
 	t_slider +=			'</span>';
 	t_slider +=		'</div>';
 	t_slider +=	'</div>';
 	
     w2ui.timeLine.content('main', t_slider);
+    
+    
+    $( "#video-track" ).sortable({
+        revert: true,
+        start: function(event, ui) {
+            //alert("start");
+        },
+        change: function(event, ui) {
+           // alert("change");
+        },
+        update: function(event, ui) {
+        	var idsInOrder = $("#video-track").sortable("toArray");
+        	//alert(idsInOrder);
+        	reorderingVideo0Clips(idsInOrder);
+        }
+    });
 }
 
 function sliderSync(stype){
@@ -309,34 +350,9 @@ function sliderSync(stype){
 	mm_player.position=svalue;
 }
 
-function getFileType(path){
-	var imgExtarr = new Array('jpg', 'jpeg', 'png');
-	var vdoExtarr = new Array('mp4', 'wemb', 'ogg');
-	var adoExtarr = new Array('mp3');
-	
-	var rtn = 'file';
-	
-	var pathArray = path.split('\\');
-	var fileArray = pathArray[pathArray.length-1].split('.');
-	var ext = fileArray[fileArray.length-1];
-	
-	for (var i in imgExtarr) {
-		if(imgExtarr[i] == ext.toLowerCase())
-			return 'image';
-	}
-	
-	for (var i in vdoExtarr) {
-		if(vdoExtarr[i] == ext.toLowerCase())
-			return 'video';
-	}
-	
-	for (var i in adoExtarr) {
-		if(adoExtarr[i] == ext.toLowerCase())
-			return 'audio';
-	}
-	
-	return rtn;
+function getFileName(path){
+	var pathArray = path.split('/');
+	return pathArray[pathArray.length-1];
 }
-
 
 

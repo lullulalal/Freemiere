@@ -50,17 +50,19 @@ public class FileFolderDAO {
 
 	public FileFolder getFilerFolerInfo(String path, String email) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-		
+
 		return mapper.getFilerFolerInfo(path, email);
 	}
-	public int getMyRecentList(String path, String email){
+
+	public int getMyRecentList(String path, String email) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		HashMap<String, Object> recentlist = new HashMap<>();
 		recentlist.put("path", path);
 		recentlist.put("email", email);
 		return mapper.getMyRecentList(recentlist);
 	}
-	public ArrayList<FileFolder> getSearchList(String title){
+
+	public ArrayList<FileFolder> getSearchList(String title) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 
 		return mapper.getSearchList(title);
@@ -105,10 +107,10 @@ public class FileFolderDAO {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
 		return mapper.newDir(path, email);
 	}
-	
-	public int getffid(String path){
+
+	public int getffid(String path) {
 		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-		return mapper.getffid(path);	
+		return mapper.getffid(path);
 	}
 
 	// 파일 다운로드
@@ -118,43 +120,38 @@ public class FileFolderDAO {
 	}
 
 	// 휴지통에서 삭제
-		public void completeDelete(ArrayList<File>fileList) {
-			FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-			String reThumbPath="";
-			for(int i=fileList.size()-1; i>=0; i--){
-				String deletePath = fileList.get(i).getAbsolutePath();
-				
-				if(fileList.get(i).isDirectory()==true){
-					deletePath +="\\";
-					fileList.get(i).delete();
-				}else{
+	public void completeDelete(ArrayList<File> fileList) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+
+		for (int i = fileList.size() - 1; i >= 0; i--) {
+			String deletePath = fileList.get(i).getAbsolutePath();
+			if (fileList.get(i).isDirectory() == true) {
+				deletePath += "\\";
+				fileList.get(i).delete();
+			} else {
+
+				if (new File(deletePath).exists()) {
+					String reThumbPath = "";
 					String[] thumbPath = (fileList.get(i).getAbsolutePath()).split("\\\\");
-					System.out.println("파싱할경로"+thumbPath);
-					for(int j=0; j<thumbPath.length-1;j++){
-						System.out.println(+j+"파싱경로"+thumbPath[j]);
-						 reThumbPath += thumbPath[j]+"\\";
+					for (int j = 0; j < thumbPath.length - 1; j++) {
+						reThumbPath += thumbPath[j] + "\\";
 					}
-					
-					fileList.get(i).delete();
-					//썸네일 파일 삭제
-					System.out.println("파싱된경로:"+reThumbPath);
-					File thumbFile = new File(reThumbPath+".thumb");
+
+					// 썸네일 파일 삭제
+					File thumbFile = new File(reThumbPath + ".thumb");
 					File[] thumbFiles = thumbFile.listFiles();
 					for (File thumb : thumbFiles) {
-						if((thumb.getName()).equals(fileList.get(i).getName()+".png")){
+						if ((thumb.getName()).equals(fileList.get(i).getName() + ".png")) {
 							thumb.delete();
-							System.out.println("성공");
 						}
 					}
-					
+					fileList.get(i).delete();
 				}
-				fileList.get(i).delete();
-				mapper.completeDelete(deletePath);
-				
-			}
-			
-	 
-		}
+			} // else
+			mapper.completeDelete(deletePath);
+			fileList.get(i).delete();
+		} // outer for
+	}
 
 	// 복원
 	public void restore(ArrayList<File> reFileList) {
@@ -172,132 +169,134 @@ public class FileFolderDAO {
 		}
 	}
 
-	   public int bookmarkUpdate(int ffid,String bookstate) {
-	      // TODO Auto-generated method stub
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> map = new HashMap<>();
-	      map.put("ffid", ffid);
-	      map.put("bookstate", bookstate);
-	      return mapper.bookmarkUpdate(map);
-	   }
-	   
-	   public int bookmarkInsert(int ffid, String email){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> map = new HashMap<>();
-	      map.put("ffid", ffid);
-	      map.put("email", email);
-	      return mapper.bookmarkInsert(map);
-	   }
-	   
-	   public FileFolder boardread(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.boardread(ffid);
-	      
-	   }
+	public int bookmarkUpdate(int ffid, String bookstate) {
+		// TODO Auto-generated method stub
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("ffid", ffid);
+		map.put("bookstate", bookstate);
+		return mapper.bookmarkUpdate(map);
+	}
 
-	   public int conDelete(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.conDelete(ffid);
-	      
-	   }
-	   
-	   
-	   public int conRemove(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.conRemove(ffid);
-	   }
-	   
-	   public int conAllRemove(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.conAllRemove(ffid);
-	   }
-	   
-	   public int conBookDelete(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.conBookDelete(ffid);
-	   }
-	   
-	   
-	   
-	   public FileFolder bookmarkSearch(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.bookmarkSearch(ffid);
-	   }
-	   public int folderShare(int ffid,String isShared) {
-	      // TODO Auto-generated method stub
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> map = new HashMap<>();
-	      map.put("ffid", ffid);
-	      map.put("isShared", isShared);
-	      return mapper.bookmarkUpdate(map);
-	   }
-	   
-	   public int sokUpdate(int ffid, String info, String path1) {
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> filefolders = new HashMap<>();
-	      filefolders.put("ffid", ffid);
-	      filefolders.put("info", info);
-	      filefolders.put("path", path1);
-	      
-	      return mapper.sokUpdate(filefolders);
-	   }
-	   
-	   
-	   public int shareInsert(int ffid, String email,String auth) {
-	      FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> shares = new HashMap<>();
-	      shares.put("ffid", ffid);
-	      shares.put("email", email);
-	      shares.put("auth", auth);
-	      return maaper.shareInsert(shares);
-	   }
-	   
-	   
-	   public ArrayList<FileFolder> shareList(int ffid){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      return mapper.shareList(ffid);
-	   }
-	   
-	   public FileFolder searchShare(int ffid, String email){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> shares = new HashMap<>();
-	      shares.put("ffid", ffid);
-	      shares.put("email", email);
-	      return mapper.searchShare(shares);
-	   }
-	   
-	   public int updateAuth(int ffid, String email,String auth) {
-	      FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> shares = new HashMap<>();
-	      shares.put("ffid", ffid);
-	      shares.put("email", email);
-	      shares.put("auth", auth);
-	      
-	      return maaper.updateAuth(shares);
-	   }
-	   public int updateFileShare(int ffid) {
-	      FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
-	      
-	      return maaper.updateFileShare(ffid);
-	   }
-	   
-	   public int firstOwner(int ffid, String myEmail){
-	      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-	      HashMap<String, Object> shares = new HashMap<>();
-	      shares.put("ffid", ffid);
-	      shares.put("myEmail", myEmail);
-	      return mapper.firstOwner(shares);
-	   }
-	   
-	   public int updateOwner(int ffid, String myEmail, String auth) {
-		      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-		      HashMap<String, Object> shares = new HashMap<>();
-		      shares.put("ffid", ffid);
-		      shares.put("email", myEmail);
-		      shares.put("auth", auth);
-		      
-		      return mapper.updateOwner(shares);
-	   }
+	public int bookmarkInsert(int ffid, String email) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("ffid", ffid);
+		map.put("email", email);
+		return mapper.bookmarkInsert(map);
+	}
+
+	public FileFolder boardread(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.boardread(ffid);
+
+	}
+
+	public int conDelete(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.conDelete(ffid);
+
+	}
+
+	public int conRemove(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.conRemove(ffid);
+	}
+
+	public int conAllRemove(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.conAllRemove(ffid);
+	}
+
+	public int conBookDelete(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.conBookDelete(ffid);
+	}
+
+	public FileFolder bookmarkSearch(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.bookmarkSearch(ffid);
+	}
+
+	public int folderShare(int ffid, String isShared) {
+		// TODO Auto-generated method stub
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("ffid", ffid);
+		map.put("isShared", isShared);
+		return mapper.bookmarkUpdate(map);
+	}
+
+	public int sokUpdate(int ffid, String info, String path1) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> filefolders = new HashMap<>();
+		filefolders.put("ffid", ffid);
+		filefolders.put("info", info);
+		filefolders.put("path", path1);
+
+		return mapper.sokUpdate(filefolders);
+	}
+
+	public int shareInsert(int ffid, String email, String auth) {
+		FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> shares = new HashMap<>();
+		shares.put("ffid", ffid);
+		shares.put("email", email);
+		shares.put("auth", auth);
+		return maaper.shareInsert(shares);
+	}
+
+	public ArrayList<FileFolder> shareList(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.shareList(ffid);
+	}
+
+	public FileFolder searchShare(int ffid, String email) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> shares = new HashMap<>();
+		shares.put("ffid", ffid);
+		shares.put("email", email);
+		return mapper.searchShare(shares);
+	}
+
+	public int updateAuth(int ffid, String email, String auth) {
+		FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> shares = new HashMap<>();
+		shares.put("ffid", ffid);
+		shares.put("email", email);
+		shares.put("auth", auth);
+
+		return maaper.updateAuth(shares);
+	}
+
+	public int updateFileShare(int ffid) {
+		FileFolderMapper maaper = sqlSession.getMapper(FileFolderMapper.class);
+
+		return maaper.updateFileShare(ffid);
+	}
+
+	public int firstOwner(int ffid, String myEmail) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> shares = new HashMap<>();
+		shares.put("ffid", ffid);
+		shares.put("myEmail", myEmail);
+		return mapper.firstOwner(shares);
+	}
+
+	public int updateOwner(int ffid, String myEmail, String auth) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		HashMap<String, Object> shares = new HashMap<>();
+		shares.put("ffid", ffid);
+		shares.put("email", myEmail);
+		shares.put("auth", auth);
+
+		return mapper.updateOwner(shares);
+	}
+
+	public FileFolder searchOwner(int ffid) {
+		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		return mapper.searchOwner(ffid);
+	}
 	   
 	   public void move(String OrginPath, String destPath){
 		   File f = new File(OrginPath);

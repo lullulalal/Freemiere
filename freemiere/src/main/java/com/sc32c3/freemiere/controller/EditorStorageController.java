@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +111,39 @@ public class EditorStorageController {
 		rtn.put("extractPath", vExtractPath);
 		
 		return rtn;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "getObjectInfo", method = RequestMethod.GET ,
+					produces = "application/json;charset=utf-8")
+	public double getObjectInfo(String type, String path){
+		
+		HashMap<String, Object> rtn  = new HashMap<>();
+		logger.info("서버:getObjectInfo 실행 {}", path);
+		System.out.println(path);
+		
+		if("image".equalsIgnoreCase(type)) return 2;
+		String tmp[] = path.split("/");
+		String audioPath = "c:\\freemiere";
+		for(int i = 2; i < tmp.length; i++){
+			audioPath += '\\';
+			audioPath += tmp[i];
+		}
+		
+		double duration = 0;	
+
+		try {
+		  AudioFile audioFile = AudioFileIO.read(new File(audioPath));
+		  duration = audioFile.getAudioHeader().getTrackLength();
+
+		} catch (Exception e) {
+		  e.printStackTrace();
+
+		}
+		System.out.println(duration);
+		
+		return duration;
 	}
 	
 }

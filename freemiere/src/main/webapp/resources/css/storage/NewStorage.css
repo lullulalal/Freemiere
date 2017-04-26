@@ -5,7 +5,7 @@
 	max-height:1100px;
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 10px;
 	overflow-y: auto;
 }
 
@@ -112,14 +112,14 @@
 	margin: auto;
 }
 
-a#btn-all, a#btn-del, a#btn-add, a#btn-copycut , a#btncompleteDel, a#btn-resotre, a#file
+a#btn-all, a#btn-del, a#btn-add, a#btncompleteDel, a#btn-resotre, a#file, a#btn-copycut
 	{
 	background-color: #2d2d2e;
 	margin-left: 30px;
 	margin-top: 10px;
 }
 
-a#btn-all:hover, a#btn-del:hover, a#btn-copycut:hover , a#btn-add:hover, a#btncompleteDel:hover,
+a#btn-all:hover, a#btn-del:hover, a#btn-add:hover, a#btncompleteDel:hover, a#btn-copycut:hover,
 	a#btn-resotre:hover, a#file:hover, a#file:hover {
 	color: #26b999;
 }
@@ -214,6 +214,21 @@ div[class*=box-1] {
 .btn-moveiEdit:hover::after {
     opacity: 0; 
     transform: scale(0.1, 1);
+}
+
+/* 속성에서 이미지 눌렀을때...  */
+.myBtn{
+   width: 50px;
+   height: 50px;
+    background-color: rgba(255,255,255,0.1);
+    border: 0;
+    outline: 0;
+    z-index: 4;
+}
+
+.modify_image{
+   width: 50px;
+   height: 50px;
 }
 
 #cm-contents{

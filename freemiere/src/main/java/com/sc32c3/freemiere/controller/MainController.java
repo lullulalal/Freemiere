@@ -1,6 +1,7 @@
 package com.sc32c3.freemiere.controller;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 import javax.servlet.http.HttpSession;
 
@@ -37,19 +38,50 @@ public class MainController {
 			// 현재 꼐정의 폴더 싸이즈임미당~츄
 			File rootDir = new File("c:\\freemiere\\" + member.getEmail());
 			long size = FileManager.getFileFolderSize(rootDir);
-			Double unitConvert = (double) (size / 1024 / 1024);
-			
-			String unit = "MB";
-			if (unitConvert < 1) {
-				unitConvert = (double) size / 1024;
-				unit = "KB";
+			Double unitConvertKB = (double) (size / 1024);
+			Double unitConvertMB = (double) Math.round((size / 1024 / 1024));
+			Double unitConvertMB2 = (double) (size / 1024 / 1024);
+			Double unitConvertGB = (double) Math.round((unitConvertMB2 / 1024) * 100) / 100.0;
+
+			System.out.println(unitConvertGB);
+
+			if (size > 1024*1024*1024) {
+				String unit = "GB";
+				System.out.println(unitConvertGB + unit + " / 20GB");
+				model.addAttribute("accountVolume", unitConvertGB + unit + " / 20GB");
+			} else if (size > 1024*1024) {
+				String unit = "MB";
+				model.addAttribute("accountVolume", unitConvertMB + unit + " / 20GB");
+			} else if(size > 1024) {
+				String unit = "KB";
+				model.addAttribute("accountVolume", unitConvertKB + unit + " / 20GB");
 			}
-			//Math.round(unitConvert);
-			System.out.println(rootDir.getName() + " : " + unitConvert + unit);
+			/*
+			 * Double unitConvert = (double) (size / 1024 / 1024); if
+			 * (unitConvert < 1) { unitConvert = (double) size / 1024; unit =
+			 * "KB"; } else if (unitConvert > 1024) { //unitConvert = (double)
+			 * (size / 1024 / 1024 / 1024); unit = "GB"; double unitCovertGB =
+			 * unitConvert / 1024; System.out.println(Math.round(unitCovertGB *
+			 * 100) / 100.0 + unit + " / 20GB");
+			 * model.addAttribute("accountVolume", Math.round(unitCovertGB *
+			 * 100) / 100.0 + unit + " / 20GB"); } // Math.round(unitConvert);
+			 * System.out.println(rootDir.getName() + " : " + unitConvert +
+			 * unit); model.addAttribute("accountVolume",
+			 * Math.round(unitConvert) + unit + " / 20GB");
+			 */
 			model.addAttribute("rootDir", rootDir.getName());
-			model.addAttribute("accountVolume", Math.round(unitConvert) + unit + " / 20GB");
 			return "storage";
 		} else
-			return "redirect:/";	
-	}	
+			return "redirect:/";
+	}
+	//로그아웃
+	 @RequestMapping(value="logout", method = RequestMethod.GET)
+     public String logout(HttpSession session){
+        System.out.println("로그아웃");
+        session.invalidate();
+        
+        return "redirect:/";
+     }
+	
+	
 }

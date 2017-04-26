@@ -36,14 +36,17 @@ function eventOnDraw( ctx, eventName ){
 
 var videoTotalDuration = 0;
 var videoClips = 0;
-function add_video0(id, url, count){
+
+function add_video0(id, url, count, fname){
 	var duration = count/30;
 	var cntLength = String(count.toString()).length;
 	var zeroPlus = '';
 	for(var i = 0; i < 9-cntLength; i++){
 		zeroPlus += '0';
 	}
+	//var fname = getFileName(url);
     var add = {
+    		'label': fname,
     		'id': id,
     		'type': 'video', 
     		'url': url,
@@ -52,20 +55,35 @@ function add_video0(id, url, count){
     		'duration' : duration
    };
    mm_player.add(add, 'video', videoTotalDuration , 0);
-   //alert(JSON.stringify(mm_player.mash, null, '\t'));
-   videoTotalDuration += duration;
+  
+   add = {
+		      'label': fname,
+		      'type': 'audio',
+		      'id': 'audio' + id,
+		      'url': url + 'audio.mp3',
+		      'duration': duration,
+  };
+   
+  mm_player.add(add, 'audio', videoTotalDuration , 0);
+  
+  videoTotalDuration += duration;
+  
 }
 
-function add_video0img(id, url){
+
+//function 
+
+function add_video0img(id, url, fname){
 	alert(url);
+	//var fname = getFileName(url);
 	var add = {
-	      'label': id,
+	      'label': fname,
 	      'type': 'image',
 	      'id': id,
 	      'url': url,
 	};
 	mm_player.add(add, 'video', videoTotalDuration , 0);
-	alert(JSON.stringify(mm_player.mash, null, '\t'));
+	//alert(JSON.stringify(mm_player.mash, null, '\t'));
 	videoTotalDuration += 2;
 }
 
@@ -110,6 +128,11 @@ function mm_load() {
 	    				"type": "video",
 	    				"index": 1,
 	    				"clips": []
+	    			},
+	    			{
+	    				"type": "video",
+	    				"index": 1,
+	    				"clips": []
 	    			}
 	    		],
 	    		"audio": [
@@ -121,6 +144,11 @@ function mm_load() {
 	    			{
 	    				"type": "audio",
 	    				"index": 1,
+	    				"clips": []
+	    			},
+	    			{
+	    				"type": "audio",
+	    				"index": 2,
 	    				"clips": []
 	    			}
 	    		]

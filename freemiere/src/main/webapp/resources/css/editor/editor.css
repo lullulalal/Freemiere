@@ -67,7 +67,7 @@
 }
 
 .player-editor-pp:hover{
-	color:#ff0080;
+	color:#26b999;
 }
 
 .imenu {
@@ -79,7 +79,7 @@
 	
 }
 .ibottom {
-	color:#ff0080;
+	color:#26b999;
 	
 }
 
@@ -88,7 +88,7 @@
 }
 
 .imenu:hover {
-    color: #ff0080;
+    color: #26b999;
 }
 
 .ibottom:hover {
@@ -148,7 +148,7 @@
 }
 
 .fileBox .fimage:active { 
-    background: #ff0080;
+    background: #26b999;
 }
 
 
@@ -162,7 +162,7 @@
 
 /* #t-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    background-color: #ff0080;
+    background-color: #26b999;
     width: 2px;
     height: 550px;
 }
@@ -200,7 +200,7 @@
 
 #player-slider::-webkit-slider-thumb {
      -webkit-appearance: none;
-    background-color: #ff0080;
+    background-color: #26b999;
     width: 8px;
     height: 12px;
 }
@@ -209,6 +209,8 @@
     -webkit-appearance: none;
     width: 70px;
 }
+
+
 
 #player-volume::-webkit-slider-runnable-track {
     width: 70px;
@@ -220,7 +222,7 @@
 
 #player-volume::-webkit-slider-thumb {
      -webkit-appearance: none;
-    background-color: #ff0080;
+    background-color: #26b999;
     width: 8px;
     height: 13px;
     margin-top: -9px;
@@ -234,6 +236,35 @@
     background: #fff;
 }
 
+#editor-vol{
+    -webkit-appearance: none;
+    width: 90px;
+}
+
+#editor-vol::-webkit-slider-runnable-track {
+    width: 90px;
+    height: 3px;
+    background: #fff;
+    border: none;
+    border-radius: 3px;
+}
+
+#editor-vol::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: #26b999;
+    width: 8px;
+    height: 13px;
+    margin-top: -9px;
+}
+
+#editor-vol:focus {
+    outline: none;
+}
+
+#editor-vol:focus::-webkit-slider-runnable-track {
+    background: #fff;
+}
+
 #mm-canvas{
 	width: 460px; 
 	height: 267px; 
@@ -241,7 +272,7 @@
 }
 
 
-#image-track{
+.track-odd{
 	width: 968px; 
 	height: 60px; 
 	background-color: #2e2e2e;	
@@ -254,33 +285,9 @@
 	color:#b3b3b3;
 }
 
-#video-track{
+.track-even{
 	width: 968px; 
 	height: 60px; 
-	background-color: #2e2e2e;		
-}
-
-#audio1-track{
-	width: 968px; 
-	height: 60px; 
-	background-color: #262626;		
-}
-
-#audio2-track{
-	width: 968px; 
-	height: 60px; 
-	background-color: #2e2e2e;		
-}
-
-#video-filter-track{
-	width: 968px; 
-	height: 23px; 
-	background-color: #262626;		
-}
-
-#image-filter-track{
-	width: 968px; 
-	height: 23px; 
 	background-color: #262626;		
 }
 
@@ -289,18 +296,41 @@ audio {
 }
 
 .verticalLine {
- 	border-left: 2px solid #ff0080;
+ 	border-left: 2px solid #26b999;
 	z-index: 999;
 	height: 100px; 
 	display: inline;
 }
 
 .video-obj{
+	overflow:hidden;
 	display: inline-block;
-	background-color:#ffffff;
+	background-color:#26b999;
 	border: 2px solid;
-	border-color: #000000;
+	border-color: #2e2e2e;
 	cursor: pointer;
+	height:56px;
+	color: #fff;
+}
+
+#editorBox{
+	color: #fff;
+}
+
+.e-num{
+	width:70px;
+}
+
+#e-filter-box{
+	width:160px;
+	height:180px;
+	background-color:#fff;
+}
+
+.obj-thumb{
+	height: 52px ; 
+	width: auto; 
+	vertical-align: middle
 }
 
 

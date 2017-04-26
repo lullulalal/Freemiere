@@ -243,7 +243,7 @@
    
    </insert>
    <select id="shareList" parameterType="int" resultType="FileFolder">
-   select * from shares where ffid=#{ffid}
+    select * from shares where ffid=#{ffid} order by decode(auth,'OWNER',1,'EDIT',2,'VIEW',3)
    </select>
    
    <select id="searchShare" parameterType="map" resultType="FileFolder">
@@ -273,5 +273,9 @@
    <update id="move" >
   	 update filefolders set path=#{1} where LOWER(path)=LOWER(#{0})
    </update>
+   
+    <select id="searchOwner" parameterType="int" resultType="FileFolder">
+   select * from shares where ffid=#{ffid} and auth='OWNER' 
+   </select>
 
 </mapper>
