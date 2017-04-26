@@ -62,11 +62,7 @@ public class FileFolderDAO {
 		return mapper.getMyRecentList(recentlist);
 	}
 
-	public ArrayList<FileFolder> getSearchList(String title) {
-		FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
-
-		return mapper.getSearchList(title);
-	}
+	
 
 	// 휴지통으로 파일 폴더 이동
 	public int deleteFileFolder(int ffid) {
@@ -319,4 +315,18 @@ public class FileFolderDAO {
 	       	  return;
 	       }
 	   }
+	   
+	   public ArrayList<FileFolder> getSearchList(String searchPath){
+			FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+
+			return mapper.getSearchList(searchPath);
+		}
+	   
+	   public FileFolder searchMyAuth(int ffid, String myEmail){
+		      FileFolderMapper mapper = sqlSession.getMapper(FileFolderMapper.class);
+		      HashMap<String, Object> shares = new HashMap<>();
+		      shares.put("ffid", ffid);
+		      shares.put("email", myEmail);
+		      return mapper.searchMyAuth(shares);
+		   }
 }

@@ -56,19 +56,6 @@ public class MainController {
 				String unit = "KB";
 				model.addAttribute("accountVolume", unitConvertKB + unit + " / 20GB");
 			}
-			/*
-			 * Double unitConvert = (double) (size / 1024 / 1024); if
-			 * (unitConvert < 1) { unitConvert = (double) size / 1024; unit =
-			 * "KB"; } else if (unitConvert > 1024) { //unitConvert = (double)
-			 * (size / 1024 / 1024 / 1024); unit = "GB"; double unitCovertGB =
-			 * unitConvert / 1024; System.out.println(Math.round(unitCovertGB *
-			 * 100) / 100.0 + unit + " / 20GB");
-			 * model.addAttribute("accountVolume", Math.round(unitCovertGB *
-			 * 100) / 100.0 + unit + " / 20GB"); } // Math.round(unitConvert);
-			 * System.out.println(rootDir.getName() + " : " + unitConvert +
-			 * unit); model.addAttribute("accountVolume",
-			 * Math.round(unitConvert) + unit + " / 20GB");
-			 */
 			model.addAttribute("rootDir", rootDir.getName());
 			return "storage";
 		} else

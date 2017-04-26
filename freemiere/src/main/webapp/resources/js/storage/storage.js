@@ -161,7 +161,7 @@ $(document).ready(function() {
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
 		$('#btn-add').on('click', newDir);
-
+		$('#edit').html('<div class="btn-edit btn-moveiEdit"><span>편집하기</span></div>');
 		loadList();
 	});
 	$('#shared').click(function() {
@@ -177,6 +177,7 @@ $(document).ready(function() {
 		$('#file').on('click', fileUpload);
 		// 하단 새폴더 버튼
 		$('#btn-add').on('click', newDir);
+		$('#edit').html('<div class="btn-edit btn-moveiEdit"><span>편집하기</span></div>');
 		loadList();
 	});
 	$('#recent').click(function() {
@@ -187,6 +188,7 @@ $(document).ready(function() {
 		$('#btn-del').on('click', go_to_Trash);
 		// 업로드버튼
 		$('#file').on('click', fileUpload);
+		$('#edit').html('<div class="btn-edit btn-moveiEdit"><span>편집하기</span></div>');
 		loadList();
 	});
 	$('#bookMark').click(function() {
@@ -197,9 +199,10 @@ $(document).ready(function() {
 		eventInit()
 		$('#btn-del').on('click', go_to_Trash);
 		// 업로드버튼
-		$('#file').on('click', fileUpload);
+		$('#file').on('click', fileUpload);df
 		// 하단 새폴더 버튼
 		$('#btn-add').on('click', newDir);
+		$('#edit').html('<div class="btn-edit btn-moveiEdit"><span>편집하기</span></div>');
 		loadList();
 	});
 	$('#trash').click(function() {
@@ -214,6 +217,15 @@ $(document).ready(function() {
 		// 휴지통에서 완전 삭제
 		$('#btncompleteDel').on('click', completeDelete);
 		loadList();
+	});
+	$('#fileSearch').click(function() {
+		menu = 'FileSearch';
+		setNavRoot(menu);
+		setNavTop(menu);
+		
+		 
+		alert("여기까지");
+		fileSearchList();
 	});
 
 	setNavTop(menu);
@@ -531,6 +543,8 @@ $('#id01').modal();
 
 
 //공유 된 상태에서 열었을경우
+
+//공유 된 상태에서 열었을경우
 function shareSet(obj){
 
 var User;
@@ -538,98 +552,98 @@ var User;
 var set = '';
 var num;
 $.each(obj, function(index, item){ 
- num = item.ffid;
+num = item.ffid;
 });
 set +='<form id= "updateForm">';
 set +='<div id="sharedS" class="modal fade">';
 set +='<div class="modal-dialog" id="dialog">';
 set +='<div class="modal-content">';
-  
+
 set +='<h2 class="modal-title">';
-  
+
 set +='<input id="fName" type="text" placeholder="아이디 검색">';
 //set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
 set += '<button type="button" id="search" class="myBtn"><img class="modify_image"src="./resources/img/storage/search.png"></button>';
 set += '</form>';
 set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
- 
- set +='<div class="modal-body">';
- 
- set +='<div id="auth1">';
- set +='<textarea id="content2" rows="2" cols="30" readonly=readonly></textarea>';
- set +='<form id= "updateForm2">';
- set +='<select id="selectAuth" name="selectAuth">';
- set +='<option value="OWNER">Owner</option>';
- set +='<option value="VIEW">View</option>';
- set +='<option value="EDIT">Edit</option>';
- set +='</select>';
- set +='&nbsp;&nbsp;&nbsp;';
- set +='<button type="button" id="addAuth" class="addPerson">추가</button>';
- set +='</div>';
- 
- 
- set +='</div>';
- 
- set +='<div id="shareList">';
- set +='<textarea id="content" rows="10" cols="30" readonly=readonly>';
 
- $(document).ready(function() {
-    $("#search").click(function(){
-         var searchName = $('#fName').val();
-         $.ajax({
-          url:'searchUser',
-          type: 'POST',
-          dataType: 'json',
-          data: {email: searchName},
-          success: function(search) {
-             if(search != null){
-                User = search.email;
-                   //alert(User);
-                $('#content2').val(User);
-               // $('#content').val().replaceAll("\r\n","<br>");
-             }               
-          },
-          error: function(e) {
-             //alert(JSON.stringify(e));
-              alert('존재하지 않습니다.');
-          }
-       });
-       
-     });   
-    
-    $("#addAuth").click(function(){
-     //  $.each(obj, function(index, item){   
-       var selectAuth = document.getElementById("selectAuth");
-       
-       var ffid = num;
-       var email = $('#content2').val();
-       var select = selectAuth.value;
-       
-       if(email==''){
-          alert('아이디를 검색해주세요.');
-          document.getElementById("fName").focus();
-          return false;
-       }
-       
-         // alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
+set +='<div class="modal-body">';
+
+set +='<div id="auth1">';
+set +='<textarea id="content2" rows="2" cols="30" readonly=readonly></textarea>';
+set +='<form id= "updateForm2">';
+set +='<select id="selectAuth" name="selectAuth">';
+set +='<option value="OWNER">Owner</option>';
+set +='<option value="VIEW">View</option>';
+set +='<option value="EDIT">Edit</option>';
+set +='</select>';
+set +='&nbsp;&nbsp;&nbsp;';
+set +='<button type="button" id="addAuth" class="addPerson">추가</button>';
+set +='</div>';
+
+
+set +='</div>';
+
+set +='<div id="shareList">';
+set +='<textarea id="content" rows="10" cols="30" readonly=readonly>';
+
+$(document).ready(function() {
+  $("#search").click(function(){
+       var searchName = $('#fName').val();
        $.ajax({
-          url:'setAuth',
-          type: 'POST',
-          dataType: 'text',
-          data: {auth: select, ffid:ffid, email:email},
-         
-          success: updateOk,
-          error: function(text) {
-             alert(text);
-             // alert('에-러');
-          }
-       });
-  //   });   
-    }); 
- });
-$.each(obj, function(index, item){   
- set += item.email+'&nbsp;&nbsp;&nbsp;'+item.auth + '\n';
+        url:'searchUser',
+        type: 'POST',
+        dataType: 'json',
+        data: {email: searchName},
+        success: function(search) {
+           if(search != null){
+              User = search.email;
+              alert(User);
+              $('#content2').val(User);
+             // $('#content').val().replaceAll("\r\n","<br>");
+           }               
+        },
+        error: function(e) {
+           //alert(JSON.stringify(e));
+            alert('존재하지 않습니다.');
+        }
+     });
      
+   });   
+  
+  $("#addAuth").click(function(){
+   //  $.each(obj, function(index, item){   
+     var selectAuth = document.getElementById("selectAuth");
+     
+     var ffid = num;
+    
+     var email = $('#content2').val();
+     var select = selectAuth.value;
+     
+     if(email==''){
+        alert('아이디를 검색해주세요.');
+        document.getElementById("fName").focus();
+        return false;
+     }
+     
+     $.ajax({
+        url:'setAuth',
+        type: 'POST',
+        dataType: 'text',
+        data: {auth: select, ffid:ffid, email:email},
+       
+        success: updateOk,
+        error: function(text) {
+           alert(text);
+           // alert('에-러');
+        }
+     });
+//   });   
+  }); 
+});
+$.each(obj, function(index, item){   
+set += item.email+'&nbsp;&nbsp;&nbsp;'+item.auth + '\n';
+   
 });
 set += '</textarea>';
 set +='</div>';
@@ -648,23 +662,25 @@ $('#sharedS').modal();
 
 function updateOk(text){
 //alert('등록완료');
- //alert(text);
+
 document.getElementById('sharedS').style.display = 'none';
 $('.modal-backdrop').remove();
 init();
 alert(text)
 }
 
-
-
-//공유되지 않은 상황에서 열었을 경우
-function shareSet2(ffid){
+//중요설정하고 공유했을때 나타나야되는것.
+function shareSet3(obj){
 
 var User;
 //alert(JSON.stringify(obj));
 var set = '';
-var num = ffid;
- //alert('ffid 자알받았습니다.' +ffid)
+
+$.each(obj, function(index, item){   
+   num = obj.ffid;
+   
+});
+
  $(document).ready(function() {
     $("#search").click(function(){
          var searchName = $('#fName').val();
@@ -677,7 +693,7 @@ var num = ffid;
           success: function(search) {
              if(search != null){
                 User = search.email;
-                   //alert(User);
+                alert(User);
                 $('#content2').val(User);
              }               
           },
@@ -691,33 +707,32 @@ var num = ffid;
     
     $("#addAuth").click(function(){
    
-       var selectAuth = document.getElementById("selectAuth");
        
-       var ffid = num;
-       var email = $('#content2').val();
-       var select = selectAuth.value;
-          //alert('얘들어 값이나오렴 !'+email+'    '+ ffid +'     ' +select);
-           if(email==''){
-              alert('아이디를 검색해주세요.');
-              document.getElementById("fName").focus();
-              return false;
-           }
+          var selectAuth = document.getElementById("selectAuth");
+           var email = $('#content2').val();
+           var select = selectAuth.value;
+           alert('num님 안녕하신가요?' + num)
+                  if(email==''){
+                     alert('아이디를 검색해주세요.');
+                     document.getElementById("fName").focus();
+                     return false;
+                  }
+              
+              $.ajax({
+                 url:'setAuth',
+                 type: 'POST',
+                 dataType: 'text',
+                 data: {auth: select, ffid:num, email:email},
+                 success: updateOk,
+                 error: function(text) {
+                    //alert(JSON.stringify(e));
+                     alert(text);
+                 }
+              });
+            });   
        
-       $.ajax({
-          url:'setAuth',
-          type: 'POST',
-          dataType: 'text',
-          data: {auth: select, ffid:ffid, email:email},
-          success: updateOk,
-          error: function(text) {
-             //alert(JSON.stringify(e));
-              alert(text);
-          }
-       });
-     });   
+          
  });
- 
- 
  
  set +='<form id= "updateForm">';
  set +='<div id="sharedS" class="modal fade">';
@@ -762,1116 +777,1232 @@ var num = ffid;
     $('#sharedS').modal();   
 }
 
+//공유되지 않은 상황에서 열었을 경우
+function shareSet2(ffid){
 
-function goToUpload(obj){
+var User;
+//alert(JSON.stringify(obj));
+var set = '';
+var num = ffid;
+/*$.each(ffid, function(index, item){   
+ num = ffid.ffid;
  
- var test = '';
+});*/
+
+$(document).ready(function() {
+  $("#search").click(function(){
+       var searchName = $('#fName').val();
+       
+       $.ajax({
+        url:'searchUser',
+        type: 'POST',
+        dataType: 'json',
+        data: {email: searchName, ffid: num},
+        success: function(search) {
+           if(search != null){
+              User = search.email;
+              alert(User);
+              $('#content2').val(User);
+           }               
+        },
+        error: function(e) {
+           //alert(JSON.stringify(e));
+            alert('존재하지 않습니다.');
+        }
+     });
+     
+   });   
+  
+  $("#addAuth").click(function(){
  
- $.each(obj, function(index, item) {
-    var path = obj.path;
-    var sPath = path.substring(13,path.length);
-    var path2 = sPath.split('\\').join("/");
-    
-    //서버주소바꾸고 싶으면 밑 ip주소만 바꾸면됨.
-    var url = 'http://203.233.196.137:8888/freemiere/storageResources/'+path2;
-    var text = 'text...?';
-    test +='<form id= "updateForm">';
-    test +='<div id="id01" class="modal fade">';
-     test +='<div class="modal-dialog">';
-     test +='<div class="modal-content">';
      
-     test +='<h2 class="modal-title">';
+        var selectAuth = document.getElementById("selectAuth");
+         var email = $('#content2').val();
+         var select = selectAuth.value;
+         alert('num님 안녕하신가요?' + num)
+                if(email==''){
+                   alert('아이디를 검색해주세요.');
+                   document.getElementById("fName").focus();
+                   return false;
+                }
+            
+            $.ajax({
+               url:'setAuth',
+               type: 'POST',
+               dataType: 'text',
+               data: {auth: select, ffid:num, email:email},
+               success: updateOk,
+               error: function(text) {
+                  //alert(JSON.stringify(e));
+                   alert(text);
+               }
+            });
+          });   
      
-     test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
-     
-     test +='<div class="modal-body">';
-     test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_blank"><img id="face" src="./resources/img/storage/facebook.png"></a>';
-    // test +='<a href="http://twitter.com/intent/tweet?url='+url+' "&text="'+text+'" target="_blank"><img src="./resources/img/storage/twitter.png"></a>';
-     test +='<a href="http://share.naver.com/web/shareView.nhn?url='+url+'&title='+text+'" target="_blank"><img src="./resources/img/storage/naver.jpg"></a>';
         
-     // test +='<a href="http://twitter.com/intent/tweet?url=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'&text=하하하하하" target="_black"><img src="./resources/img/storage/twitter.png"></a>';
-     
-     test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-     test +='</div>';
-     test +='</div>';
-     test +='</div>';
-     test +=' </div>';
-     test +='</form>';
- });
- 
-  $('#test').html(test);      
+});
 
-  $('#id01').modal();   
+
+
+set +='<form id= "updateForm">';
+set +='<div id="sharedS" class="modal fade">';
+set +='<div class="modal-dialog" id="dialog">';
+set +='<div class="modal-content">';
+   
+set +='<h2 class="modal-title">';
+   
+set +='<input id="fName" type="text" placeholder="아이디 검색">';
+set += '<button type="button" id="search" class="myBtn"><img class="modify_image"src="./resources/img/storage/search.png"></button>';
+//set +='<button type="button"class="btn btn-info btn-lg" id="search">검색</button>';
+set += '</form>';
+set +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+
+  set +='<div class="modal-body">';
+  
+  set +='<div id="auth1">';
+  set +='<textarea id="content2" rows="2" cols="30" readonly=readonly></textarea>';
+  set +='<form id= "updateForm2">';
+  set +='<select id="selectAuth" name="selectAuth">';
+  set +='<option value="OWNER">Owner</option>';
+  set +='<option value="VIEW">View</option>';
+  set +='<option value="EDIT">Edit</option>';
+  set +='</select>';
+  set +='&nbsp;&nbsp;&nbsp;';
+  set +='<button type="button" id="addAuth" class="addPerson">추가</button>';
+  set +='</div>';
+  
+  set +='<div id="shareList">';
+  //set +='<textarea id="content" rows="10" cols="30" readonly=readonly>'+item.email+'&nbsp;&nbsp;&nbsp;'+item.auth+'</textarea>';
+  set +='</div>';
+  set +='</form>';
+  set +='</div>';
+  
+  set +='</div>';
+  set +='</div>';
+  set +=' </div>';
+  set +='</form>';
+   
+  $('#sharedSet').html(set);      
+  
+  $('#sharedS').modal();   
 }
 
+
+function goToUpload(obj){
+
+var test = '';
+
+$.each(obj, function(index, item) {
+  var path = obj.path;
+  var sPath = path.substring(13,path.length);
+  var path2 = sPath.split('\\').join("/");
+  
+  //서버주소바꾸고 싶으면 밑 ip주소만 바꾸면됨.
+  var url = 'http://203.233.196.137:8888/freemiere/storageResources/'+path2;
+  var text = 'text...?';
+  test +='<form id= "updateForm">';
+  test +='<div id="id01" class="modal fade">';
+   test +='<div class="modal-dialog" id="dialog3">';
+   test +='<div class="modal-content">';
+   
+   test +='<h2 class="modal-title">';
+   
+   test +='<button type="button" class="close" data-dismiss="modal">x</button></h2>';
+   
+   test +='<div class="modal-body" >';
+  /* test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_blank"><img id="face" src="./resources/img/storage/facebook.png"></a>';
+  // test +='<a href="http://twitter.com/intent/tweet?url='+url+' "&text="'+text+'" target="_blank"><img src="./resources/img/storage/twitter.png"></a>';
+   test +='<a href="http://share.naver.com/web/shareView.nhn?url='+url+'&title='+text+'" target="_blank"><img src="./resources/img/storage/naver.jpg"></a>';
+      
+   // test +='<a href="http://twitter.com/intent/tweet?url=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'&text=하하하하하" target="_black"><img src="./resources/img/storage/twitter.png"></a>';
+   */
+   
+  test +='<div class="social-icons">';
+ test +='<div class="social-icons-image">';
+ test +='<a href="http://www.facebook.com/sharer/sharer.php?u=http://203.233.196.137:8888/freemiere/storageResources/'+sPath+'" target="_blank"">';
+ test +='<img src="https://www.facebook.com/images/fb_icon_325x325.png" alt="Facebook Icon">';
+ test +='</a>';
+ test +='</div>';
+ test +='<div class="social-icons-image">';
+ test +='<a href="http://share.naver.com/web/shareView.nhn?url='+url+'&title='+text+'" target="_blank">';
+  test +='<img src="./resources/img/storage/naver.jpg">';
+  test +='</a>'
+  test +='</div>';
+  
+  test +='<div class="social-icons-image">';
+//  test +='<a href="https://story.kakao.com/share?url=http://203.233.196.137:8888/freemiere/storageResources/kty2589a@naver.com/" target="_blank">';
+  test +='<a href="https://plus.google.com/share?url='+url+'" target="_blank"">';
+ //test +='<a href="https://story.kakao.com/share?url='+url+'" target="_blank">';
+  test +='<img src="./resources/img/storage/google.png">';
+  test +='</a>'
+  test +='</div>';
+  test +='</div>';
+   //닫기
+   test +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+   test +='</div>';
+   test +='</div>';
+   test +='</div>';
+   test +=' </div>';
+   test +='</form>';
+});
+
+$('#test').html(test);      
+
+$('#id01').modal();   
+}
 function outputList(list) {
-	// alert(JSON.stringify(list));
-	var data = '';
+	   // alert(JSON.stringify(list));
+	   var data = '';
 
-	data += '<ul class="fileTable">'
-	$.each(list,function(index, item) {
-						data += '<li class="fileItem">'
-						data += '<table class="fileBox">';
-						data += '<tr><td>';
-						data += '<input type="checkbox" class="file_check" ffid="'
-								+ item.ffid
-								+ '" '
-								+ 'bookState="'
-								+ item.bookState
-								+ '"'
-								+ 'isshared="'
-								+ item.isShared
-								+ '" '
-								+ 'path="'
-								+ item.path
-								+ '"'
-								+ 'checkboxNum=' + index + '>';
-						data += '</td></tr>';
-						data += '<tr align="center">';
-						data += '	<label for="file_check">';
-						data += '   		<td class="filebox-td" fileboxNum='+index+'>';
-						if (item.isDeleted.toLowerCase() == 't') {
-							if (item.isFolder == true) {
-								$(function() {
-									// var image =
-									// document.getElementById("#file");
-									$('#sfolders' + item.ffid + '').contextPopup(
-													{
-														title : 'Image/Avi File',
-														items : [
-																{
-																	label : '복구',
-																	action : function() {
-																		$.ajax({
-																				url : 'conRemove',
-																				type : 'POST',
-																				data : {
-																					ffid : item.ffid
-																				},
-																				success : function(obj) {
-																						alert('복구되었습니다.');
-																						init();
-																					},
-																					error : function(e) {
-																						alert(JSON.stringify(e));
-																						// alert('에-러');
-																					}
-																				});
+	   data += '<ul class="fileTable">';
+	   $.each(list,function(index, item) {
+	                  data += '<li class="fileItem">'
+	                  data += '<table class="fileBox">';
+	                  data += '<tr><td>';
+	                  data += '<input type="checkbox" class="file_check" ffid="'
+	                        + item.ffid
+	                        + '" '
+	                        + 'bookState="'
+	                        + item.bookState
+	                        + '"'
+	                        + 'isshared="'
+	                        + item.isShared
+	                        + '" '
+	                        + 'path="'
+	                        + item.path
+	                        + '"'
+	                        + 'checkboxNum=' + index + '>';
+	                  data += '</td></tr>';
+	                  data += '<tr align="center">';
+	                  data += '   <label for="file_check">';
+	                  data += '         <td class="filebox-td" fileboxNum='+index+'>';
+	                  if (item.isDeleted.toLowerCase() == 't') {
+	                     if (item.isFolder == true) {
+	                        $(function() {
+	                           // var image =
+	                           // document.getElementById("#file");
+	                           $('#sfolders' + item.ffid + '').contextPopup(
+	                                       {
+	                                          title : 'Image/Avi File',
+	                                          items : [
+	                                                {
+	                                                   label : '복구',
+	                                                   action : function() {
+	                                                      $.ajax({
+	                                                            url : 'conRemove',
+	                                                            type : 'POST',
+	                                                            data : {
+	                                                               ffid : item.ffid
+	                                                            },
+	                                                            success : function(obj) {
+	                                                                  alert('복구되었습니다.');
+	                                                                  init();
+	                                                               },
+	                                                               error : function(e) {
+	                                                                  alert(JSON.stringify(e));
+	                                                                  // alert('에-러');
+	                                                               }
+	                                                            });
 
-																	}
-																},
+	                                                   }
+	                                                },
 
-																{
-																	label : '속성',
-																	action : function() {
-																		$.ajax({
-																				url : 'info',
-																				type : 'POST',
-																				dataType : 'json',
-																				data : {
-																					ffid : item.ffid,
-																					path : item.path
-																				},
-																				success : function(obj) {
-																						soksungTrash(obj);
-																					},
-																					error : function(e) {
-																						alert(JSON.stringify(e));
-																						// alert('에-러');
-																					}
-																				});
-																	}
-																},
-																{
-																	label : '삭제',
-																	action : function() {
-																		$.ajax({
-																				url : 'conAllRemove',
-																				type : 'POST',
-																				data : {
-																					ffid : item.ffid
-																					},
-																				success : function(obj) {
-																					alert('삭제되었습니다.');
-																					init();
-																					},
-																				error : function(e) {
-																						alert(JSON.stringify(e));
-																						// alert('에-러');
-																					}
-																				});
-																	}
-																}
+	                                                {
+	                                                   label : '속성',
+	                                                   action : function() {
+	                                                      $.ajax({
+	                                                            url : 'info',
+	                                                            type : 'POST',
+	                                                            dataType : 'json',
+	                                                            data : {
+	                                                               ffid : item.ffid,
+	                                                               path : item.path
+	                                                            },
+	                                                            success : function(obj) {
+	                                                                  soksungTrash(obj);
+	                                                               },
+	                                                               error : function(e) {
+	                                                                  alert(JSON.stringify(e));
+	                                                                  // alert('에-러');
+	                                                               }
+	                                                            });
+	                                                   }
+	                                                },
+	                                                {
+	                                                   label : '삭제',
+	                                                   action : function() {
+	                                                      $.ajax({
+	                                                            url : 'conAllRemove',
+	                                                            type : 'POST',
+	                                                            data : {
+	                                                               ffid : item.ffid
+	                                                               },
+	                                                            success : function(obj) {
+	                                                               alert('삭제되었습니다.');
+	                                                               init();
+	                                                               },
+	                                                            error : function(e) {
+	                                                                  alert(JSON.stringify(e));
+	                                                                  // alert('에-러');
+	                                                               }
+	                                                            });
+	                                                   }
+	                                                }
 
-														]
-													});
-								});
+	                                          ]
+	                                       });
+	                        });
 
-								data += '<label for="file_check">';
-								data += '<img id="sfolders' 
-									  + item.ffid 
-									  + '"class="folder sfolder" path="' 
-									  + item.path 
-									  + '"src="./resources/img/storage/newFolder.png">';	
-								data += '</label>';
+	                        data += '<label for="file_check">';
+	                        data += '<img id="sfolders' 
+	                             + item.ffid 
+	                             + '"class="folder sfolder" path="' 
+	                             + item.path 
+	                             + '"src="./resources/img/storage/newFolder.png">';   
+	                        data += '</label>';
 
-							} else {
-								$(function() {
+	                     } else {
+	                        $(function() {
 
-									// var image =
-									// document.getElementById("#file");
+	                           // var image =
+	                           // document.getElementById("#file");
 
-									$('#file' + item.ffid + '').contextPopup(
-													{
-														title : 'Image/Avi File',
-														items : [
-																{
-																	label : '복구',
-																	action : function() {
-																		$.ajax({
-																				url : 'conRemove',
-																				type : 'POST',
-																				data : {
-																					ffid : item.ffid
-																					},
-																				success : function(obj) {
-																						alert('복구되었습니다.');
-																						init();
-																					},
-																				error : function(e) {
-																						alert(JSON.stringify(e));
-																						// alert('에-러');
-																					}
-																				});
-																	}
-																},
+	                           $('#file' + item.ffid + '').contextPopup(
+	                                       {
+	                                          title : 'Image/Avi File',
+	                                          items : [
+	                                                {
+	                                                   label : '복구',
+	                                                   action : function() {
+	                                                      $.ajax({
+	                                                            url : 'conRemove',
+	                                                            type : 'POST',
+	                                                            data : {
+	                                                               ffid : item.ffid
+	                                                               },
+	                                                            success : function(obj) {
+	                                                                  alert('복구되었습니다.');
+	                                                                  init();
+	                                                               },
+	                                                            error : function(e) {
+	                                                                  alert(JSON.stringify(e));
+	                                                                  // alert('에-러');
+	                                                               }
+	                                                            });
+	                                                   }
+	                                                },
 
-																{
-																	label : '속성',
-																	action : function() {
-																		$.ajax({
-																				url : 'info',
-																				type : 'POST',
-																				dataType : 'json',
-																				data : {
-																						ffid : item.ffid,
-																						path : item.path
-																					},
-																				success : function(	obj) {
-																						soksungTrash(obj);
-																					},
-																				error : function(e) {
-																						alert(JSON.stringify(e));
-																						// alert('에-러');
-																					}
-																				});
-																	}
-																},
-																{
-																	label : '삭제',
-																	action : function() {
-																		$.ajax({
-																				url : 'conAllRemove',
-																				type : 'POST',
-																				data : {
-																						ffid : item.ffid
-																					},
-																				success : function(obj) {
-																						alert('휴지통으로 이동하였습니다.');
-																						init();
-																					},
-																				error : function(e) {
-																						alert(JSON.stringify(e));
-																						// alert('에-러');
-																					}
-																				});
-																	}
-																}
+	                                                {
+	                                                   label : '속성',
+	                                                   action : function() {
+	                                                      $.ajax({
+	                                                            url : 'info',
+	                                                            type : 'POST',
+	                                                            dataType : 'json',
+	                                                            data : {
+	                                                                  ffid : item.ffid,
+	                                                                  path : item.path
+	                                                               },
+	                                                            success : function(   obj) {
+	                                                                  soksungTrash(obj);
+	                                                               },
+	                                                            error : function(e) {
+	                                                                  alert(JSON.stringify(e));
+	                                                                  // alert('에-러');
+	                                                               }
+	                                                            });
+	                                                   }
+	                                                },
+	                                                {
+	                                                   label : '삭제',
+	                                                   action : function() {
+	                                                      $.ajax({
+	                                                            url : 'conAllRemove',
+	                                                            type : 'POST',
+	                                                            data : {
+	                                                                  ffid : item.ffid
+	                                                               },
+	                                                            success : function(obj) {
+	                                                                  alert('휴지통으로 이동하였습니다.');
+	                                                                  init();
+	                                                               },
+	                                                            error : function(e) {
+	                                                                  alert(JSON.stringify(e));
+	                                                                  // alert('에-러');
+	                                                               }
+	                                                            });
+	                                                   }
+	                                                }
 
-														]
-													});
-								});
-								/*
-								 * data += '<img id="file' + item.ffid + '"
-								 * src="' + item.path + '"
-								 * onclick="window.open(this.src)">';
-								 */
-								var path = item.path;
-		                           var pathArray = path.split('\\');
-		                           var thumbPath = './storageResources/';
-		                           var imgPath = './storageResources/';
-		                           for (var j = 2; j < pathArray.length; j++) {
-		                              imgPath += pathArray[j];
-		                              thumbPath += pathArray[j];
-		                              if (j < (pathArray.length - 1)) {
-		                                 thumbPath += '/';
-		                                 imgPath += '/';
-		                              }
-		                              if (j == (pathArray.length - 2))
-		                                 thumbPath += '.thumb/';
-		                           }
-		                           thumbPath += '.png';
+	                                          ]
+	                                       });
+	                        });
+	                        /*
+	                         * data += '<img id="file' + item.ffid + '"
+	                         * src="' + item.path + '"
+	                         * onclick="window.open(this.src)">';
+	                         */
+	                        var path = item.path;
+	                                 var pathArray = path.split('\\');
+	                                 var thumbPath = './storageResources/';
+	                                 var imgPath = './storageResources/';
+	                                 for (var j = 2; j < pathArray.length; j++) {
+	                                    imgPath += pathArray[j];
+	                                    thumbPath += pathArray[j];
+	                                    if (j < (pathArray.length - 1)) {
+	                                       thumbPath += '/';
+	                                       imgPath += '/';
+	                                    }
+	                                    if (j == (pathArray.length - 2))
+	                                       thumbPath += '.thumb/';
+	                                 }
+	                                 thumbPath += '.png';
 
-		                           var fileType = getFileType(item.path);
-		                           if (fileType == 'image') {
-		                              data += '<label for="file_check'
-		                                    + index + '">';
-		                              data += '<img id="file'
-		                                    + item.ffid
-		                                    + '" class="file fimage" path="'
-		                                    + imgPath + '" src="'
-		                                    + thumbPath + '">';
-		                              data += '</label>';
-		                           } else if (fileType == 'video') {
+	                                 var fileType = getFileType(item.path);
+	                                 if (fileType == 'image') {
+	                                    data += '<label for="file_check'
+	                                          + index + '">';
+	                                    data += '<img id="file'
+	                                          + item.ffid
+	                                          + '" class="file fimage" path="'
+	                                          + imgPath + '" src="'
+	                                          + thumbPath + '">';
+	                                    data += '</label>';
+	                                 } else if (fileType == 'video') {
 
-		                              var p = item.path;
-		                              var videoPathrray = p.split('\\');
-		                              var videoPath = './storageResources/';
-		                              for (var j = 2; j < videoPathrray.length; j++) {
-		                                 videoPath += videoPathrray[j];
-		                                 if (j < (videoPathrray.length - 1))
-		                                    videoPath += '/';
-		                              }
-		                              data += '<div class="checkDiv">';
-		                              data += '<label class="videoLibel" for="file_check'
-		                                    + index + '">';
-		                              data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
-		                                    + thumbPath + '">';
-		                              data += '<source src="' + videoPath
-		                                    + '" type="video/mp4">';
-		                              data += '<source src="' + item.path
-		                                    + '" type="video/ogg">';
-		                              data += '<source src="' + item.path
-		                                    + '" type="video/webm">';
-		                              data += 'Your browser does not support the video tag.';
-		                              data += '</video>';
-		                              data += '</label>';
-		                              data += '</div>';
-		                           } else {
-		                              data += '<label for="file_check'
-		                                    + index + '">';
-		                              data += '<img id="file'
-		                                    + item.ffid
-		                                    + '" class="file" src="./resources/img/storage/file.png">';
-		                              data += '</label>';
-		                           }
+	                                    var p = item.path;
+	                                    var videoPathrray = p.split('\\');
+	                                    var videoPath = './storageResources/';
+	                                    for (var j = 2; j < videoPathrray.length; j++) {
+	                                       videoPath += videoPathrray[j];
+	                                       if (j < (videoPathrray.length - 1))
+	                                          videoPath += '/';
+	                                    }
+	                                    data += '<div class="checkDiv">';
+	                                    data += '<label class="videoLibel" for="file_check'
+	                                          + index + '">';
+	                                    data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
+	                                          + thumbPath + '">';
+	                                    data += '<source src="' + videoPath
+	                                          + '" type="video/mp4">';
+	                                    data += '<source src="' + item.path
+	                                          + '" type="video/ogg">';
+	                                    data += '<source src="' + item.path
+	                                          + '" type="video/webm">';
+	                                    data += 'Your browser does not support the video tag.';
+	                                    data += '</video>';
+	                                    data += '</label>';
+	                                    data += '</div>';
+	                                 } else {
+	                                    data += '<label for="file_check'
+	                                          + index + '">';
+	                                    data += '<img id="file'
+	                                          + item.ffid
+	                                          + '" class="file" src="./resources/img/storage/file.png">';
+	                                    data += '</label>';
+	                                 }
 
-		                        }
+	                              }
 
-						}
+	                  }
 
-						else {
-							// /////////////////////////////////////////////////////////////////////////////////////
-							if (item.isFolder == false) {
-								// 중요의 상태가 T일 경우
-								if (item.bookState.toLowerCase() == 't') {
-									$(function() {
-										// var image =
-										// document.getElementById("#file");
-										$('#file' + item.ffid + '').contextPopup(
-														{
-															title : 'Image/Avi File',
-															items : [
-																	{
-																		label : '게시',
-																		action : function() {
-																			$.ajax({
-										                                        url:'getData',
-										                                        type: 'POST',
-										                                        dataType: 'json',
-										                                        data: {ffid:item.ffid},
-										                                        success: function(obj){
-										                                           goToUpload(obj);
-										                                        }
-										                                        
-										                                     });
-																		}
-																	},
-																	null, // divider
+	                  else {
+	                      // /////////////////////////////////////////////////////////////////////////////////////
+	                      if (item.isFolder == false) {
+	                         // 중요의 상태가 T일 경우
+	                         if (item.bookState.toLowerCase() == 't') {
+	                            $(function() {
+	                               // var image =
+	                               // document.getElementById("#file");
+	                               $('#file' + item.ffid + '').contextPopup(
+	                                           {
+	                                              title : 'Image/Avi File',
+	                                              items : [
+	                                                    {
+	                                                       label : '게시',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                       url:'getData',
+	                                                                       type: 'POST',
+	                                                                       dataType: 'json',
+	                                                                       data: {ffid:item.ffid},
+	                                                                       success: function(obj){
+	                                                                          goToUpload(obj);
+	                                                                       }
+	                                                                       
+	                                                                    });
+	                                                       }
+	                                                    },
+	                                                    null, // divider
 
-																	{
-																		label : '중요        ★',
-																		action : function() {
-																			$.ajax({
-																					url : 'bookmarkUpdate',
-																					type : 'POST',
-																					data : {
-																							ffid : item.ffid,
-																							bookstate : item.bookState
-																						},
-																					success : function() {
-																							//alert('중요하지 않군요... ');
-																							init();
-																						},
-																						error : function(e) {
-																							alert(JSON.stringify(e));
-																							// alert('에-러');
-																						}
-																					});
-																		}
-																	},
+	                                                    {
+	                                                       label : '중요        ★',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                url : 'bookmarkUpdate',
+	                                                                type : 'POST',
+	                                                                data : {
+	                                                                      ffid : item.ffid,
+	                                                                      bookstate : item.bookState
+	                                                                   },
+	                                                                success : function() {
+	                                                                      alert('중요하지 않군요... ');
+	                                                                      init();
+	                                                                   },
+	                                                                   error : function(e) {
+	                                                                      alert(JSON.stringify(e));
+	                                                                      // alert('에-러');
+	                                                                   }
+	                                                                });
+	                                                       }
+	                                                    },
 
-																	{
-																		label : '속성',
-																		action : function() {
-																			$.ajax({
-																					url : 'info',
-																					type : 'POST',
-																					dataType : 'json',
-																					data : {
-																							ffid : item.ffid,
-																							path : item.path
-																						},
-																					success : function(obj) {
-																							soksung(obj);
-																						},
-																					error : function(e) {
-																							alert(JSON.stringify(e));
-																							// alert('에-러');
-																						}
-																					});
-																		}
-																	},
-																	{
-																		label : '삭제',
-																		action : function() {
-																			$.ajax({
-																					url : 'conDelete',
-																					type : 'POST',
-																					data : {
-																							ffid : item.ffid
-																						},
-																					success : function(obj) {
-																							alert('휴지통으로 이동하였습니다.');
-																							init();
-																						},
-																						error : function(e) {
-																							alert(JSON.stringify(e));
-																							// alert('에-러');
-																						}
-																					});
-																		}
-																	}
+	                                                    {
+	                                                       label : '속성',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                url : 'info',
+	                                                                type : 'POST',
+	                                                                dataType : 'json',
+	                                                                data : {
+	                                                                      ffid : item.ffid,
+	                                                                      path : item.path
+	                                                                   },
+	                                                                success : function(obj) {
+	                                                                      soksung(obj);
+	                                                                   },
+	                                                                error : function(e) {
+	                                                                      alert(JSON.stringify(e));
+	                                                                      // alert('에-러');
+	                                                                   }
+	                                                                });
+	                                                       }
+	                                                    },
+	                                                    {
+	                                                       label : '삭제',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                url : 'conDelete',
+	                                                                type : 'POST',
+	                                                                data : {
+	                                                                      ffid : item.ffid
+	                                                                   },
+	                                                                success : function(obj) {
+	                                                                      alert('휴지통으로 이동하였습니다.');
+	                                                                      init();
+	                                                                   },
+	                                                                   error : function(e) {
+	                                                                      alert(JSON.stringify(e));
+	                                                                      // alert('에-러');
+	                                                                   }
+	                                                                });
+	                                                       }
+	                                                    }
 
-															]
-														});
-									});
-									var path = item.path;
-									var pathArray = path.split('\\');
-									var thumbPath = './storageResources/';
-									var imgPath = './storageResources/';
-									for (var j = 2; j < pathArray.length; j++) {
-										imgPath += pathArray[j];
-										thumbPath += pathArray[j];
-										if (j < (pathArray.length - 1)) {
-											thumbPath += '/';
-											imgPath += '/';
-										}
-										if (j == (pathArray.length - 2))
-											thumbPath += '.thumb/';
-									}
-									thumbPath += '.png';
+	                                              ]
+	                                           });
+	                            });
+	                            var path = item.path;
+	                            var pathArray = path.split('\\');
+	                            var thumbPath = './storageResources/';
+	                            var imgPath = './storageResources/';
+	                            for (var j = 2; j < pathArray.length; j++) {
+	                               imgPath += pathArray[j];
+	                               thumbPath += pathArray[j];
+	                               if (j < (pathArray.length - 1)) {
+	                                  thumbPath += '/';
+	                                  imgPath += '/';
+	                               }
+	                               if (j == (pathArray.length - 2))
+	                                  thumbPath += '.thumb/';
+	                            }
+	                            thumbPath += '.png';
 
-									var fileType = getFileType(item.path);
-									if (fileType == 'image') {
-										data += '<label for="file_check">';
-										data += '<img id="file'
-												+ item.ffid
-												+ '" class="file fimage" path="'
-												+ imgPath + '" src="'
-												+ thumbPath + '">';
-										data += '</label>';
-									} else if (fileType == 'video') {
+	                            var fileType = getFileType(item.path);
+	                            if (fileType == 'image') {
+	                               data += '<label for="file_check">';
+	                               data += '<img id="file'
+	                                     + item.ffid
+	                                     + '" class="file fimage" path="'
+	                                     + imgPath + '" src="'
+	                                     + thumbPath + '">';
+	                               data += '</label>';
+	                            } else if (fileType == 'video') {
 
-										var p = item.path;
-										var videoPathrray = p.split('\\');
-										var videoPath = './storageResources/';
-										for (var j = 2; j < videoPathrray.length; j++) {
-											videoPath += videoPathrray[j];
-											if (j < (videoPathrray.length - 1))
-												videoPath += '/';
-										}
-										data += '<label class="videoLibel" for="file_check">';
-										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
-												+ thumbPath
-												+ '" onclick="videoCheck()">';
-										data += '<source src="' + videoPath
-												+ '" type="video/mp4">';
-										data += '<source src="' + item.path
-												+ '" type="video/ogg">';
-										data += '<source src="' + item.path
-												+ '" type="video/webm">';
-										data += 'Your browser does not support the video tag.';
-										data += '</video>';
-										data += '</label>';
-									} else {
-										data += '<label for="file_check">';
-										data += '<img id="file'
-												+ item.ffid
-												+ '" class="file" src="./resources/img/storage/save.png">';
-										data += '</label>';
-									}
+	                               var p = item.path;
+	                               var videoPathrray = p.split('\\');
+	                               var videoPath = './storageResources/';
+	                               for (var j = 2; j < videoPathrray.length; j++) {
+	                                  videoPath += videoPathrray[j];
+	                                  if (j < (videoPathrray.length - 1))
+	                                     videoPath += '/';
+	                               }
+	                               data += '<label class="videoLibel" for="file_check">';
+	                               data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
+	                                     + thumbPath
+	                                     + '" onclick="videoCheck()">';
+	                               data += '<source src="' + videoPath
+	                                     + '" type="video/mp4">';
+	                               data += '<source src="' + item.path
+	                                     + '" type="video/ogg">';
+	                               data += '<source src="' + item.path
+	                                     + '" type="video/webm">';
+	                               data += 'Your browser does not support the video tag.';
+	                               data += '</video>';
+	                               data += '</label>';
+	                            } else {
+	                               data += '<label for="file_check">';
+	                               data += '<img id="file'
+	                                     + item.ffid
+	                                     + '" class="file" src="./resources/img/storage/save.png">';
+	                               data += '</label>';
+	                            }
 
-									// bookState가 F일 경우
-								} else {
-									$(function() {
+	                            // bookState가 F일 경우
+	                         } else {
+	                            $(function() {
 
-										// var image =
-										// document.getElementById("#file");
+	                               // var image =
+	                               // document.getElementById("#file");
 
-										$('#file' + item.ffid + '')
-												.contextPopup(
-														{
-															title : 'Image/Avi File',
-															items : [
-																	{
-																		label : '게시',
-																		action : function() {
-																			$.ajax({
-										                                        url:'getData',
-										                                        type: 'POST',
-										                                        dataType: 'json',
-										                                        data: {ffid:item.ffid	},
-										                                        success: function(obj){
-										                                           goToUpload(obj);
-										                                        }
-										                                        
-										                                     });
-																		}
-																	},
-																	null, // divider
+	                               $('#file' + item.ffid + '')
+	                                     .contextPopup(
+	                                           {
+	                                              title : 'Image/Avi File',
+	                                              items : [
+	                                                    {
+	                                                       label : '게시',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                       url:'getData',
+	                                                                       type: 'POST',
+	                                                                       dataType: 'json',
+	                                                                       data: {ffid:item.ffid   },
+	                                                                       success: function(obj){
+	                                                                          goToUpload(obj);
+	                                                                       }
+	                                                                       
+	                                                                    });
+	                                                       }
+	                                                    },
+	                                                    null, // divider
 
-																	{
-																		label : '중요',
-																		action : function() {
-																			$.ajax({
-																					url : 'bookmarkUpdate',
-																					type : 'POST',
-																					data : {
-																							ffid : item.ffid,
-																							bookstate : item.bookState
-																						},
-																					success : function() {
-																							alert('중요로 변경되었습니다.');
-																							init();
-																						},
-																					error : function(e) {
-																							alert(JSON.stringify(e));
-																							// alert('에-러');
-																						}
-																					});
-																		}
-																	},
+	                                                    {
+	                                                       label : '중요',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                url : 'bookmarkUpdate',
+	                                                                type : 'POST',
+	                                                                data : {
+	                                                                      ffid : item.ffid,
+	                                                                      bookstate : item.bookState
+	                                                                   },
+	                                                                success : function() {
+	                                                                      alert('중요로 변경되었습니다.');
+	                                                                      init();
+	                                                                   },
+	                                                                error : function(e) {
+	                                                                      alert(JSON.stringify(e));
+	                                                                      // alert('에-러');
+	                                                                   }
+	                                                                });
+	                                                       }
+	                                                    },
 
-																	// {label:'중요',
-																	// action:function()
-																	// {
-																	// alert('clicked
-																	// 5') }
-																	// },
-																	{
-																		label : '속성',
-																		action : function() {
-																			$.ajax({
-																					url : 'info',
-																					type : 'POST',
-																					dataType : 'json',
-																					data : {
-																							ffid : item.ffid,
-																							path : item.path
-																						},
-																					success : function(obj) {
-																							soksung(obj);
-																						},
-																					error : function(e) {
-																							alert(JSON.stringify(e));
-																							// alert('에-러');
-																						}
-																					});
-																		}
-																	},
-																	{
-																		label : '삭제',
-																		action : function() {
-																			$.ajax({
-																					url : 'conDelete',
-																					type : 'POST',
-																					data : {
-																							ffid : item.ffid
-																						},
-																					success : function(obj) {
-																							alert('휴지통으로 이동하였습니다.');
-																							init();
-																						},
-																						error : function(e) {
-																							alert(JSON.stringify(e));
-																							// alert('에-러');
-																						}
-																					});
-																		}
-																	}
+	                                                    // {label:'중요',
+	                                                    // action:function()
+	                                                    // {
+	                                                    // alert('clicked
+	                                                    // 5') }
+	                                                    // },
+	                                                    {
+	                                                       label : '속성',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                url : 'info',
+	                                                                type : 'POST',
+	                                                                dataType : 'json',
+	                                                                data : {
+	                                                                      ffid : item.ffid,
+	                                                                      path : item.path
+	                                                                   },
+	                                                                success : function(obj) {
+	                                                                      soksung(obj);
+	                                                                   },
+	                                                                error : function(e) {
+	                                                                      alert(JSON.stringify(e));
+	                                                                      // alert('에-러');
+	                                                                   }
+	                                                                });
+	                                                       }
+	                                                    },
+	                                                    {
+	                                                       label : '삭제',
+	                                                       action : function() {
+	                                                          $.ajax({
+	                                                                url : 'conDelete',
+	                                                                type : 'POST',
+	                                                                data : {
+	                                                                      ffid : item.ffid
+	                                                                   },
+	                                                                success : function(obj) {
+	                                                                      alert('휴지통으로 이동하였습니다.');
+	                                                                      init();
+	                                                                   },
+	                                                                   error : function(e) {
+	                                                                      alert(JSON.stringify(e));
+	                                                                      // alert('에-러');
+	                                                                   }
+	                                                                });
+	                                                       }
+	                                                    }
 
-															]
-														});
-									});
-									var path = item.path;
-									var pathArray = path.split('\\');
-									var thumbPath = './storageResources/';
-									var imgPath = './storageResources/';
-									for (var j = 2; j < pathArray.length; j++) {
-										imgPath += pathArray[j];
-										thumbPath += pathArray[j];
-										if (j < (pathArray.length - 1)) {
-											thumbPath += '/';
-											imgPath += '/';
-										}
-										if (j == (pathArray.length - 2))
-											thumbPath += '.thumb/';
-									}
-									thumbPath += '.png';
+	                                              ]
+	                                           });
+	                            });
+	                            var path = item.path;
+	                            var pathArray = path.split('\\');
+	                            var thumbPath = './storageResources/';
+	                            var imgPath = './storageResources/';
+	                            for (var j = 2; j < pathArray.length; j++) {
+	                               imgPath += pathArray[j];
+	                               thumbPath += pathArray[j];
+	                               if (j < (pathArray.length - 1)) {
+	                                  thumbPath += '/';
+	                                  imgPath += '/';
+	                               }
+	                               if (j == (pathArray.length - 2))
+	                                  thumbPath += '.thumb/';
+	                            }
+	                            thumbPath += '.png';
 
-									var fileType = getFileType(item.path);
-									if (fileType == 'image') {
-										data += '<label for="file_check">';
-										data += '<img id="file'
-												+ item.ffid
-												+ '" class="file fimage" path="'
-												+ imgPath + '" src="'
-												+ thumbPath + '">';
-										data += '</label>';
-									} else if (fileType == 'video') {
+	                            var fileType = getFileType(item.path);
+	                            if (fileType == 'image') {
+	                               data += '<label for="file_check">';
+	                               data += '<img id="file'
+	                                     + item.ffid
+	                                     + '" class="file fimage" path="'
+	                                     + imgPath + '" src="'
+	                                     + thumbPath + '">';
+	                               data += '</label>';
+	                            } else if (fileType == 'video') {
 
-										var p = item.path;
-										var videoPathrray = p.split('\\');
-										var videoPath = './storageResources/';
-										for (var j = 2; j < videoPathrray.length; j++) {
-											videoPath += videoPathrray[j];
-											if (j < (videoPathrray.length - 1))
-												videoPath += '/';
-										}
-										data += '<label class="videoLibel" for="file_check">';
-										data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
-												+ thumbPath + '">';
-										data += '<source src="' + videoPath
-												+ '" type="video/mp4">';
-										data += '<source src="' + item.path
-												+ '" type="video/ogg">';
-										data += '<source src="' + item.path
-												+ '" type="video/webm">';
-										data += 'Your browser does not support the video tag.';
-										data += '</video>';
-										data += '</label>';
-									} else {
-										data += '<label for="file_check">';
-										data += '<img id="file'
-												+ item.ffid
-												+ '" class="file" src="./resources/img/storage/save.png">';
-										data += '</label>';
-									}
+	                               var p = item.path;
+	                               var videoPathrray = p.split('\\');
+	                               var videoPath = './storageResources/';
+	                               for (var j = 2; j < videoPathrray.length; j++) {
+	                                  videoPath += videoPathrray[j];
+	                                  if (j < (videoPathrray.length - 1))
+	                                     videoPath += '/';
+	                               }
+	                               data += '<label class="videoLibel" for="file_check">';
+	                               data += '<video id=file'+item.ffid+' width=156 height=156 controls poster="'
+	                                     + thumbPath + '">';
+	                               data += '<source src="' + videoPath
+	                                     + '" type="video/mp4">';
+	                               data += '<source src="' + item.path
+	                                     + '" type="video/ogg">';
+	                               data += '<source src="' + item.path
+	                                     + '" type="video/webm">';
+	                               data += 'Your browser does not support the video tag.';
+	                               data += '</video>';
+	                               data += '</label>';
+	                            } else {
+	                               data += '<label for="file_check">';
+	                               data += '<img id="file'
+	                                     + item.ffid
+	                                     + '" class="file" src="./resources/img/storage/save.png">';
+	                               data += '</label>';
+	                            }
 
-								}
+	                         }
 
-								// data += '<img class="file"
-								// src="./resources/img/storage/file.png">';
-								// data += '<img id="file'+item.ffid+'"
-								// src="'+item.path+'"
-								// onclick="window.open(this.src)">';
-								// data += '<img class="file"
-								// src="./resources/img/storage/file.png"
-								// onclick="window.open(this.src)">';
-							}
+	                         // data += '<img class="file"
+	                         // src="./resources/img/storage/file.png">';
+	                         // data += '<img id="file'+item.ffid+'"
+	                         // src="'+item.path+'"
+	                         // onclick="window.open(this.src)">';
+	                         // data += '<img class="file"
+	                         // src="./resources/img/storage/file.png"
+	                         // onclick="window.open(this.src)">';
+	                      }
 
-							// 폴더일 경우
-							else {
+	                      // 폴더일 경우
+	                      else {
 
-								if (item.isShared.toLowerCase() == 't') {
+	                         if (item.isShared.toLowerCase() == 't') {
 
-									if (item.bookState.toLowerCase() == 't') {
-										// 폴더이면서 공유T, 중요 T
-										$(function() {
+	                            if (item.bookState.toLowerCase() == 't') {
+	                               // 폴더이면서 공유T, 중요 T
+	                               $(function() {
 
-											// var image =
-											// document.getElementById("#file");
+	                                  // var image =
+	                                  // document.getElementById("#file");
 
-											$('#sfolders' + item.ffid + '').contextPopup(
-															{
-																title : 'My Popup Menu',
-																items : [
-																		{
-																			label : '공유설정',
-																			action : function() {
-																				$.ajax({
-																						url : 'folderShare',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								shareSet(obj);
-																							},
-																							error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
+	                                  $('#sfolders' + item.ffid + '').contextPopup(
+	                                              {
+	                                                 title : 'My Popup Menu',
+	                                                 items : [
+	                                                       {
+	                                                          label : '공유설정',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'folderShare',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         shareSet(obj);
+	                                                                      },
+	                                                                      error : function(e) {
+	                                                                         alert('권한이 없습니다.')
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
 
-																			}
-																		},
-																		{
-																			label : '복사/이동',
-																			action : function() {
-																				location.href = "http://www.naver.com"
-																			}
-																		},
-																		{
-																			label : '중요        ★',
-																			action : function() {
-																				$.ajax({
-																						url : 'bookmarkUpdate',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid,
-																								bookstate : item.bookState
-																							},
-																						success : function() {
-																								//alert('중요하지 않군요... ');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		null, // divider
-																		{
-																			label : '속성',
-																			action : function() {
-																				$.ajax({
-																						url : 'info',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid,
-																								path : item.path
-																							},
-																						success : function(obj) {
-																								soksungFolder(obj);
-																							},
-																							error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		{
-																			label : '삭제',
-																			action : function() {
+	                                                          }
+	                                                       },
+	                                                       
+	                                                       {
+	                                                          label : '중요        ★',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'bookmarkUpdate',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         bookstate : item.bookState
+	                                                                      },
+	                                                                   success : function() {
+	                                                                         alert('중요하지 않군요... ');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       null, // divider
+	                                                       {
+	                                                          label : '속성',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'info',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         path : item.path
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         soksungFolder(obj);
+	                                                                      },
+	                                                                      error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       {
+	                                                          label : '삭제',
+	                                                          action : function() {
 
-																				$.ajax({
-																						url : 'conDelete',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								alert('휴지통으로 이동하였습니다.');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		}
+	                                                             $.ajax({
+	                                                                   url : 'conDelete',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         alert('휴지통으로 이동하였습니다.');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       }
 
-																]
-															});
-										});
-										data += '<label for="file_check">';
-										data += '<img id="sfolders'
-												+ item.ffid
-												+ '" class="folder sfolder" path="'
-												+ item.path
-												+ '" src="./resources/img/storage/bookmarkFolder.png">';
-										data += '<label>';
-										// data += '<img class="folder sfolder"
-										// path="'+ item.path
-										// +'"
-										// src="./resources/img/storage/sbfolder.png">';
-									}
+	                                                 ]
+	                                              });
+	                               });
+	                               data += '<label for="file_check">';
+	                               data += '<img id="sfolders'
+	                                     + item.ffid
+	                                     + '" class="folder sfolder" path="'
+	                                     + item.path
+	                                     + '" src="./resources/img/storage/bookmarkFolder.png">';
+	                               data += '<label>';
+	                               // data += '<img class="folder sfolder"
+	                               // path="'+ item.path
+	                               // +'"
+	                               // src="./resources/img/storage/sbfolder.png">';
+	                            }
 
-									else {
-										// 폴더이면서 공유 T, 중요 F
-										$(function() {
+	                            else {
+	                               // 폴더이면서 공유 T, 중요 F
+	                               $(function() {
 
-											// var image =
-											// document.getElementById("#file");
+	                                  // var image =
+	                                  // document.getElementById("#file");
 
-											$('#sfolders' + item.ffid + '').contextPopup(
-															{
-																title : 'My Popup Menu',
-																items : [
-																		{
-																			label : '공유설정',
-																			action : function() {
-																				$.ajax({
-																						url : 'folderShare',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								shareSet(obj);
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
+	                                  $('#sfolders' + item.ffid + '').contextPopup(
+	                                              {
+	                                                 title : 'My Popup Menu',
+	                                                 items : [
+	                                                       {
+	                                                          label : '공유설정',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'folderShare',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         shareSet(obj);
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert('권한이 없습니다.')
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
 
-																			}
-																		},
-																		{
-																			label : '복사/이동',
-																			action : function() {
-																				location.href = "http://www.naver.com"
-																			}
-																		},
-																		{
-																			label : '중요',
-																			action : function() {
-																				$.ajax({
-																						url : 'bookmarkUpdate',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid,
-																								bookstate : item.bookState
-																							},
-																						success : function() {
-																								alert('중요로 설정되었습니다.');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		null, // divider
-																		{
-																			label : '속성',
-																			action : function() {
-																				$.ajax({
-																						url : 'info',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid,
-																								path : item.path
-																							},
-																						success : function(obj) {
-																								soksungFolder(obj);
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		{
-																			label : '삭제',
-																			action : function() {
-																				$.ajax({
-																						url : 'conDelete',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								alert('휴지통으로 이동하였습니다.');
-																								init();
-																							},
-																							error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		}
+	                                                          }
+	                                                       },
+	                                                       
+	                                                       {
+	                                                          label : '중요',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'bookmarkUpdate',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         bookstate : item.bookState
+	                                                                      },
+	                                                                   success : function() {
+	                                                                         alert('중요로 설정되었습니다.');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       null, // divider
+	                                                       {
+	                                                          label : '속성',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'info',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         path : item.path
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         soksungFolder(obj);
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       {
+	                                                          label : '삭제',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'conDelete',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         alert('휴지통으로 이동하였습니다.');
+	                                                                         init();
+	                                                                      },
+	                                                                      error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       }
 
-																]
-															});
-										});
-										data += '<label for="file_check' + index+ '">';
-										data += '<img id="sfolders'
-												+ item.ffid
-												+ '" class="folder sfolder" path="'
-												+ item.path
-												+ '" src="./resources/img/storage/sharedFolder.png">';
-										data += '<label>';
+	                                                 ]
+	                                              });
+	                               });
+	                               data += '<label for="file_check' + index+ '">';
+	                               data += '<img id="sfolders'
+	                                     + item.ffid
+	                                     + '" class="folder sfolder" path="'
+	                                     + item.path
+	                                     + '" src="./resources/img/storage/sharedFolder.png">';
+	                               data += '<label>';
 
-									}
-								}
-								// ↑여기까지가 폴더이면서 중요T이면서 북마크 T,F설정
+	                            }
+	                         }
+	                         // ↑여기까지가 폴더이면서 중요T이면서 북마크 T,F설정
 
-								// 폴더이면서 중요 F
-								else {
-									// 폴더이면서 중요F, 북마크 T일경우
-									if (item.bookState.toLowerCase() == 't') {
-										$(function() {
+	                         // 폴더이면서 중요 F
+	                         else {
+	                            // 폴더이면서 중요F, 북마크 T일경우
+	                            if (item.bookState.toLowerCase() == 't') {
+	                               $(function() {
 
-											// var image =
-											// document.getElementById("#file");
+	                                  // var image =
+	                                  // document.getElementById("#file");
 
-											$('#mfolders' + item.ffid + '').contextPopup(
-															{
-																title : 'My Popup Menu',
-																items : [
-																		{
-																			label : '공유설정',
-																			action : function() {
-																				$.ajax({
-																						url : 'folderShare',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								shareSet(obj);
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
+	                                  $('#mfolders' + item.ffid + '').contextPopup(
+	                                              {
+	                                                 title : 'My Popup Menu',
+	                                                 items : [
+	                                                       {
+	                                                          label : '공유설정',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'folderShare2',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         shareSet2(obj);
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
 
-																			}
-																		},
-																		{
-																			label : '복사/이동',
-																			action : function() {
-																				location.href = "http://www.naver.com"
-																			}
-																		},
-																		{
-																			label : '중요        ★',
-																			action : function() {
-																				$.ajax({
-																						url : 'bookmarkUpdate',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid,
-																								bookstate : item.bookState
-																							},
-																						success : function() {
-																								//alert('중요하지 않군요... ');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		null, // divider
-																		{
-																			label : '속성',
-																			action : function() {
-																				$.ajax({
-																						url : 'info',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid,
-																								path : item.path
-																							},
-																						success : function(obj) {
-																								soksungFolder(obj);
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		{
-																			label : '삭제',
-																			action : function() {
-																				$.ajax({
-																						url : 'conDelete',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								alert('휴지통으로 이동하였습니다.');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		}
+	                                                          }
+	                                                       },
+	                                                       
+	                                                       {
+	                                                          label : '중요        ★',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'bookmarkUpdate',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         bookstate : item.bookState
+	                                                                      },
+	                                                                   success : function() {
+	                                                                         alert('중요하지 않군요... ');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       null, // divider
+	                                                       {
+	                                                          label : '속성',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'info',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         path : item.path
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         soksungFolder(obj);
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       {
+	                                                          label : '삭제',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'conDelete',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         alert('휴지통으로 이동하였습니다.');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       }
 
-																]
-															});
-										});
-										data += '<label for="file_check' + index+ '">';
-										data += '<img id="mfolders'
-												+ item.ffid
-												+ '" class="folder mfolder" path="'
-												+ item.path
-												+ '" src="./resources/img/storage/bookmarkFolder.png">';
-										data += '<label>';
-										// data += '<img class="folder mfolder"
-										// path="'+ item.path
-										// +'"
-										// src="./resources/img/storage/mbfolder.png">';
-									}
+	                                                 ]
+	                                              });
+	                               });
+	                               data += '<label for="file_check' + index+ '">';
+	                               data += '<img id="mfolders'
+	                                     + item.ffid
+	                                     + '" class="folder mfolder" path="'
+	                                     + item.path
+	                                     + '" src="./resources/img/storage/bookmarkFolder.png">';
+	                               data += '<label>';
+	                               // data += '<img class="folder mfolder"
+	                               // path="'+ item.path
+	                               // +'"
+	                               // src="./resources/img/storage/mbfolder.png">';
+	                            }
 
-									// 폴더이면서 중요F, 북마크 F일경우
-									else {
-										$(function() {
+	                            // 폴더이면서 중요F, 북마크 F일경우
+	                            else {
+	                               $(function() {
 
-											// var image =
-											// document.getElementById("#file");
+	                                  // var image =
+	                                  // document.getElementById("#file");
 
-											$('#mfolders' + item.ffid + '').contextPopup(
-															{
-																title : 'My Popup Menu',
-																items : [
-																		{
-																			label : '공유설정',
-																			action : function() {
-																				var ffid = item.ffid;
-																				$.ajax({
-																						url : 'folderShare2',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								shareSet2(obj.ffid);
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
+	                                  $('#mfolders' + item.ffid + '').contextPopup(
+	                                              {
+	                                                 title : 'My Popup Menu',
+	                                                 items : [
+	                                                       {
+	                                                          label : '공유설정',
+	                                                          action : function() {
+	                                                             var ffid = item.ffid;
+	                                                             $.ajax({
+	                                                                   url : 'folderShare2',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         shareSet2(obj.ffid);
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
 
-																			}
-																		},
-																		{
-																			label : '중요',
-																			action : function() {
-																				$.ajax({
-																						url : 'bookmarkUpdate',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid,
-																								bookstate : item.bookState
-																							},
-																						success : function() {
-																								alert('중요로 변경되었습니다.');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		null, // divider
-																		{
-																			label : '속성',
-																			action : function() {
-																				$.ajax({
-																						url : 'info',
-																						type : 'POST',
-																						dataType : 'json',
-																						data : {
-																								ffid : item.ffid,
-																								path : item.path
-																							},
-																						success : function(obj) {
-																								soksungFolder(obj);
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		},
-																		{
-																			label : '삭제',
-																			action : function() {
+	                                                          }
+	                                                       },
+	                                                       {
+	                                                          label : '중요',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'bookmarkUpdate',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         bookstate : item.bookState
+	                                                                      },
+	                                                                   success : function() {
+	                                                                         alert('중요로 변경되었습니다.');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       null, // divider
+	                                                       {
+	                                                          label : '속성',
+	                                                          action : function() {
+	                                                             $.ajax({
+	                                                                   url : 'info',
+	                                                                   type : 'POST',
+	                                                                   dataType : 'json',
+	                                                                   data : {
+	                                                                         ffid : item.ffid,
+	                                                                         path : item.path
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         soksungFolder(obj);
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       },
+	                                                       {
+	                                                          label : '삭제',
+	                                                          action : function() {
 
-																				$.ajax({
-																						url : 'conDelete',
-																						type : 'POST',
-																						data : {
-																								ffid : item.ffid
-																							},
-																						success : function(obj) {
-																								alert('휴지통으로 이동하였습니다.');
-																								init();
-																							},
-																						error : function(e) {
-																								alert(JSON.stringify(e));
-																								// alert('에-러');
-																							}
-																						});
-																			}
-																		}
+	                                                             $.ajax({
+	                                                                   url : 'conDelete',
+	                                                                   type : 'POST',
+	                                                                   data : {
+	                                                                         ffid : item.ffid
+	                                                                      },
+	                                                                   success : function(obj) {
+	                                                                         alert('휴지통으로 이동하였습니다.');
+	                                                                         init();
+	                                                                      },
+	                                                                   error : function(e) {
+	                                                                         alert(JSON.stringify(e));
+	                                                                         // alert('에-러');
+	                                                                      }
+	                                                                   });
+	                                                          }
+	                                                       }
 
-																]
-															});
-										});
-										data += '<label for="file_check">';
-										data += '<img id="mfolders'
-												+ item.ffid
-												+ '" class="folder mfolder" path="'
-												+ item.path
-												+ '" src="./resources/img/storage/newFolder.png">';
-										data += '</label>';
-										// data += '<img class="folder mfolder"
-										// path="'+ item.path
-										// +'"
-										// src="./resources/img/storage/mfolder.png">';
-									}
-								}
+	                                                 ]
+	                                              });
+	                               });
+	                               data += '<label for="file_check">';
+	                               data += '<img id="mfolders'
+	                                     + item.ffid
+	                                     + '" class="folder mfolder" path="'
+	                                     + item.path
+	                                     + '" src="./resources/img/storage/newFolder.png">';
+	                               data += '</label>';
+	                               // data += '<img class="folder mfolder"
+	                               // path="'+ item.path
+	                               // +'"
+	                               // src="./resources/img/storage/mfolder.png">';
+	                            }
+	                         }
 
-							}
-						}
+	                      }
+	                   }
 
-						data += '   		</td>';
-						data += '	</label>';
-						data += '</tr>';
-						data += '<tr align="center">';
-						data += '   <td class="fileName">';
-						data += item.fileName;
-						data += '   </td>';
-						data += '</tr>';
-						data += '</table>';
-						data += '</li>';
-					});
-					data += '</ul>';
+	                   data += '         </td>';
+	                   data += '   </label>';
+	                   data += '</tr>';
+	                   data += '<tr align="center">';
+	                   data += '   <td class="fileName">';
+	                   data += item.fileName;
+	                   data += '   </td>';
+	                   data += '</tr>';
+	                   data += '</table>';
+	                   data += '</li>';
+	                });
+	                data += '</ul>';
 
 	if(recentHTML == ''){
 		//alert("dd");
@@ -1895,7 +2026,7 @@ function outputList(list) {
 			// 선택
 			$('.file_check').each(function(index, item) {
 				$(this).prop("checked", true);
-				$('.filebox-td').css('background-color', '#ccffeb');
+				$('.filebox-td').css('background-color', '#E1F6F1');
 			});
 		}
 	});
@@ -1908,9 +2039,21 @@ function outputList(list) {
 			$(this).css('background-color', '');
 		}else{
 			$('.file_check:eq("'+fileboxNum+'")').prop("checked", true);
-			$(this).css('background-color', '#ccffeb');
+			$(this).css('background-color', '#E1F6F1');
 		}
 	});
+	
+	//체크박스 클릭시 색깔변경
+	   $('.file_check').click(function() {
+	      var checkBoxNum = $(".file_check").index(this);
+	      if($(this).is(':checked')){
+	         alert($(this).is(':checked'));
+	         $('.filebox-td:eq("'+checkBoxNum+'")').css('background-color', '#ccffeb');
+	      }else{
+	         alert($(this).is(':checked'));
+	         $('.filebox-td:eq("'+checkBoxNum+'")').css('background-color', '');
+	      }
+	   });
 
 
 	if (navRoot != 'Trash') {
@@ -1919,6 +2062,15 @@ function outputList(list) {
 			nowPath = path;
 			menu = 'List';
 			loadList(path);
+			var auth = '';
+			$.each(list, function(index, item) {
+				auth = $(this).attr('auth');
+				return;
+			});
+			alert(auth);
+			if (auth == "VIEW") {
+				$('.btn-moveiEdit').hide();
+			}
 			setNavTop('inFolder');
 			// 삭제버튼
 			eventInit();
@@ -1951,18 +2103,19 @@ var nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 
 function setNavRoot(nr) {
 	navRoot = nr;
+	
 	if (navRoot == 'MyStorage') {
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '내 저장소</a>';
 	} else if (navRoot == 'Shared')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '공유저장소</a>';
+			+ navRoot + '">' + '공유저장소</a>';
 	else if (navRoot == 'Bookmark')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '즐겨 찾기</a>';
+			+ navRoot + '">' + '즐겨 찾기</a>';
 	else if (navRoot == 'Recent')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
-				+ navRoot + '">' + '최근 작업 파일</a>';
+			+ navRoot + '">' + '최근 작업 파일</a>';
 	else if (navRoot == 'Trash')
 		nav = '<a style="cursor:pointer" class="navbar-brand naviBarRoot" nav="'
 				+ navRoot + '">' + '휴지통</a>';
@@ -2006,14 +2159,17 @@ function setNav() {
 function regEvent() {
 	$(".naviBarRoot").click(function() {
 		var path = $(this).attr('nav');
-		if(path='MyStorage')
+		
+		if(path == 'MyStorage')
 			nowPath = myRootDir;
+		
 		else
 			nowPath = '';
-		menu = path;
-		setNavRoot(menu)
-		alert(navRoot);
-		loadList();
+			menu = path;
+			setNavRoot(menu)
+			alert(navRoot);
+			loadList();
+		
 	});
 
 	$(".naviBar").click(function() {
@@ -2046,7 +2202,7 @@ function regEvent() {
 function setNavTop(nr) {
 	var data = '';
 	var root = nr;
-
+	alert(root);
 	if (root == 'MyStorage') {
 		data += '<ul class="nav navbar-nav">';
 		data += '	<li class="active">';
@@ -2055,7 +2211,6 @@ function setNavTop(nr) {
 		data += '			</i> 전체선택';
 		data += '		</a>';
 		data += '	</li>';
-		
 		data += '	<li>';
 		data += '		<a id="btn-copycut" class=' + 'topMenu' + '>';
 		data += '			<i class="fa fa-files-o" aria-hidden="true">';
@@ -2490,6 +2645,43 @@ function outputRecentList(dateFile) {
 			maxHeight : "75%",
 			href : path
 		});
+		
+		/// 이미지 클릭시 색깔 바꾸기
+		$('.filebox-td').click(function() {
+			var fileboxNum = $(".filebox-td").index(this);
+			if($('.file_check:eq("'+fileboxNum+'")').is(':checked')){
+				$('.file_check:eq("'+fileboxNum+'")').prop("checked", false);
+				$(this).css('background-color', '');
+			}else{
+				$('.file_check:eq("'+fileboxNum+'")').prop("checked", true);
+				$(this).css('background-color', '#E1F6F1');
+			}
+		});
+		
+		//체크박스 클릭시 색깔변경
+		   $('.file_check').click(function() {
+		      var checkBoxNum = $(".file_check").index(this);
+		      if($(this).is(':checked')){
+		         alert($(this).is(':checked'));
+		         $('.filebox-td:eq("'+checkBoxNum+'")').css('background-color', '#ccffeb');
+		      }else{
+		         alert($(this).is(':checked'));
+		         $('.filebox-td:eq("'+checkBoxNum+'")').css('background-color', '');
+		      }
+		   });
+	});
+	
+
+	/// 이미지 클릭시 색깔 바꾸기
+	$('.filebox-td').click(function() {
+		var fileboxNum = $(".filebox-td").index(this);
+		if($('.file_check:eq("'+fileboxNum+'")').is(':checked')){
+			$('.file_check:eq("'+fileboxNum+'")').prop("checked", false);
+			$(this).css('background-color', '');
+		}else{
+			$('.file_check:eq("'+fileboxNum+'")').prop("checked", true);
+			$(this).css('background-color', '#E1F6F1');
+		}
 	});
 }
 function sortObject(o){
@@ -2667,6 +2859,27 @@ function onClickCC(event, treeId, treeNode, clickFlag) {
 
 function requestFileListCC(path){
 	copyMoveDestPath = path;
+}
+
+//검색파일
+function fileSearchList() {
+	if (menu == 'FileSearch')
+		path = myRootDir;
+	//alert("제이슨까지오는가");
+	var url = 'load' + menu;
+	$.ajax({
+		url : url,
+		type : 'POST',
+		data : $('#fileSearchForm').serialize(),
+		dataType : 'json',
+		success : outputList,
+		error : function(e) {
+			alert(JSON.stringify(e));
+			
+		}
+	});
+
+	outputNavi(path);
 }
 
 

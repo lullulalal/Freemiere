@@ -2,280 +2,296 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- 
+
 <!-- 회원정보 처리 SQL -->
 <mapper namespace="com.sc32c3.freemiere.dao.FileFolderMapper">
-	<!-- <select id="getFilerFolerInfo" parameterType="string" resultType="FileFolder">
-		select * from filefolders where LOWER(path) like LOWER('%#{path}%') 
-	</select> -->
-	
+	<!-- <select id="getFilerFolerInfo" parameterType="string" resultType="FileFolder"> 
+		select * from filefolders where LOWER(path) like LOWER('%#{path}%') </select> -->
+
 	<select id="getFilerFolerInfo" resultType="FileFolder">
-		select myffs.ffs_email email, myffs.ffs_path path,
-		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
-		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
-		       bm.bookstate bookstate
-		from	(select ffs.email ffs_email, ffs.path ffs_path, 
-				ffs.info ffs_info, ffs.isshared ffs_isshared, 
-				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
-			from filefolders ffs
-			where LOWER(ffs.path)=LOWER(#{0}) ) myffs, bookmarks bm
-		where myffs.ffs_ffid = bm.ffid(+) 
-		      and (bm.email=#{1} or bm.email is null) 
-		      and LOWER(myffs.ffs_isshared)='f'
-		      and LOWER(myffs.ffs_isdeleted)='f'
+		select myffs.ffs_email
+		email, myffs.ffs_path path,
+		myffs.ffs_info info, myffs.ffs_isshared isshared,
+		myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		bm.bookstate bookstate
+		from (select ffs.email ffs_email, ffs.path ffs_path,
+		ffs.info ffs_info, ffs.isshared ffs_isshared,
+		ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+		from filefolders ffs
+		where LOWER(ffs.path)=LOWER(#{0}) ) myffs, bookmarks bm
+		where myffs.ffs_ffid
+		= bm.ffid(+)
+		and (bm.email=#{1} or bm.email is null)
+		and LOWER(myffs.ffs_isshared)='f'
+		and LOWER(myffs.ffs_isdeleted)='f'
 	</select>
-	
-	
+
+
 	<select id="getSharedList" parameterType="string" resultType="FileFolder">
 		select shared.ffs_email email, shared.ffs_path path,
-		       shared.ffs_info info, shared.ffs_isshared isshared, 
-		       shared.ffs_ffid ffid, shared.ffs_isdeleted isdeleted,
-		       shared.s_auth auth, bm.bookstate bookstate
-		from  (select ffs.email ffs_email, ffs.path ffs_path, 
-			ffs.info ffs_info, ffs.isshared ffs_isshared, 
-			ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted,
-			s.auth s_auth 
-			from filefolders ffs, shares s
-			where 	ffs.ffid=s.ffid
-			and s.email=#{email} 
-			and LOWER(ffs.isShared)='t' 
-			and LOWER(ffs.isDeleted)='f') shared, bookmarks bm
-		where shared.ffs_ffid = bm.ffid(+) 
-		      and (bm.email=#{email} or bm.email is null)
+		shared.ffs_info info, shared.ffs_isshared isshared,
+		shared.ffs_ffid ffid, shared.ffs_isdeleted isdeleted,
+		shared.s_auth auth, bm.bookstate bookstate
+		from (select ffs.email ffs_email,
+		ffs.path ffs_path,
+		ffs.info ffs_info, ffs.isshared ffs_isshared,
+		ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted,
+		s.auth s_auth
+		from filefolders ffs, shares s
+		where ffs.ffid=s.ffid
+		and s.email=#{email}
+		and LOWER(ffs.isShared)='t'
+		and LOWER(ffs.isDeleted)='f') shared, bookmarks bm
+		where shared.ffs_ffid =
+		bm.ffid(+)
+		and (bm.email=#{email} or bm.email is null)
 	</select>
-	
+
 	<select id="getMyRecentList" parameterType="map" resultType="FileFolder">
 		select myffs.ffs_email email, myffs.ffs_path path,
-		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
-		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
-		       bm.bookstate bookstate
-		from	(select ffs.email ffs_email, ffs.path ffs_path, 
-				ffs.info ffs_info, ffs.isshared ffs_isshared, 
-				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
-			from filefolders ffs
-			where LOWER(ffs.path)=LOWER(#{path}) ) myffs, bookmarks bm
-		where ffs.ffid=s.ffid
-		      and (bm.email=#{email} or bm.email is null) 
-		      and LOWER(myffs.ffs_isshared)='f'
-		      and LOWER(myffs.ffs_isdeleted)='f'
-		      order by strUpdate desc
+		myffs.ffs_info info, myffs.ffs_isshared isshared,
+		myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		bm.bookstate bookstate
+		from (select ffs.email ffs_email, ffs.path ffs_path,
+		ffs.info ffs_info, ffs.isshared ffs_isshared,
+		ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+		from filefolders ffs
+		where LOWER(ffs.path)=LOWER(#{path}) ) myffs, bookmarks bm
+		where
+		ffs.ffid=s.ffid
+		and (bm.email=#{email} or bm.email is null)
+		and LOWER(myffs.ffs_isshared)='f'
+		and LOWER(myffs.ffs_isdeleted)='f'
+		order by strUpdate desc
 	</select>
-	
-	
-	<!-- 검색 -->
-	<select id="getSearchList" parameterType="string" resultType="FileFolder">
-		select * from filefolders
-		where path like '%#{title}%' 
-			order by path desc
-	</select>
-	
-	
-	
-	<select id="getSharedBookmarkList" parameterType="string" resultType="FileFolder">
+
+	<select id="getSharedBookmarkList" parameterType="string"
+		resultType="FileFolder">
 		select shared.ffs_email email, shared.ffs_path path,
-		       shared.ffs_info info, shared.ffs_isshared isshared, 
-		       shared.ffs_ffid ffid, shared.ffs_isdeleted isdeleted,
-		       shared.s_auth auth, bm.bookstate bookstate
-		from  (select ffs.email ffs_email, ffs.path ffs_path, 
-			ffs.info ffs_info, ffs.isshared ffs_isshared, 
-			ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted,
-			s.auth s_auth 
-			from filefolders ffs, shares s
-			where 	ffs.ffid=s.ffid
-			and s.email=#{email} 
-			and LOWER(ffs.isShared)='t' 
-			and LOWER(ffs.isDeleted)='f') shared, bookmarks bm
-		where shared.ffs_ffid = bm.ffid 
-		      and bm.email=#{email}
+		shared.ffs_info info, shared.ffs_isshared isshared,
+		shared.ffs_ffid ffid, shared.ffs_isdeleted isdeleted,
+		shared.s_auth auth, bm.bookstate bookstate
+		from (select ffs.email ffs_email,
+		ffs.path ffs_path,
+		ffs.info ffs_info, ffs.isshared ffs_isshared,
+		ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted,
+		s.auth s_auth
+		from filefolders ffs, shares s
+		where ffs.ffid=s.ffid
+		and s.email=#{email}
+		and LOWER(ffs.isShared)='t'
+		and LOWER(ffs.isDeleted)='f') shared, bookmarks bm
+		where shared.ffs_ffid =
+		bm.ffid
+		and bm.email=#{email}
 	</select>
-	
-	<select id="getMyStorageBookmarkList" parameterType="string" resultType="FileFolder">
+
+	<select id="getMyStorageBookmarkList" parameterType="string"
+		resultType="FileFolder">
 		select myffs.ffs_email email, myffs.ffs_path path,
-		       myffs.ffs_info info, myffs.ffs_isshared isshared, 
-		       myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
-		       bm.bookstate bookstate
-		from	(select ffs.email ffs_email, ffs.path ffs_path, 
-				ffs.info ffs_info, ffs.isshared ffs_isshared, 
-				ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
-			from filefolders ffs
-			where ffs.email=#{email}
-				and LOWER(ffs.isShared)='f' 
-				and LOWER(ffs.isDeleted)='f') myffs, bookmarks bm
-		where myffs.ffs_ffid = bm.ffid
-		      and (bm.email=#{email} or bm.email is null)
+		myffs.ffs_info info, myffs.ffs_isshared isshared,
+		myffs.ffs_ffid ffid, myffs.ffs_isdeleted isdeleted,
+		bm.bookstate bookstate
+		from (select ffs.email ffs_email, ffs.path ffs_path,
+		ffs.info ffs_info, ffs.isshared ffs_isshared,
+		ffs.ffid ffs_ffid, ffs.isdeleted ffs_isdeleted
+		from filefolders ffs
+		where ffs.email=#{email}
+		and LOWER(ffs.isShared)='f'
+		and LOWER(ffs.isDeleted)='f') myffs, bookmarks bm
+		where myffs.ffs_ffid =
+		bm.ffid
+		and (bm.email=#{email} or bm.email is null)
 	</select>
-	
+
 	<select id="getTrashList" parameterType="string" resultType="FileFolder">
 		select * from filefolders
-		where email=#{email} 
-			and LOWER(isDeleted)='t'
+		where email=#{email}
+		and LOWER(isDeleted)='t'
 	</select>
-	
+
 	<!-- 일반 파일 폴더 삭제 -->
 	<update id="deleteFileFolder" parameterType="int">
 		update filefolders
 		set isdeleted = 't'
 		where ffid = #{ffid}
 	</update>
-	
-	<!--북마크 파일폴더 삭제  -->
+
+	<!--북마크 파일폴더 삭제 -->
 	<delete id="deleteBookmarks" parameterType="map">
-		delete bookmarks 
-		where 
-			ffid = #{ffid}
+		delete bookmarks
+		where
+		ffid = #{ffid}
 		and
-			email = #{email}
+		email = #{email}
 	</delete>
-	
-	<!--공유 파일폴더 삭제  -->
+
+	<!--공유 파일폴더 삭제 -->
 	<delete id="deleteShare" parameterType="map">
-		delete shares 
-		where 
-			ffid = #{ffid}
+		delete shares
+		where
+		ffid = #{ffid}
 		and
-			email = #{email}
+		email = #{email}
 	</delete>
-	
+
 	<!-- 새폴더 -->
 	<insert id="newDir"> <!-- FileFolderController의 newDir메서드 참조 -->
 		insert into filefolders values(
-			 #{1},
-			 #{0},
-			 ' ',
-			 default,
-			 filefolders_seq.nextval,
-			 default
+		#{1},
+		#{0},
+		' ',
+		default,
+		filefolders_seq.nextval,
+		default
 		)
 	</insert>
-	
-	<!--파일업로드  -->
+
+	<!--파일업로드 -->
 	<insert id="upload" parameterType="FileFolder">
 		insert into
-			filefolders
+		filefolders
 		values(
-			#{email}
-			,#{path}
-			,#{info}
-			,default
- 			,filefolders_seq.nextval
- 			,default)
- 			
- 	</insert>
-	
-	<!--휴지통에서 삭제  -->
+		#{email}
+		,#{path}
+		,#{info}
+		,default
+		,filefolders_seq.nextval
+		,default)
+
+	</insert>
+
+	<!--휴지통에서 삭제 -->
 	<delete id="completeDelete" parameterType="String">
-		delete filefolders 
-		where 
-			path = #{path}
+		delete filefolders
+		where
+		path = #{path}
 	</delete>
-	
-	<!--복원  -->
+
+	<!--복원 -->
 	<update id="restore" parameterType="String">
 		update filefolders
 		set
-			isdeleted = 'F'
-		where 
-			path = #{path}
+		isdeleted = 'F'
+		where
+		path = #{path}
 	</update>
-	
-	<update id="bookmarkUpdate" parameterType="map" >
-   update bookmarks set  
-     <if test='bookstate=="t"'>bookstate='f'</if>
-      <if test='bookstate=="f"'>bookstate='t'</if>
 
-    where ffid= #{ffid}
-   </update>
-   
-   <select id="boardread" parameterType="int" resultType="FileFolder">
-   
-   select * from filefolders
-   where ffid=#{ffid}
-   </select>
-   
-   <!-- 컨텍스트메뉴에서 삭제하기 -->
-   <update id="conDelete" parameterType="int">
-   update filefolders set isdeleted='t' where ffid = #{ffid}
-   </update>
-   
-   <update id="conRemove" parameterType="int">
-   update filefolders set isdeleted='f' where ffid = #{ffid}
-   </update>
-   
-   <delete id="conAllRemove" parameterType="int">
-   delete from filefolders where ffid=#{ffid}
-   </delete>
-   
-   <delete id="conBookDelete" parameterType="int">
-   delete from bookmarks where ffid=#{ffid}
-   </delete>
-   
-   <insert id="bookmarkInsert" parameterType="map">
-   insert into bookmarks values(
-   #{ffid},#{email},'t'
-   )
-   </insert>
-   
-   <select id="bookmarkSearch" parameterType="int" resultType="FileFolder">
-   select * from bookmarks where ffid = #{ffid}
-   </select>
-   
-   
+	<update id="bookmarkUpdate" parameterType="map">
+		update bookmarks set
+		<if test='bookstate=="t"'>bookstate='f'</if>
+		<if test='bookstate=="f"'>bookstate='t'</if>
+
+		where ffid= #{ffid}
+	</update>
+
+	<select id="boardread" parameterType="int" resultType="FileFolder">
+
+		select * from filefolders
+		where ffid=#{ffid}
+	</select>
+
+	<!-- 컨텍스트메뉴에서 삭제하기 -->
+	<update id="conDelete" parameterType="int">
+		update filefolders set isdeleted='t' where ffid = #{ffid}
+	</update>
+
+	<update id="conRemove" parameterType="int">
+		update filefolders set isdeleted='f' where ffid = #{ffid}
+	</update>
+
+	<delete id="conAllRemove" parameterType="int">
+		delete from filefolders where ffid=#{ffid}
+	</delete>
+
+	<delete id="conBookDelete" parameterType="int">
+		delete from bookmarks where ffid=#{ffid}
+	</delete>
+
+	<insert id="bookmarkInsert" parameterType="map">
+		insert into bookmarks values(
+		#{ffid},#{email},'t'
+		)
+	</insert>
+
+	<select id="bookmarkSearch" parameterType="int" resultType="FileFolder">
+		select * from bookmarks where ffid = #{ffid}
+	</select>
+
+
 	<!-- path에 대한 ffid 가져오기 -->
-	<select id="getffid" parameterType="string" resultType="int"> 
+	<select id="getffid" parameterType="string" resultType="int">
 		select ffid from filefolders where path=#{path}
+	</select>
+
+	<update id="folderShare" parameterType="map">
+		update filefolders set
+		<if test='isShared=="f"'>isshared='T'</if>
+
+		where ffid= #{ffid}
+	</update>
+
+	<update id="sokUpdate" parameterType="map">
+		update filefolders set info= #{info}, path=#{path} where ffid=#{ffid}
+	</update>
+
+	<insert id="shareInsert" parameterType="map">
+		insert into shares values(
+		#{ffid},#{auth},#{email}
+		)
+
+	</insert>
+	<select id="shareList" parameterType="int" resultType="FileFolder">
+		select * from shares where ffid=#{ffid} order by
+		decode(auth,'OWNER',1,'EDIT',2,'VIEW',3)
+	</select>
+
+	<select id="searchShare" parameterType="map" resultType="FileFolder">
+		select * from shares where ffid=#{ffid} and email=#{email}
+	</select>
+
+	<!-- 경로에서 auth처리 -->
+	<update id="updateAuth" parameterType="map">
+		update shares set auth=#{auth} where ffid=#{ffid} and email=#{email}
+	</update>
+
+	<update id="updateFileShare" parameterType="int">
+		update filefolders set ISSHARED = 'T' where ffid = #{ffid}
+	</update>
+
+	<insert id="firstOwner" parameterType="map">
+		insert into shares values(
+		#{ffid},'OWNER',#{myEmail}
+		)
+
+	</insert>
+
+	<update id="updateOwner" parameterType="map">
+		update shares set auth='VIEW' where ffid=#{ffid} and email=#{email}
+	</update>
+
+	<update id="move">
+		update filefolders set path=#{1} where LOWER(path)=LOWER(#{0})
+	</update>
+
+	<select id="searchOwner" parameterType="int" resultType="FileFolder">
+		select * from shares where ffid=#{ffid} and auth='OWNER'
+	</select>
+
+<!-- 검색 -->
+	
+	<select id="getSearchList" parameterType="string" resultType="FileFolder">
+		select *
+		from
+		filefolders
+		where
+		LOWER(path) like LOWER('%' || #{fileSearch} || '%') 
+		and  
+		LOWER(isDeleted)='f' 
 	</select> 
 	
-   <update id="folderShare" parameterType="map" >
-   update filefolders set  
-      <if test='isShared=="f"'>isshared='T'</if>
-
-    where ffid= #{ffid}
-   </update>
-   
-   <update id="sokUpdate" parameterType="map">
-   update filefolders set info= #{info}, path=#{path} where ffid=#{ffid}
-   </update>
-   
-   <insert id="shareInsert" parameterType="map">
-   insert into shares values(
-   #{ffid},#{auth},#{email}
-   )
-   
-   </insert>
-   <select id="shareList" parameterType="int" resultType="FileFolder">
-    select * from shares where ffid=#{ffid} order by decode(auth,'OWNER',1,'EDIT',2,'VIEW',3)
-   </select>
-   
-   <select id="searchShare" parameterType="map" resultType="FileFolder">
+	<select id="searchMyAuth" parameterType="map" resultType="FileFolder">
    select * from shares where ffid=#{ffid} and email=#{email}
-   </select>
-   
-   <!-- 경로에서 auth처리 -->
-   <update id="updateAuth" parameterType="map">
-   update shares set auth=#{auth} where ffid=#{ffid} and email=#{email}
-   </update>
-   
-   <update id="updateFileShare" parameterType="int">
-   update filefolders set ISSHARED = 'T' where ffid = #{ffid}
-   </update>
-   
-   <insert id="firstOwner" parameterType="map">
-   insert into shares values(
-   #{ffid},'OWNER',#{myEmail}
-   )
-   
-   </insert>
-   
-   <update id="updateOwner" parameterType="map">
-  	 update shares set auth='VIEW' where ffid=#{ffid} and email=#{email}
-   </update>
-   
-   <update id="move" >
-  	 update filefolders set path=#{1} where LOWER(path)=LOWER(#{0})
-   </update>
-   
-    <select id="searchOwner" parameterType="int" resultType="FileFolder">
-   select * from shares where ffid=#{ffid} and auth='OWNER' 
    </select>
 
 </mapper>

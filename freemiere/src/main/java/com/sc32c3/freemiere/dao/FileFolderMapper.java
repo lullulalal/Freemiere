@@ -21,9 +21,8 @@ public interface FileFolderMapper {
 
 	public ArrayList<FileFolder> getMyStorageBookmarkList(String email);
 
-	//public ArrayList<FileFolder> getMyRecentList( String email);
-	
-	public ArrayList<FileFolder> getSearchList(String title);
+	// public ArrayList<FileFolder> getMyRecentList( String email);
+
 
 	public int deleteFileFolder(int ffid);
 
@@ -40,7 +39,7 @@ public interface FileFolderMapper {
 
 	// 새폴더(경로와 이메일 정보를 가져온다.)
 	public int newDir(String path, String email);
-	
+
 	public int getffid(String path);
 
 	// 파일 다운로드
@@ -83,9 +82,14 @@ public interface FileFolderMapper {
 	public int updateFileShare(int ffid);
 
 	public int firstOwner(HashMap<String, Object> map);
-	
+
 	public int updateOwner(HashMap<String, Object> map);
-	
+
 	public FileFolder searchOwner(int ffid);
+
 	public int move(String originPath, String destPath);
+
+	public ArrayList<FileFolder> getSearchList(String searchPath);
+	
+	public FileFolder searchMyAuth(HashMap<String, Object> map);
 }
